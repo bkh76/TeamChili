@@ -9,7 +9,7 @@ function_definition : 'func' Identifier '(' (arg_list',')*(arg_list)? ')' ('->' 
 arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array<' typeIdentifier '>' Identifier) #Argument;
 
 instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' instruction)? #Assignment
-		   | Identifier '=' instruction #ReAssignment
+           | Identifier '=' instruction #ReAssignment
            | Identifier ('[' expr ']')+ ('=' instruction)? #ArrayAssignment
            | Identifier op=('*=' | '/=') instruction  #MulEqDivEq
            | Identifier op=('++' | '--') instruction  #IncDec
@@ -22,10 +22,9 @@ instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('
            | Identifier '(' (instruction',')*(instruction)? ')' #FunctionCall
            | Identifier '=' Identifier '(' (instruction',')*(instruction)? ')' #AssignmentFunctionCall
            | expr #InstructionToExpr
-  		   ;
+           ;
 
-expr : expr (op='**') expr #Exp
-          | expr op=('*'|'/') instruction #MulDiv
+expr :  expr op=('*'|'/') instruction #MulDiv
           | expr op=('+'|'-') instruction #AddSub
           | expr op=('<'|'>') instruction #GtLt
           | expr op=('<='|'>=') instruction #GteqLteq
