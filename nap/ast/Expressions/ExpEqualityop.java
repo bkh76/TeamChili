@@ -4,7 +4,7 @@ public class ExpEqualityop extends Expr {
     public Expression left;
     public Expression right;
     public Equalityop op;
-    public ExpBinop(Position pos, Expression left,
+    public ExpEqualityop(Position pos, Expression left,
 		    Equalityop op, Expression right) {
         this.pos = pos;
         this.left = left;
