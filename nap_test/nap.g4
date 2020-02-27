@@ -8,7 +8,7 @@ function_definition : 'func' Identifier '(' (arg_list',')*(arg_list)? ')' ('->' 
 
 arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array<' typeIdentifier '>' Identifier) #Argument;
 
-instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' instruction)? #Assignment
+instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' expr)? #Assignment
            | Identifier '=' instruction #ReAssignment
            | expr  ('[' expr ']')+ '=' expr #ArrayAssignment
            | Identifier op=('*=' | '/=') expr  #MulEqDivEq
@@ -21,6 +21,7 @@ instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('
            | '->' expr #Return
            | conditional #CondExpr
            | Identifier '=' Identifier '(' (expr',')*(expr)? ')' #AssignmentFunctionCall
+           | expr #InstructionToExpr
            ;
 
 expr :      expr op=('*'|'/') expr #MulDiv
@@ -69,6 +70,6 @@ CharacterConstant : '\'' ('\\')?[a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ] '
 
 StringConstant : '"' [a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ]* '"';
 
-Comment : '//' -> skip;
+Comment : '#' -> skip;
 
 WS : [ \t\r\n;]+ -> skip;

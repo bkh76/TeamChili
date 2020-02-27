@@ -44,7 +44,7 @@ public class napParser extends Parser {
 			"'+'", "'-'", "'<'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", 
 			"'!'", "'mod'", "'while'", "'do'", "'for'", "'in'", "'if'", "'else if'", 
 			"'else'", "'char'", "'byte'", "'int'", "'bool'", null, null, null, null, 
-			null, "'//'"
+			null, "'#'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -531,8 +531,8 @@ public class napParser extends Parser {
 			return getRuleContext(TypeIdentifierContext.class,0);
 		}
 		public TerminalNode Identifier() { return getToken(napParser.Identifier, 0); }
-		public InstructionContext instruction() {
-			return getRuleContext(InstructionContext.class,0);
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public AssignmentContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -791,7 +791,7 @@ public class napParser extends Parser {
 					setState(78);
 					match(T__11);
 					setState(79);
-					instruction();
+					expr(0);
 					}
 				}
 
@@ -2362,7 +2362,7 @@ public class napParser extends Parser {
 		"\2\2@A\5\20\t\2AB\7\f\2\2BC\7\63\2\2CE\3\2\2\2D8\3\2\2\2D<\3\2\2\2D?\3"+
 		"\2\2\2E\t\3\2\2\2FN\7\r\2\2GH\5\20\t\2HI\7\63\2\2IO\3\2\2\2JK\7\13\2\2"+
 		"KL\5\20\t\2LM\7\f\2\2MO\3\2\2\2NG\3\2\2\2NJ\3\2\2\2OR\3\2\2\2PQ\7\16\2"+
-		"\2QS\5\n\6\2RP\3\2\2\2RS\3\2\2\2S\u00a5\3\2\2\2TU\7\63\2\2UV\7\16\2\2"+
+		"\2QS\5\f\7\2RP\3\2\2\2RS\3\2\2\2S\u00a5\3\2\2\2TU\7\63\2\2UV\7\16\2\2"+
 		"V\u00a5\5\n\6\2W\\\5\f\7\2XY\7\17\2\2YZ\5\f\7\2Z[\7\20\2\2[]\3\2\2\2\\"+
 		"X\3\2\2\2]^\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_`\3\2\2\2`a\7\16\2\2ab\5\f\7"+
 		"\2b\u00a5\3\2\2\2cd\7\63\2\2de\t\2\2\2e\u00a5\5\f\7\2fg\7\63\2\2gh\t\3"+
