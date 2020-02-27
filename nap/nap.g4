@@ -24,24 +24,24 @@ instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('
            | expr #InstructionToExpr
            ;
 
-expr :  expr op=('*'|'/') instruction #MulDiv
-          | expr op=('+'|'-') instruction #AddSub
+expr : expr op=('*'|'/') expr #MulDiv
+          | expr op=('+'|'-') expr #AddSub
           | expr op=('<'|'>') instruction #GtLt
           | expr op=('<='|'>=') instruction #GteqLteq
           | expr op=('==' | '!=') instruction #EqualNotEq
-          | expr 'mod' instruction #Mod
-          | expr op=('||' | '&&' | '!') instruction #LOrLAndLNot
-          | '-' instruction #Negation
-          | '!' instruction #LNegation
-          | 'mod' instruction #ConstMod
+          | expr 'mod' expr #Mod
+          | expr op=('||' | '&&' | '!') expr #LOrLAndLNot
+          | '-' expr #Negation
+          | '!' expr #LNegation
+          | 'mod' expr #ConstMod
           | Identifier #Identifier
           | Constant #Constant
           | CharacterConstant #CharacterConstant
           | BooleanConstant #BooleanConstant
           | StringConstant #StringConstant
-          | '(' instruction ')' #Parenthesis
+          | '(' expr ')' #Parenthesis
           |	'{' (instruction',')*(instruction)? '}' #ConstantArray
-          | '->' instruction #Return
+          | '->' expr #Return
           ;
 
 conditional : 'while' '(' instruction ')' block #WhileLoop
@@ -69,4 +69,6 @@ CharacterConstant : '\'' ('\\')?[a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ] '
 
 StringConstant : '"' [a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ]* '"';
 
-WS: [ \t\r\n;]+ -> skip;
+Comment : '//' -> skip;
+
+WS : [ \t\r\n;]+ -> skip;
