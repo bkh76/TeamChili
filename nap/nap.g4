@@ -10,19 +10,17 @@ arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array
 
 instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' instruction)? #Assignment
            | Identifier '=' instruction #ReAssignment
-           | Identifier ('[' expr ']')+ ('=' instruction)? #ArrayAssignment
-           | Identifier op=('*=' | '/=') instruction  #MulEqDivEq
-           | Identifier op=('++' | '--') instruction  #IncDec
-           | Identifier op=('+=' | '-=') instruction  #IncEqDecEq
-           | ('var') ('array<' typeIdentifier '>') Identifier '=' 'new (' typeIdentifier ',' Constant ')' #NewOp
+           | expr  ('[' expr ']')+ '=' expr #ArrayAssignment
+           | Identifier op=('*=' | '/=') expr  #MulEqDivEq
+           | Identifier op=('++' | '--') expr  #IncDec
+           | Identifier op=('+=' | '-=') expr  #IncEqDecEq
+           | ('var') ('array<' typeIdentifier '>')? Identifier '=' 'new (' typeIdentifier ',' Constant ')' #NewOp
            | 'read' '(' typeIdentifier ',' Identifier ')' #Read
-           | 'print' '(' typeIdentifier ',' instruction ')' #Print
-           | 'new' '(' typeIdentifier ',' instruction ')' #ConstNew
-           | '->' instruction #Return
+           | 'print' '(' typeIdentifier ',' expr ')' #Print
+           | 'new' '(' typeIdentifier ',' expr ')' #ConstNew
+           | '->' expr #Return
            | conditional #CondExpr
-           | Identifier '(' (instruction',')*(instruction)? ')' #FunctionCall
-           | Identifier '=' Identifier '(' (instruction',')*(instruction)? ')' #AssignmentFunctionCall
-           | expr #InstructionToExpr
+           | Identifier '=' Identifier '(' (expr',')*(expr)? ')' #AssignmentFunctionCall
            ;
 
 expr :      expr op=('*'|'/') expr #MulDiv
@@ -35,6 +33,8 @@ expr :      expr op=('*'|'/') expr #MulDiv
           | '!' expr #LNegation
           | expr 'mod' expr #Mod
           | 'mod' expr #ConstMod
+          | expr  ('[' expr ']')+ #ArrayAccess
+          | Identifier '(' (expr',')*(expr)? ')' #FunctionCall
           | Identifier #Identifier
           | Constant #Constant
           | CharacterConstant #CharacterConstant
@@ -44,17 +44,17 @@ expr :      expr op=('*'|'/') expr #MulDiv
           | '(' expr ')' #Parenthesis
           ;
 
-conditional : 'while' '(' instruction ')' block #WhileLoop
+conditional : 'while' '(' expr ')' block #WhileLoop
            | 'do' block 'while' '(' expr ')' #DoWhileLoop
            | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
            | 'if' '(' instruction ')' block #IfCond
-           | 'else if' '(' instruction ')' block #ElseIfCond
+           | 'else if' '(' expr ')' block #ElseIfCond
            | 'else' block #ElseBlock
            ;
 
 Identifier : [a-zA-Z_] [a-zA-Z0-9_]*;
 
-typeIdentifier : 'char' #Char 
+typeIdentifier : 'char' #Char
                | 'byte' #Byte
                | 'int' #Int
                | 'bool' #Bool

@@ -196,18 +196,6 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitCondExpr(napParser.CondExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link napParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCall(napParser.FunctionCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link napParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCall(napParser.FunctionCallContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code AssignmentFunctionCall}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
@@ -364,6 +352,18 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitParenthesis(napParser.ParenthesisContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ArrayAccess}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayAccess(napParser.ArrayAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayAccess}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayAccess(napParser.ArrayAccessContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Identifier}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -411,6 +411,18 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualNotEq(napParser.EqualNotEqContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(napParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(napParser.FunctionCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code StringConstant}
 	 * labeled alternative in {@link napParser#expr}.

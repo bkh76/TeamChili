@@ -1,12 +1,12 @@
 func input(ref int a, ref int b, ref int c)
 {
   print(array<char>, "Number of solutions of a^2 + bx +c = 0\n")
-  print("a = ")
-  read(int, a);
-  print("b =")
-  read(int, b);
-  print("c = ")
-  read(int, c);	
+  print(array<char>, "a = ")
+  read(int, a)
+  print(array<char>, "b =")
+  read(int, b)
+  print(array<char>, "c = ")
+  read(int, c)
 }
 
 func num_solutions(int a, int b, int c) -> int

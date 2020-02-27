@@ -11,7 +11,7 @@ func main()
   // Should always return T
   print(bool, a * b + c == 10)
   print(bool, a * (b + c) ==  14)
-  print(bool, a ** b ** c == a ** (b ** c))
+  print(bool, a * b * c == a * (b * c))
   print(bool, a - b - c == (a - b) - c)
   print(bool, a + b < a + c)
   print(bool, c mod a == 0)

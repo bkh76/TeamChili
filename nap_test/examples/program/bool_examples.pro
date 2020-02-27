@@ -22,8 +22,6 @@ func main()
   print(bool, b2)	  
   b = 2 > 1
   print(bool, b)
-  b = 1 & 2
   print(bool, b)
-  b = 1 | 2
   print(bool, b)  
 }
