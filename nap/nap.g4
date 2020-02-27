@@ -18,6 +18,7 @@ instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('
            | 'read' '(' typeIdentifier ',' Identifier ')' #Read
            | 'print' '(' typeIdentifier ',' instruction ')' #Print
            | 'new' '(' typeIdentifier ',' instruction ')' #ConstNew
+           | '->' instruction #Return
            | conditional #CondExpr
            | Identifier '(' (instruction',')*(instruction)? ')' #FunctionCall
            | Identifier '=' Identifier '(' (instruction',')*(instruction)? ')' #AssignmentFunctionCall
@@ -40,8 +41,7 @@ expr : expr op=('*'|'/') expr #MulDiv
           | BooleanConstant #BooleanConstant
           | StringConstant #StringConstant
           | '(' expr ')' #Parenthesis
-          |	'{' (instruction',')*(instruction)? '}' #ConstantArray
-          | '->' expr #Return
+          | '{' (instruction',')*(instruction)? '}' #ConstantArray
           ;
 
 conditional : 'while' '(' instruction ')' block #WhileLoop
