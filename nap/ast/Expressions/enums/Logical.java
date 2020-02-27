@@ -1,4 +1,4 @@
 package ast;
 
-public enum Logicalop { LAND, LOR, LNOT } 
+public enum Logical { LAND, LOR, LNOT }
                        //&&', '||', '!'

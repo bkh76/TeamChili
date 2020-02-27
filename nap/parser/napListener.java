@@ -40,17 +40,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitFunctionDeclaration(napParser.FunctionDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SingleArg}
+	 * Enter a parse tree produced by the {@code Argument}
 	 * labeled alternative in {@link napParser#arg_list}.
 	 * @param ctx the parse tree
 	 */
-	void enterSingleArg(napParser.SingleArgContext ctx);
+	void enterArgument(napParser.ArgumentContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SingleArg}
+	 * Exit a parse tree produced by the {@code Argument}
 	 * labeled alternative in {@link napParser#arg_list}.
 	 * @param ctx the parse tree
 	 */
-	void exitSingleArg(napParser.SingleArgContext ctx);
+	void exitArgument(napParser.ArgumentContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Assignment}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -412,18 +412,6 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitEqualNotEq(napParser.EqualNotEqContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code OrAnd}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterOrAnd(napParser.OrAndContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code OrAnd}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitOrAnd(napParser.OrAndContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code StringConstant}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -435,18 +423,6 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStringConstant(napParser.StringConstantContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Exp}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterExp(napParser.ExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Exp}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitExp(napParser.ExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ConstMod}
 	 * labeled alternative in {@link napParser#expr}.

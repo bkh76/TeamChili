@@ -1,4 +1,4 @@
 package ast;
 
-public enum Equalityop { EQ, NOTEQ } 
+public enum Equality { EQUAL, NOT_EQUAL }
                     // '==', '!='

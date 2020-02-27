@@ -52,13 +52,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSingleArg(napParser.SingleArgContext ctx) { }
+	@Override public void enterArgument(napParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSingleArg(napParser.SingleArgContext ctx) { }
+	@Override public void exitArgument(napParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -424,18 +424,6 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrAnd(napParser.OrAndContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOrAnd(napParser.OrAndContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStringConstant(napParser.StringConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -443,18 +431,6 @@ public class napBaseListener implements napListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStringConstant(napParser.StringConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExp(napParser.ExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExp(napParser.ExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
