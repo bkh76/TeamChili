@@ -136,13 +136,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNewOp(napParser.NewOpContext ctx) { }
+	@Override public void enterNewInline(napParser.NewInlineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNewOp(napParser.NewOpContext ctx) { }
+	@Override public void exitNewInline(napParser.NewInlineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -172,13 +172,25 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstNew(napParser.ConstNewContext ctx) { }
+	@Override public void enterNew(napParser.NewContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstNew(napParser.ConstNewContext ctx) { }
+	@Override public void exitNew(napParser.NewContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturn(napParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn(napParser.ReturnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -191,18 +203,6 @@ public class napBaseListener implements napListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCondExpr(napParser.CondExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionCall(napParser.FunctionCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionCall(napParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -251,18 +251,6 @@ public class napBaseListener implements napListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLNegation(napParser.LNegationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterReturn(napParser.ReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturn(napParser.ReturnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -376,6 +364,18 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrayAccess(napParser.ArrayAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayAccess(napParser.ArrayAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIdentifier(napParser.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -419,6 +419,18 @@ public class napBaseListener implements napListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualNotEq(napParser.EqualNotEqContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionCall(napParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionCall(napParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

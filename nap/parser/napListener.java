@@ -124,17 +124,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitIncEqDecEq(napParser.IncEqDecEqContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code NewOp}
+	 * Enter a parse tree produced by the {@code NewInline}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void enterNewOp(napParser.NewOpContext ctx);
+	void enterNewInline(napParser.NewInlineContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code NewOp}
+	 * Exit a parse tree produced by the {@code NewInline}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void exitNewOp(napParser.NewOpContext ctx);
+	void exitNewInline(napParser.NewInlineContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Read}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -160,17 +160,29 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitPrint(napParser.PrintContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ConstNew}
+	 * Enter a parse tree produced by the {@code New}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstNew(napParser.ConstNewContext ctx);
+	void enterNew(napParser.NewContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ConstNew}
+	 * Exit a parse tree produced by the {@code New}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstNew(napParser.ConstNewContext ctx);
+	void exitNew(napParser.NewContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link napParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn(napParser.ReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link napParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn(napParser.ReturnContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code CondExpr}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -183,18 +195,6 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCondExpr(napParser.CondExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link napParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCall(napParser.FunctionCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link napParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCall(napParser.FunctionCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code AssignmentFunctionCall}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -243,18 +243,6 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLNegation(napParser.LNegationContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturn(napParser.ReturnContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturn(napParser.ReturnContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Mod}
 	 * labeled alternative in {@link napParser#expr}.
@@ -364,6 +352,18 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitParenthesis(napParser.ParenthesisContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ArrayAccess}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayAccess(napParser.ArrayAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayAccess}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayAccess(napParser.ArrayAccessContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Identifier}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -411,6 +411,18 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualNotEq(napParser.EqualNotEqContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(napParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(napParser.FunctionCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code StringConstant}
 	 * labeled alternative in {@link napParser#expr}.

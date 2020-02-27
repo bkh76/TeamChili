@@ -51,7 +51,8 @@ Constant=50
 BooleanConstant=51
 CharacterConstant=52
 StringConstant=53
-WS=54
+Comment=54
+WS=55
 '{'=1
 '}'=2
 'func'=3
@@ -85,10 +86,10 @@ WS=54
 '>='=31
 '=='=32
 '!='=33
-'mod'=34
+'&&'=34
 '||'=35
-'&&'=36
-'!'=37
+'!'=36
+'mod'=37
 'while'=38
 'do'=39
 'for'=40
@@ -100,3 +101,4 @@ WS=54
 'byte'=46
 'int'=47
 'bool'=48
+'//'=54

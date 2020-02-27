@@ -1,10 +1,10 @@
 package ast;
 
 public class Read extends Instruction {
-    public Instruction instruction;
-    public Read(Position pos, Instruction instruction){
+    public Expr expr;
+    public Read(Position pos, Expr expr){
         this.pos = pos;
-        this.instruction = instruction;
+        this.expr = expr;
     }
     public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);

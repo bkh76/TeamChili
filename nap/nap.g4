@@ -8,31 +8,29 @@ function_definition : 'func' Identifier '(' (arg_list',')*(arg_list)? ')' ('->' 
 
 arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array<' typeIdentifier '>' Identifier) #Argument;
 
-instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' instruction)? #Assignment
+instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' expr)? #Assignment
            | Identifier '=' instruction #ReAssignment
            | expr  ('[' expr ']')+ '=' expr #ArrayAssignment
            | Identifier op=('*=' | '/=') expr  #MulEqDivEq
            | Identifier op=('++' | '--') expr  #IncDec
            | Identifier op=('+=' | '-=') expr  #IncEqDecEq
-           | ('var') ('array<' typeIdentifier '>')? Identifier '=' 'new (' typeIdentifier ',' Constant ')' #NewOp
+           | ('var') ('array<' typeIdentifier '>')? Identifier '=' 'new (' typeIdentifier ',' Constant ')' #NewInline
            | 'read' '(' typeIdentifier ',' Identifier ')' #Read
            | 'print' '(' typeIdentifier ',' expr ')' #Print
-           | 'new' '(' typeIdentifier ',' expr ')' #ConstNew
+           | 'new' '(' typeIdentifier ',' expr ')' #New
            | '->' expr #Return
            | conditional #CondExpr
            | Identifier '=' Identifier '(' (expr',')*(expr)? ')' #AssignmentFunctionCall
+           | expr #InstructionToExpr
            ;
 
 expr :      expr op=('*'|'/') expr #MulDiv
           | expr op=('+'|'-') expr #AddSub
-          | expr op=('<'|'>') expr #GtLt
-          | expr op=('<='|'>=') expr #GteqLteq
-          | expr op=('==' | '!=') expr #EqualNotEq
-          | expr op=('&&' | '||' | '!') expr #LOrLAndLNot
-          | '-' expr #Negation
-          | '!' expr #LNegation
-          | expr 'mod' expr #Mod
-          | 'mod' expr #ConstMod
+          | expr op=('<='|'>='|'>'|'<') expr #Inequality
+          | expr op=('==' | '!=') expr #Equality
+          | expr op=('&&' | '||' | '!') expr #Logical
+          | expr op=('-'|'!') expr #Negation
+          | (expr)? 'mod' expr #Mod
           | expr  ('[' expr ']')+ #ArrayAccess
           | Identifier '(' (expr',')*(expr)? ')' #FunctionCall
           | Identifier #Identifier
@@ -72,3 +70,12 @@ StringConstant : '"' [a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ]* '"';
 Comment : '//' -> skip;
 
 WS : [ \t\r\n;]+ -> skip;
+
+ADD: '+';
+SUB: '-';
+MUL: '*';
+DIV: '/';
+GT: '>';
+LT: '<';
+GTEQ: '>=';
+LTEQ: '<=';
