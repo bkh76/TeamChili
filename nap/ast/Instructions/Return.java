@@ -1,8 +1,8 @@
 package ast;
 
-public class Print extends Instruction {
+public class Return extends Instruction {
     public Expr expr;
-    public Print(Position pos, Expr expr) {
+    public Return(Position pos, Expr expr) {
         this.pos = pos;
         this.expr = expr;
     }

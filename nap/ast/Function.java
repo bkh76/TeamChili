@@ -1,4 +1,5 @@
 package ast;
+import java.util.*;
 
 public class Function extends Ast {
     Position pos;

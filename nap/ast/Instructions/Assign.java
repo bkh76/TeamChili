@@ -1,12 +1,12 @@
 package ast;
 
 public class Assign extends Instruction {
-    public String var;
-    public Expression exp;
-    public Assign(Position pos,String var, Expression exp) {
+    public String identifier_name;
+    public Expr expr;
+    public Assign(Position pos, String identifier_name, Expr expr) {
         this.pos = pos;
-        this.var = var;
-        this.exp = exp;
+        this.identifier_name = identifier_name;
+        this.expr = expr;
     }
     public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(this);

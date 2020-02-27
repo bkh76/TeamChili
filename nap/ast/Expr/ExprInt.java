@@ -1,10 +1,10 @@
 package ast;
 
-public class Print extends Instruction {
-    public Expr expr;
-    public Print(Position pos, Expr expr) {
+public class ExprInt extends Expr {
+    public int value;
+    public ExprInt(Position pos, int value) {
         this.pos = pos;
-        this.expr = expr;
+        this.value = value;
     }
 
     public <T> T accept(Visitor<T> visitor) {

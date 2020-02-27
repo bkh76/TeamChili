@@ -1,0 +1,3 @@
+{
+  var array<char> hello = { 'h', 'e', 'l', 'o', char_of_int(0) }
+}

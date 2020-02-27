@@ -1,0 +1,3 @@
+{
+  var byte x = byte_of_int(1)
+}
