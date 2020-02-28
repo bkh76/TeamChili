@@ -7,8 +7,9 @@ public interface Visitor<T> {
     public T visit(ExpNegop expression);
     public T visit(ExpRelationop expression);
     public T visit(ExpInt number);
-    public T visit(ExpVar variable);
+    public T visit(ExprIdentifier variable);
     public T visit(Print instruction);
+    public T visit(Read instruction);
     public T visit(Assign instruction);
     public T visit(Program program);
 }
