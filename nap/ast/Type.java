@@ -1,5 +1,5 @@
 package ast;
 
 public enum Type {
-    CHAR, BYTE, INT, BOOL
+    NONE, CHAR, BYTE, INT, BOOL, ARRAY_CHAR, ARRAY_INT, ARRAY_BYTE, ARRAY_BOOL
 }

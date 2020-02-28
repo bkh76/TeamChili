@@ -52,7 +52,7 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReAssignment(napParser.ReAssignmentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssign(napParser.AssignContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -150,13 +150,6 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLNegation(napParser.LNegationContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitMod(napParser.ModContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -199,14 +192,7 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitGteqLteq(napParser.GteqLteqContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitLOrLAndLNot(napParser.LOrLAndLNotContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLogical(napParser.LogicalContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -234,21 +220,7 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitGtLt(napParser.GtLtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitBooleanConstant(napParser.BooleanConstantContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitEqualNotEq(napParser.EqualNotEqContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -262,6 +234,13 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitEquality(napParser.EqualityContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitStringConstant(napParser.StringConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -269,7 +248,7 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitConstMod(napParser.ConstModContext ctx) { return visitChildren(ctx); }
+	@Override public T visitInequality(napParser.InequalityContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -311,7 +290,7 @@ public class napBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements na
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElseBlock(napParser.ElseBlockContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElseCond(napParser.ElseCondContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

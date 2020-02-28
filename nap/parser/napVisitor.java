@@ -44,12 +44,12 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(napParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ReAssignment}
+	 * Visit a parse tree produced by the {@code Assign}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReAssignment(napParser.ReAssignmentContext ctx);
+	T visitAssign(napParser.AssignContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ArrayAssignment}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -142,13 +142,6 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharacterConstant(napParser.CharacterConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code LNegation}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLNegation(napParser.LNegationContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Mod}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -191,19 +184,12 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstant(napParser.ConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code GteqLteq}
+	 * Visit a parse tree produced by the {@code Logical}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitGteqLteq(napParser.GteqLteqContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code LOrLAndLNot}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLOrLAndLNot(napParser.LOrLAndLNotContext ctx);
+	T visitLogical(napParser.LogicalContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Parenthesis}
 	 * labeled alternative in {@link napParser#expr}.
@@ -226,26 +212,12 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdentifier(napParser.IdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code GtLt}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGtLt(napParser.GtLtContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code BooleanConstant}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBooleanConstant(napParser.BooleanConstantContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code EqualNotEq}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqualNotEq(napParser.EqualNotEqContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FunctionCall}
 	 * labeled alternative in {@link napParser#expr}.
@@ -254,6 +226,13 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionCall(napParser.FunctionCallContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEquality(napParser.EqualityContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringConstant}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -261,12 +240,12 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringConstant(napParser.StringConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ConstMod}
+	 * Visit a parse tree produced by the {@code Inequality}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstMod(napParser.ConstModContext ctx);
+	T visitInequality(napParser.InequalityContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code WhileLoop}
 	 * labeled alternative in {@link napParser#conditional}.
@@ -303,12 +282,12 @@ public interface napVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElseIfCond(napParser.ElseIfCondContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ElseBlock}
+	 * Visit a parse tree produced by the {@code ElseCond}
 	 * labeled alternative in {@link napParser#conditional}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElseBlock(napParser.ElseBlockContext ctx);
+	T visitElseCond(napParser.ElseCondContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Char}
 	 * labeled alternative in {@link napParser#typeIdentifier}.

@@ -1,7 +1,7 @@
 package napc;
+import parser.*;
 
 import ast.*;
-import parser.*;
 
 import java.util.*;
 
@@ -14,6 +14,18 @@ public class BuildAST extends napBaseVisitor<Ast> {
         Position pos = new Position(ctx.start.getLine(),
                                     ctx.start.getCharPositionInLine());
         return pos;
+    }
+
+    @Override
+    public Ast visitProgram(napParser.ProgramContext ctx) {
+        List<Function> program = new ArrayList<Function>();
+
+        for (ParseTree child : ctx.children) {
+            Ast i = visit(child);
+            if (i != null && i instanceof Function)
+                program.add((Function)i);
+        }
+        return new Program(position(ctx), program);
     }
 
     // TODO: Other types of Assigns
@@ -137,6 +149,50 @@ public class BuildAST extends napBaseVisitor<Ast> {
                 break;
             case napLexer.GTEQ:
                 return new ExprInequality(position(ctx), e0, Inequality.GTEQ, e1);
+                break;
+        }
+    }
+
+    @Override
+    public Ast visitNegation(napParser.NegationContext ctx) {
+        Expr e = (Expr).visit(ctx.expr);
+        switch (ctx.op.getType()) {
+            case napLexer.NEG:
+                return new ExprNegation(position(ctx), Negation.NEG);
+                break;
+            case napLexer.LNEG:
+                return new ExprNegation(position(ctx), Negation.LNEG);
+                break;
+        }
+    }
+
+    @Override
+    public Ast visitLogical(napParser.LogicalContext ctx) {
+        Expr e0 = (Expr) visit(ctx.expr(0));
+        Expr e1 = (Expr) visit(ctx.expr(1));
+        switch (ctx.op.getType()) {
+            case napLexer.LNOT:
+                return new ExprLogical(position(ctx), e0, Logical.LNOT, e1);
+                break;
+            case napLexer.LOR:
+                return new ExprLogical(position(ctx), e0, Logical.LOR, e1);
+                break;
+            case napLexer.LAND:
+                return new ExprLogical(position(ctx), e0, Logical.LAND, e1);
+                break;
+        }
+    }
+
+    @Override
+    public Ast visitEquality(napParser.EqualityContext ctx) {
+        Expr e0 = (Expr) visit(ctx.expr(0));
+        Expr e1 = (Expr) visit(ctx.expr(1));
+        switch (ctx.op.getType()) {
+            case napLexer.EQ:
+                return new ExprEquality(position(ctx), e0, Logical.EQ, e1);
+                break;
+            case napLexer.NEQ:
+                return new ExprEquality(position(ctx), e0, Logical.NEQ, e1);
                 break;
         }
     }

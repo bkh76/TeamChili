@@ -3,18 +3,21 @@ import java.util.*;
 
 public class Function extends Ast {
     Position pos;
-    List<Argument> arguments;
+    String funcName;
+    List<ExprIdentifier> arguments;
     List<Instruction> instructions;
-    Type return_type;
+    Type returnType;
 
     public Function(Position pos,
-                    List<Argument> arguments,
+                    String funcName,
+                    List<ExprIdentifier> arguments,
                     List<Instruction> instructions,
-                    Type return_type) {
+                    Type returnType) {
         this.pos = pos;
+        this.funcName = funcName;
         this.arguments = arguments;
         this.instructions = instructions;
-        this.return_type = return_type;
+        this.returnType = returnType;
     }
 
     public <T> T accept(Visitor<T> visitor) {

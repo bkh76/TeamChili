@@ -64,17 +64,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitAssignment(napParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ReAssignment}
+	 * Enter a parse tree produced by the {@code Assign}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void enterReAssignment(napParser.ReAssignmentContext ctx);
+	void enterAssign(napParser.AssignContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ReAssignment}
+	 * Exit a parse tree produced by the {@code Assign}
 	 * labeled alternative in {@link napParser#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void exitReAssignment(napParser.ReAssignmentContext ctx);
+	void exitAssign(napParser.AssignContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ArrayAssignment}
 	 * labeled alternative in {@link napParser#instruction}.
@@ -232,18 +232,6 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitCharacterConstant(napParser.CharacterConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code LNegation}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterLNegation(napParser.LNegationContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code LNegation}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitLNegation(napParser.LNegationContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Mod}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -316,29 +304,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitConstant(napParser.ConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code GteqLteq}
+	 * Enter a parse tree produced by the {@code Logical}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterGteqLteq(napParser.GteqLteqContext ctx);
+	void enterLogical(napParser.LogicalContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code GteqLteq}
+	 * Exit a parse tree produced by the {@code Logical}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitGteqLteq(napParser.GteqLteqContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code LOrLAndLNot}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterLOrLAndLNot(napParser.LOrLAndLNotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code LOrLAndLNot}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitLOrLAndLNot(napParser.LOrLAndLNotContext ctx);
+	void exitLogical(napParser.LogicalContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Parenthesis}
 	 * labeled alternative in {@link napParser#expr}.
@@ -376,18 +352,6 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitIdentifier(napParser.IdentifierContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code GtLt}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterGtLt(napParser.GtLtContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code GtLt}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitGtLt(napParser.GtLtContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code BooleanConstant}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -399,18 +363,6 @@ public interface napListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBooleanConstant(napParser.BooleanConstantContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code EqualNotEq}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqualNotEq(napParser.EqualNotEqContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EqualNotEq}
-	 * labeled alternative in {@link napParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqualNotEq(napParser.EqualNotEqContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code FunctionCall}
 	 * labeled alternative in {@link napParser#expr}.
@@ -424,6 +376,18 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitFunctionCall(napParser.FunctionCallContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEquality(napParser.EqualityContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link napParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEquality(napParser.EqualityContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code StringConstant}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
@@ -436,17 +400,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitStringConstant(napParser.StringConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ConstMod}
+	 * Enter a parse tree produced by the {@code Inequality}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstMod(napParser.ConstModContext ctx);
+	void enterInequality(napParser.InequalityContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ConstMod}
+	 * Exit a parse tree produced by the {@code Inequality}
 	 * labeled alternative in {@link napParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstMod(napParser.ConstModContext ctx);
+	void exitInequality(napParser.InequalityContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code WhileLoop}
 	 * labeled alternative in {@link napParser#conditional}.
@@ -508,17 +472,17 @@ public interface napListener extends ParseTreeListener {
 	 */
 	void exitElseIfCond(napParser.ElseIfCondContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ElseBlock}
+	 * Enter a parse tree produced by the {@code ElseCond}
 	 * labeled alternative in {@link napParser#conditional}.
 	 * @param ctx the parse tree
 	 */
-	void enterElseBlock(napParser.ElseBlockContext ctx);
+	void enterElseCond(napParser.ElseCondContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code ElseBlock}
+	 * Exit a parse tree produced by the {@code ElseCond}
 	 * labeled alternative in {@link napParser#conditional}.
 	 * @param ctx the parse tree
 	 */
-	void exitElseBlock(napParser.ElseBlockContext ctx);
+	void exitElseCond(napParser.ElseCondContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Char}
 	 * labeled alternative in {@link napParser#typeIdentifier}.

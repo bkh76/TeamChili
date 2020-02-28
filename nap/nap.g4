@@ -9,7 +9,7 @@ function_definition : 'func' Identifier '(' (arg_list',')*(arg_list)? ')' ('->' 
 arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array<' typeIdentifier '>' Identifier) #Argument;
 
 instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' expr)? #Assignment
-           | Identifier '=' instruction #ReAssignment
+           | Identifier '=' instruction #Assign
            | expr  ('[' expr ']')+ '=' expr #ArrayAssignment
            | Identifier op=('*=' | '/=') expr  #MulEqDivEq
            | Identifier op=('++' | '--') expr  #IncDec
@@ -29,8 +29,8 @@ expr :      expr op=('*'|'/') expr #MulDiv
           | expr op=('<='|'>='|'>'|'<') expr #Inequality
           | expr op=('==' | '!=') expr #Equality
           | expr op=('&&' | '||' | '!') expr #Logical
-          | expr op=('-'|'!') expr #Negation
-          | (expr)? 'mod' expr #Mod
+          | op=('-'|'!') expr #Negation
+          | expr 'mod' expr #Mod
           | expr  ('[' expr ']')+ #ArrayAccess
           | Identifier '(' (expr',')*(expr)? ')' #FunctionCall
           | Identifier #Identifier
@@ -47,7 +47,7 @@ conditional : 'while' '(' expr ')' block #WhileLoop
            | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
            | 'if' '(' instruction ')' block #IfCond
            | 'else if' '(' expr ')' block #ElseIfCond
-           | 'else' block #ElseBlock
+           | 'else' block #ElseCond
            ;
 
 Identifier : [a-zA-Z_] [a-zA-Z0-9_]*;
@@ -79,3 +79,8 @@ GT: '>';
 LT: '<';
 GTEQ: '>=';
 LTEQ: '<=';
+LOR: '||';
+LAND: '&&';
+LNOT: '!';
+EQ: '==';
+NEQ: '!=';

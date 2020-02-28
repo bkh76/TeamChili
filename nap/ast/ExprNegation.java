@@ -1,3 +1,4 @@
+package ast; 
 public class ExprNegation extends Expr {
     public Negation op;
     public Expr right;

@@ -1,4 +1,4 @@
 package ast;
 
-public enum Arithmetic { ADD, SUB, MUL, DIV, MOD }
+public enum Binop { ADD, SUB, MUL, DIV, MOD }
                         // '+', '-', '*', '/', '%'

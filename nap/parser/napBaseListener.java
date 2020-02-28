@@ -76,13 +76,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReAssignment(napParser.ReAssignmentContext ctx) { }
+	@Override public void enterAssign(napParser.AssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReAssignment(napParser.ReAssignmentContext ctx) { }
+	@Override public void exitAssign(napParser.AssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -244,18 +244,6 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLNegation(napParser.LNegationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLNegation(napParser.LNegationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMod(napParser.ModContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -328,25 +316,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGteqLteq(napParser.GteqLteqContext ctx) { }
+	@Override public void enterLogical(napParser.LogicalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitGteqLteq(napParser.GteqLteqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLOrLAndLNot(napParser.LOrLAndLNotContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLOrLAndLNot(napParser.LOrLAndLNotContext ctx) { }
+	@Override public void exitLogical(napParser.LogicalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -388,18 +364,6 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGtLt(napParser.GtLtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGtLt(napParser.GtLtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBooleanConstant(napParser.BooleanConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -407,18 +371,6 @@ public class napBaseListener implements napListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBooleanConstant(napParser.BooleanConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqualNotEq(napParser.EqualNotEqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqualNotEq(napParser.EqualNotEqContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -436,6 +388,18 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEquality(napParser.EqualityContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEquality(napParser.EqualityContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStringConstant(napParser.StringConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -448,13 +412,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstMod(napParser.ConstModContext ctx) { }
+	@Override public void enterInequality(napParser.InequalityContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstMod(napParser.ConstModContext ctx) { }
+	@Override public void exitInequality(napParser.InequalityContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -520,13 +484,13 @@ public class napBaseListener implements napListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseBlock(napParser.ElseBlockContext ctx) { }
+	@Override public void enterElseCond(napParser.ElseCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElseBlock(napParser.ElseBlockContext ctx) { }
+	@Override public void exitElseCond(napParser.ElseCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

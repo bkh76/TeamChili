@@ -21,10 +21,10 @@ public class napParser extends Parser {
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
-		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
-		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, T__44=45, 
-		T__45=46, T__46=47, T__47=48, Identifier=49, Constant=50, BooleanConstant=51, 
-		CharacterConstant=52, StringConstant=53, Comment=54, WS=55;
+		T__31=32, T__32=33, T__33=34, T__34=35, Identifier=36, Constant=37, BooleanConstant=38, 
+		CharacterConstant=39, StringConstant=40, Comment=41, WS=42, ADD=43, SUB=44, 
+		MUL=45, DIV=46, GT=47, LT=48, GTEQ=49, LTEQ=50, LOR=51, LAND=52, LNOT=53, 
+		EQ=54, NEQ=55;
 	public static final int
 		RULE_program = 0, RULE_block = 1, RULE_function_definition = 2, RULE_arg_list = 3, 
 		RULE_instruction = 4, RULE_expr = 5, RULE_conditional = 6, RULE_typeIdentifier = 7;
@@ -39,12 +39,12 @@ public class napParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'{'", "'}'", "'func'", "'('", "','", "')'", "'->'", "'ref'", "'array<'", 
-			"'>'", "'var'", "'='", "'['", "']'", "'*='", "'/='", "'++'", "'--'", 
-			"'+='", "'-='", "'new ('", "'read'", "'print'", "'new'", "'*'", "'/'", 
-			"'+'", "'-'", "'<'", "'<='", "'>='", "'=='", "'!='", "'&&'", "'||'", 
-			"'!'", "'mod'", "'while'", "'do'", "'for'", "'in'", "'if'", "'else if'", 
-			"'else'", "'char'", "'byte'", "'int'", "'bool'", null, null, null, null, 
-			null, "'//'"
+			"'var'", "'='", "'['", "']'", "'*='", "'/='", "'++'", "'--'", "'+='", 
+			"'-='", "'new ('", "'read'", "'print'", "'new'", "'mod'", "'while'", 
+			"'do'", "'for'", "'in'", "'if'", "'else if'", "'else'", "'char'", "'byte'", 
+			"'int'", "'bool'", null, null, null, null, null, "'//'", null, "'+'", 
+			"'-'", "'*'", "'/'", "'>'", "'<'", "'>='", "'<='", "'||'", "'&&'", "'!'", 
+			"'=='", "'!='"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -53,9 +53,9 @@ public class napParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, "Identifier", "Constant", "BooleanConstant", "CharacterConstant", 
-			"StringConstant", "Comment", "WS"
+			"Identifier", "Constant", "BooleanConstant", "CharacterConstant", "StringConstant", 
+			"Comment", "WS", "ADD", "SUB", "MUL", "DIV", "GT", "LT", "GTEQ", "LTEQ", 
+			"LOR", "LAND", "LNOT", "EQ", "NEQ"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -210,7 +210,7 @@ public class napParser extends Parser {
 			setState(28);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__6) | (1L << T__10) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__27) | (1L << T__35) | (1L << T__36) | (1L << T__37) | (1L << T__38) | (1L << T__39) | (1L << T__41) | (1L << T__42) | (1L << T__43) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__6) | (1L << T__9) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__24) | (1L << T__25) | (1L << T__26) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant) | (1L << SUB) | (1L << LNOT))) != 0)) {
 				{
 				{
 				setState(25);
@@ -313,7 +313,7 @@ public class napParser extends Parser {
 			setState(45);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << T__8) | (1L << T__44) | (1L << T__45) | (1L << T__46) | (1L << T__47))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << T__8) | (1L << T__31) | (1L << T__32) | (1L << T__33) | (1L << T__34))) != 0)) {
 				{
 				setState(44);
 				arg_list();
@@ -365,6 +365,7 @@ public class napParser extends Parser {
 			return getRuleContext(TypeIdentifierContext.class,0);
 		}
 		public TerminalNode Identifier() { return getToken(napParser.Identifier, 0); }
+		public TerminalNode GT() { return getToken(napParser.GT, 0); }
 		public ArgumentContext(Arg_listContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -416,7 +417,7 @@ public class napParser extends Parser {
 				setState(62);
 				typeIdentifier();
 				setState(63);
-				match(T__9);
+				match(GT);
 				setState(64);
 				match(Identifier);
 				}
@@ -553,6 +554,7 @@ public class napParser extends Parser {
 			return getRuleContext(TypeIdentifierContext.class,0);
 		}
 		public TerminalNode Identifier() { return getToken(napParser.Identifier, 0); }
+		public TerminalNode GT() { return getToken(napParser.GT, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
@@ -600,6 +602,7 @@ public class napParser extends Parser {
 			return getRuleContext(TypeIdentifierContext.class,i);
 		}
 		public TerminalNode Constant() { return getToken(napParser.Constant, 0); }
+		public TerminalNode GT() { return getToken(napParser.GT, 0); }
 		public NewInlineContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -684,6 +687,26 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class AssignContext extends InstructionContext {
+		public TerminalNode Identifier() { return getToken(napParser.Identifier, 0); }
+		public InstructionContext instruction() {
+			return getRuleContext(InstructionContext.class,0);
+		}
+		public AssignContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).enterAssign(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).exitAssign(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitAssign(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class InstructionToExprContext extends InstructionContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -700,26 +723,6 @@ public class napParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitInstructionToExpr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ReAssignmentContext extends InstructionContext {
-		public TerminalNode Identifier() { return getToken(napParser.Identifier, 0); }
-		public InstructionContext instruction() {
-			return getRuleContext(InstructionContext.class,0);
-		}
-		public ReAssignmentContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterReAssignment(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitReAssignment(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitReAssignment(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -760,7 +763,7 @@ public class napParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(68);
-				match(T__10);
+				match(T__9);
 				setState(76);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
@@ -779,17 +782,17 @@ public class napParser extends Parser {
 					setState(73);
 					typeIdentifier();
 					setState(74);
-					match(T__9);
+					match(GT);
 					}
 					break;
 				}
 				setState(80);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__11) {
+				if (_la==T__10) {
 					{
 					setState(78);
-					match(T__11);
+					match(T__10);
 					setState(79);
 					expr(0);
 					}
@@ -798,13 +801,13 @@ public class napParser extends Parser {
 				}
 				break;
 			case 2:
-				_localctx = new ReAssignmentContext(_localctx);
+				_localctx = new AssignContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(82);
 				match(Identifier);
 				setState(83);
-				match(T__11);
+				match(T__10);
 				setState(84);
 				instruction();
 				}
@@ -822,19 +825,19 @@ public class napParser extends Parser {
 					{
 					{
 					setState(86);
-					match(T__12);
+					match(T__11);
 					setState(87);
 					expr(0);
 					setState(88);
-					match(T__13);
+					match(T__12);
 					}
 					}
 					setState(92); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==T__12 );
+				} while ( _la==T__11 );
 				setState(94);
-				match(T__11);
+				match(T__10);
 				setState(95);
 				expr(0);
 				}
@@ -848,7 +851,7 @@ public class napParser extends Parser {
 				setState(98);
 				((MulEqDivEqContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__14 || _la==T__15) ) {
+				if ( !(_la==T__13 || _la==T__14) ) {
 					((MulEqDivEqContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -869,7 +872,7 @@ public class napParser extends Parser {
 				setState(101);
 				((IncDecContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__16 || _la==T__17) ) {
+				if ( !(_la==T__15 || _la==T__16) ) {
 					((IncDecContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -890,7 +893,7 @@ public class napParser extends Parser {
 				setState(104);
 				((IncEqDecEqContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__18 || _la==T__19) ) {
+				if ( !(_la==T__17 || _la==T__18) ) {
 					((IncEqDecEqContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -908,7 +911,7 @@ public class napParser extends Parser {
 				{
 				{
 				setState(106);
-				match(T__10);
+				match(T__9);
 				}
 				setState(111);
 				_errHandler.sync(this);
@@ -920,16 +923,16 @@ public class napParser extends Parser {
 					setState(108);
 					typeIdentifier();
 					setState(109);
-					match(T__9);
+					match(GT);
 					}
 				}
 
 				setState(113);
 				match(Identifier);
 				setState(114);
-				match(T__11);
+				match(T__10);
 				setState(115);
-				match(T__20);
+				match(T__19);
 				setState(116);
 				typeIdentifier();
 				setState(117);
@@ -945,7 +948,7 @@ public class napParser extends Parser {
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(121);
-				match(T__21);
+				match(T__20);
 				setState(122);
 				match(T__3);
 				setState(123);
@@ -963,7 +966,7 @@ public class napParser extends Parser {
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(128);
-				match(T__22);
+				match(T__21);
 				setState(129);
 				match(T__3);
 				setState(130);
@@ -981,7 +984,7 @@ public class napParser extends Parser {
 				enterOuterAlt(_localctx, 10);
 				{
 				setState(135);
-				match(T__23);
+				match(T__22);
 				setState(136);
 				match(T__3);
 				setState(137);
@@ -1019,7 +1022,7 @@ public class napParser extends Parser {
 				setState(145);
 				match(Identifier);
 				setState(146);
-				match(T__11);
+				match(T__10);
 				setState(147);
 				match(Identifier);
 				setState(148);
@@ -1045,7 +1048,7 @@ public class napParser extends Parser {
 				setState(158);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__27) | (1L << T__35) | (1L << T__36) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant) | (1L << SUB) | (1L << LNOT))) != 0)) {
 					{
 					setState(157);
 					expr(0);
@@ -1105,25 +1108,6 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LNegationContext extends ExprContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public LNegationContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterLNegation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitLNegation(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitLNegation(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class ModContext extends ExprContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -1147,9 +1131,12 @@ public class napParser extends Parser {
 		}
 	}
 	public static class NegationContext extends ExprContext {
+		public Token op;
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode SUB() { return getToken(napParser.SUB, 0); }
+		public TerminalNode LNOT() { return getToken(napParser.LNOT, 0); }
 		public NegationContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1195,6 +1182,8 @@ public class napParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public TerminalNode MUL() { return getToken(napParser.MUL, 0); }
+		public TerminalNode DIV() { return getToken(napParser.DIV, 0); }
 		public MulDivContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1218,6 +1207,8 @@ public class napParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public TerminalNode ADD() { return getToken(napParser.ADD, 0); }
+		public TerminalNode SUB() { return getToken(napParser.SUB, 0); }
 		public AddSubContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1250,7 +1241,7 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class GteqLteqContext extends ExprContext {
+	public static class LogicalContext extends ExprContext {
 		public Token op;
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -1258,41 +1249,21 @@ public class napParser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public GteqLteqContext(ExprContext ctx) { copyFrom(ctx); }
+		public TerminalNode LAND() { return getToken(napParser.LAND, 0); }
+		public TerminalNode LOR() { return getToken(napParser.LOR, 0); }
+		public TerminalNode LNOT() { return getToken(napParser.LNOT, 0); }
+		public LogicalContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterGteqLteq(this);
+			if ( listener instanceof napListener ) ((napListener)listener).enterLogical(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitGteqLteq(this);
+			if ( listener instanceof napListener ) ((napListener)listener).exitLogical(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitGteqLteq(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LOrLAndLNotContext extends ExprContext {
-		public Token op;
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public LOrLAndLNotContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterLOrLAndLNot(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitLOrLAndLNot(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitLOrLAndLNot(this);
+			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitLogical(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1354,29 +1325,6 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class GtLtContext extends ExprContext {
-		public Token op;
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public GtLtContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterGtLt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitGtLt(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitGtLt(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class BooleanConstantContext extends ExprContext {
 		public TerminalNode BooleanConstant() { return getToken(napParser.BooleanConstant, 0); }
 		public BooleanConstantContext(ExprContext ctx) { copyFrom(ctx); }
@@ -1391,29 +1339,6 @@ public class napParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitBooleanConstant(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class EqualNotEqContext extends ExprContext {
-		public Token op;
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public EqualNotEqContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterEqualNotEq(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitEqualNotEq(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitEqualNotEq(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1440,6 +1365,31 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class EqualityContext extends ExprContext {
+		public Token op;
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode EQ() { return getToken(napParser.EQ, 0); }
+		public TerminalNode NEQ() { return getToken(napParser.NEQ, 0); }
+		public EqualityContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).enterEquality(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).exitEquality(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitEquality(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class StringConstantContext extends ExprContext {
 		public TerminalNode StringConstant() { return getToken(napParser.StringConstant, 0); }
 		public StringConstantContext(ExprContext ctx) { copyFrom(ctx); }
@@ -1457,22 +1407,30 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ConstModContext extends ExprContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+	public static class InequalityContext extends ExprContext {
+		public Token op;
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
 		}
-		public ConstModContext(ExprContext ctx) { copyFrom(ctx); }
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode LTEQ() { return getToken(napParser.LTEQ, 0); }
+		public TerminalNode GTEQ() { return getToken(napParser.GTEQ, 0); }
+		public TerminalNode GT() { return getToken(napParser.GT, 0); }
+		public TerminalNode LT() { return getToken(napParser.LT, 0); }
+		public InequalityContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterConstMod(this);
+			if ( listener instanceof napListener ) ((napListener)listener).enterInequality(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitConstMod(this);
+			if ( listener instanceof napListener ) ((napListener)listener).exitInequality(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitConstMod(this);
+			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitInequality(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1493,7 +1451,7 @@ public class napParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(207);
+			setState(203);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
@@ -1503,174 +1461,161 @@ public class napParser extends Parser {
 				_prevctx = _localctx;
 
 				setState(165);
-				match(T__27);
+				((NegationContext)_localctx).op = _input.LT(1);
+				_la = _input.LA(1);
+				if ( !(_la==SUB || _la==LNOT) ) {
+					((NegationContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				setState(166);
-				expr(13);
+				expr(11);
 				}
 				break;
 			case 2:
 				{
-				_localctx = new LNegationContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(167);
-				match(T__35);
-				setState(168);
-				expr(12);
-				}
-				break;
-			case 3:
-				{
-				_localctx = new ConstModContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(169);
-				match(T__36);
-				setState(170);
-				expr(10);
-				}
-				break;
-			case 4:
-				{
 				_localctx = new FunctionCallContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(171);
+				setState(167);
 				match(Identifier);
-				setState(172);
+				setState(168);
 				match(T__3);
-				setState(178);
+				setState(174);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(173);
+						setState(169);
 						expr(0);
-						setState(174);
+						setState(170);
 						match(T__4);
 						}
 						} 
 					}
-					setState(180);
+					setState(176);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 				}
-				setState(182);
+				setState(178);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__27) | (1L << T__35) | (1L << T__36) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant) | (1L << SUB) | (1L << LNOT))) != 0)) {
 					{
-					setState(181);
+					setState(177);
 					expr(0);
 					}
 				}
 
-				setState(184);
+				setState(180);
 				match(T__5);
 				}
 				break;
-			case 5:
+			case 3:
 				{
 				_localctx = new IdentifierContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(185);
+				setState(181);
 				match(Identifier);
 				}
 				break;
-			case 6:
+			case 4:
 				{
 				_localctx = new ConstantContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(186);
+				setState(182);
 				match(Constant);
 				}
 				break;
-			case 7:
+			case 5:
 				{
 				_localctx = new CharacterConstantContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(187);
+				setState(183);
 				match(CharacterConstant);
 				}
 				break;
-			case 8:
+			case 6:
 				{
 				_localctx = new BooleanConstantContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(188);
+				setState(184);
 				match(BooleanConstant);
 				}
 				break;
-			case 9:
+			case 7:
 				{
 				_localctx = new StringConstantContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(189);
+				setState(185);
 				match(StringConstant);
 				}
 				break;
-			case 10:
+			case 8:
 				{
 				_localctx = new ConstantArrayContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(190);
+				setState(186);
 				match(T__0);
-				setState(196);
+				setState(192);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(191);
+						setState(187);
 						expr(0);
-						setState(192);
+						setState(188);
 						match(T__4);
 						}
 						} 
 					}
-					setState(198);
+					setState(194);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 				}
-				setState(200);
+				setState(196);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__27) | (1L << T__35) | (1L << T__36) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << Identifier) | (1L << Constant) | (1L << BooleanConstant) | (1L << CharacterConstant) | (1L << StringConstant) | (1L << SUB) | (1L << LNOT))) != 0)) {
 					{
-					setState(199);
+					setState(195);
 					expr(0);
 					}
 				}
 
-				setState(202);
+				setState(198);
 				match(T__1);
 				}
 				break;
-			case 11:
+			case 9:
 				{
 				_localctx = new ParenthesisContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(203);
+				setState(199);
 				match(T__3);
-				setState(204);
+				setState(200);
 				expr(0);
-				setState(205);
+				setState(201);
 				match(T__5);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(241);
+			setState(234);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1678,19 +1623,19 @@ public class napParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(239);
+					setState(232);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MulDivContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(209);
-						if (!(precpred(_ctx, 19))) throw new FailedPredicateException(this, "precpred(_ctx, 19)");
-						setState(210);
+						setState(205);
+						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
+						setState(206);
 						((MulDivContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__24 || _la==T__25) ) {
+						if ( !(_la==MUL || _la==DIV) ) {
 							((MulDivContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1698,20 +1643,20 @@ public class napParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(211);
-						expr(20);
+						setState(207);
+						expr(17);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new AddSubContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(212);
-						if (!(precpred(_ctx, 18))) throw new FailedPredicateException(this, "precpred(_ctx, 18)");
-						setState(213);
+						setState(208);
+						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
+						setState(209);
 						((AddSubContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__26 || _la==T__27) ) {
+						if ( !(_la==ADD || _la==SUB) ) {
 							((AddSubContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1719,113 +1664,92 @@ public class napParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(214);
-						expr(19);
+						setState(210);
+						expr(16);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new GtLtContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new InequalityContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(215);
-						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
-						setState(216);
-						((GtLtContext)_localctx).op = _input.LT(1);
+						setState(211);
+						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
+						setState(212);
+						((InequalityContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__9 || _la==T__28) ) {
-							((GtLtContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << GT) | (1L << LT) | (1L << GTEQ) | (1L << LTEQ))) != 0)) ) {
+							((InequalityContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(217);
-						expr(18);
+						setState(213);
+						expr(15);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new GteqLteqContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new EqualityContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(218);
-						if (!(precpred(_ctx, 16))) throw new FailedPredicateException(this, "precpred(_ctx, 16)");
-						setState(219);
-						((GteqLteqContext)_localctx).op = _input.LT(1);
+						setState(214);
+						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
+						setState(215);
+						((EqualityContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__29 || _la==T__30) ) {
-							((GteqLteqContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !(_la==EQ || _la==NEQ) ) {
+							((EqualityContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(220);
-						expr(17);
+						setState(216);
+						expr(14);
 						}
 						break;
 					case 5:
 						{
-						_localctx = new EqualNotEqContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new LogicalContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(221);
-						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
-						setState(222);
-						((EqualNotEqContext)_localctx).op = _input.LT(1);
+						setState(217);
+						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
+						setState(218);
+						((LogicalContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__31 || _la==T__32) ) {
-							((EqualNotEqContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LOR) | (1L << LAND) | (1L << LNOT))) != 0)) ) {
+							((LogicalContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(223);
-						expr(16);
+						setState(219);
+						expr(13);
 						}
 						break;
 					case 6:
 						{
-						_localctx = new LOrLAndLNotContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new ModContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(224);
-						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-						setState(225);
-						((LOrLAndLNotContext)_localctx).op = _input.LT(1);
-						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__33) | (1L << T__34) | (1L << T__35))) != 0)) ) {
-							((LOrLAndLNotContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
-						setState(226);
-						expr(15);
+						setState(220);
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						setState(221);
+						match(T__23);
+						setState(222);
+						expr(11);
 						}
 						break;
 					case 7:
 						{
-						_localctx = new ModContext(new ExprContext(_parentctx, _parentState));
-						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(227);
-						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
-						setState(228);
-						match(T__36);
-						setState(229);
-						expr(12);
-						}
-						break;
-					case 8:
-						{
 						_localctx = new ArrayAccessContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(230);
+						setState(223);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(235); 
+						setState(228); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -1833,19 +1757,19 @@ public class napParser extends Parser {
 							case 1:
 								{
 								{
-								setState(231);
-								match(T__12);
-								setState(232);
+								setState(224);
+								match(T__11);
+								setState(225);
 								expr(0);
-								setState(233);
-								match(T__13);
+								setState(226);
+								match(T__12);
 								}
 								}
 								break;
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(237); 
+							setState(230); 
 							_errHandler.sync(this);
 							_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -1854,7 +1778,7 @@ public class napParser extends Parser {
 					}
 					} 
 				}
-				setState(243);
+				setState(236);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
 			}
@@ -1930,6 +1854,25 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ElseCondContext extends ConditionalContext {
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
+		public ElseCondContext(ConditionalContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).enterElseCond(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof napListener ) ((napListener)listener).exitElseCond(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitElseCond(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class DoWhileLoopContext extends ConditionalContext {
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -1996,128 +1939,109 @@ public class napParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ElseBlockContext extends ConditionalContext {
-		public BlockContext block() {
-			return getRuleContext(BlockContext.class,0);
-		}
-		public ElseBlockContext(ConditionalContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).enterElseBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof napListener ) ((napListener)listener).exitElseBlock(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof napVisitor ) return ((napVisitor<? extends T>)visitor).visitElseBlock(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 
 	public final ConditionalContext conditional() throws RecognitionException {
 		ConditionalContext _localctx = new ConditionalContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_conditional);
 		try {
-			setState(280);
+			setState(273);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__37:
+			case T__24:
 				_localctx = new WhileLoopContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(244);
-				match(T__37);
-				setState(245);
+				setState(237);
+				match(T__24);
+				setState(238);
 				match(T__3);
-				setState(246);
+				setState(239);
 				expr(0);
-				setState(247);
+				setState(240);
 				match(T__5);
-				setState(248);
+				setState(241);
 				block();
 				}
 				break;
-			case T__38:
+			case T__25:
 				_localctx = new DoWhileLoopContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(250);
-				match(T__38);
-				setState(251);
+				setState(243);
+				match(T__25);
+				setState(244);
 				block();
-				setState(252);
-				match(T__37);
-				setState(253);
+				setState(245);
+				match(T__24);
+				setState(246);
 				match(T__3);
-				setState(254);
+				setState(247);
 				expr(0);
-				setState(255);
+				setState(248);
 				match(T__5);
 				}
 				break;
-			case T__39:
+			case T__26:
 				_localctx = new ForLoopContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(257);
-				match(T__39);
-				setState(258);
+				setState(250);
+				match(T__26);
+				setState(251);
 				match(T__3);
-				setState(259);
+				setState(252);
 				typeIdentifier();
-				setState(260);
+				setState(253);
 				match(Identifier);
-				setState(261);
-				match(T__40);
-				setState(262);
+				setState(254);
+				match(T__27);
+				setState(255);
 				instruction();
-				setState(263);
+				setState(256);
 				match(T__5);
-				setState(264);
+				setState(257);
 				block();
 				}
 				break;
-			case T__41:
+			case T__28:
 				_localctx = new IfCondContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(266);
-				match(T__41);
-				setState(267);
+				setState(259);
+				match(T__28);
+				setState(260);
 				match(T__3);
-				setState(268);
+				setState(261);
 				instruction();
-				setState(269);
+				setState(262);
 				match(T__5);
-				setState(270);
+				setState(263);
 				block();
 				}
 				break;
-			case T__42:
+			case T__29:
 				_localctx = new ElseIfCondContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(272);
-				match(T__42);
-				setState(273);
+				setState(265);
+				match(T__29);
+				setState(266);
 				match(T__3);
-				setState(274);
+				setState(267);
 				expr(0);
-				setState(275);
+				setState(268);
 				match(T__5);
-				setState(276);
+				setState(269);
 				block();
 				}
 				break;
-			case T__43:
-				_localctx = new ElseBlockContext(_localctx);
+			case T__30:
+				_localctx = new ElseCondContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(278);
-				match(T__43);
-				setState(279);
+				setState(271);
+				match(T__30);
+				setState(272);
 				block();
 				}
 				break;
@@ -2151,6 +2075,7 @@ public class napParser extends Parser {
 		public TypeIdentifierContext typeIdentifier() {
 			return getRuleContext(TypeIdentifierContext.class,0);
 		}
+		public TerminalNode GT() { return getToken(napParser.GT, 0); }
 		public ArrayContext(TypeIdentifierContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -2235,51 +2160,51 @@ public class napParser extends Parser {
 		TypeIdentifierContext _localctx = new TypeIdentifierContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_typeIdentifier);
 		try {
-			setState(290);
+			setState(283);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__44:
+			case T__31:
 				_localctx = new CharContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(282);
-				match(T__44);
+				setState(275);
+				match(T__31);
 				}
 				break;
-			case T__45:
+			case T__32:
 				_localctx = new ByteContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(283);
-				match(T__45);
+				setState(276);
+				match(T__32);
 				}
 				break;
-			case T__46:
+			case T__33:
 				_localctx = new IntContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(284);
-				match(T__46);
+				setState(277);
+				match(T__33);
 				}
 				break;
-			case T__47:
+			case T__34:
 				_localctx = new BoolContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(285);
-				match(T__47);
+				setState(278);
+				match(T__34);
 				}
 				break;
 			case T__8:
 				_localctx = new ArrayContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(286);
+				setState(279);
 				match(T__8);
-				setState(287);
+				setState(280);
 				typeIdentifier();
-				setState(288);
-				match(T__9);
+				setState(281);
+				match(GT);
 				}
 				break;
 			default:
@@ -2307,27 +2232,25 @@ public class napParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 19);
-		case 1:
-			return precpred(_ctx, 18);
-		case 2:
-			return precpred(_ctx, 17);
-		case 3:
 			return precpred(_ctx, 16);
-		case 4:
+		case 1:
 			return precpred(_ctx, 15);
-		case 5:
+		case 2:
 			return precpred(_ctx, 14);
+		case 3:
+			return precpred(_ctx, 13);
+		case 4:
+			return precpred(_ctx, 12);
+		case 5:
+			return precpred(_ctx, 10);
 		case 6:
-			return precpred(_ctx, 11);
-		case 7:
 			return precpred(_ctx, 9);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u0127\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u0120\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\7\2\24\n\2"+
 		"\f\2\16\2\27\13\2\3\2\3\2\3\3\3\3\7\3\35\n\3\f\3\16\3 \13\3\3\3\3\3\3"+
 		"\4\3\4\3\4\3\4\3\4\3\4\7\4*\n\4\f\4\16\4-\13\4\3\4\5\4\60\n\4\3\4\3\4"+
@@ -2338,100 +2261,96 @@ public class napParser extends Parser {
 		"\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6"+
 		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
 		"\6\3\6\7\6\u009b\n\6\f\6\16\6\u009e\13\6\3\6\5\6\u00a1\n\6\3\6\3\6\5\6"+
-		"\u00a5\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u00b3\n"+
-		"\7\f\7\16\7\u00b6\13\7\3\7\5\7\u00b9\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
-		"\7\3\7\3\7\7\7\u00c5\n\7\f\7\16\7\u00c8\13\7\3\7\5\7\u00cb\n\7\3\7\3\7"+
-		"\3\7\3\7\3\7\5\7\u00d2\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
-		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\6\7\u00ee"+
-		"\n\7\r\7\16\7\u00ef\7\7\u00f2\n\7\f\7\16\7\u00f5\13\7\3\b\3\b\3\b\3\b"+
-		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
-		"\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\b\u011b\n"+
-		"\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u0125\n\t\3\t\2\3\f\n\2\4\6\b\n"+
-		"\f\16\20\2\13\3\2\21\22\3\2\23\24\3\2\25\26\3\2\33\34\3\2\35\36\4\2\f"+
-		"\f\37\37\3\2 !\3\2\"#\3\2$&\2\u0158\2\25\3\2\2\2\4\32\3\2\2\2\6#\3\2\2"+
-		"\2\bD\3\2\2\2\n\u00a4\3\2\2\2\f\u00d1\3\2\2\2\16\u011a\3\2\2\2\20\u0124"+
-		"\3\2\2\2\22\24\5\6\4\2\23\22\3\2\2\2\24\27\3\2\2\2\25\23\3\2\2\2\25\26"+
-		"\3\2\2\2\26\30\3\2\2\2\27\25\3\2\2\2\30\31\7\2\2\3\31\3\3\2\2\2\32\36"+
-		"\7\3\2\2\33\35\5\n\6\2\34\33\3\2\2\2\35 \3\2\2\2\36\34\3\2\2\2\36\37\3"+
-		"\2\2\2\37!\3\2\2\2 \36\3\2\2\2!\"\7\4\2\2\"\5\3\2\2\2#$\7\5\2\2$%\7\63"+
-		"\2\2%+\7\6\2\2&\'\5\b\5\2\'(\7\7\2\2(*\3\2\2\2)&\3\2\2\2*-\3\2\2\2+)\3"+
-		"\2\2\2+,\3\2\2\2,/\3\2\2\2-+\3\2\2\2.\60\5\b\5\2/.\3\2\2\2/\60\3\2\2\2"+
-		"\60\61\3\2\2\2\61\64\7\b\2\2\62\63\7\t\2\2\63\65\5\20\t\2\64\62\3\2\2"+
-		"\2\64\65\3\2\2\2\65\66\3\2\2\2\66\67\5\4\3\2\67\7\3\2\2\289\7\n\2\29:"+
-		"\5\20\t\2:;\7\63\2\2;E\3\2\2\2<=\5\20\t\2=>\7\63\2\2>E\3\2\2\2?@\7\13"+
-		"\2\2@A\5\20\t\2AB\7\f\2\2BC\7\63\2\2CE\3\2\2\2D8\3\2\2\2D<\3\2\2\2D?\3"+
-		"\2\2\2E\t\3\2\2\2FN\7\r\2\2GH\5\20\t\2HI\7\63\2\2IO\3\2\2\2JK\7\13\2\2"+
-		"KL\5\20\t\2LM\7\f\2\2MO\3\2\2\2NG\3\2\2\2NJ\3\2\2\2OR\3\2\2\2PQ\7\16\2"+
-		"\2QS\5\f\7\2RP\3\2\2\2RS\3\2\2\2S\u00a5\3\2\2\2TU\7\63\2\2UV\7\16\2\2"+
-		"V\u00a5\5\n\6\2W\\\5\f\7\2XY\7\17\2\2YZ\5\f\7\2Z[\7\20\2\2[]\3\2\2\2\\"+
-		"X\3\2\2\2]^\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_`\3\2\2\2`a\7\16\2\2ab\5\f\7"+
-		"\2b\u00a5\3\2\2\2cd\7\63\2\2de\t\2\2\2e\u00a5\5\f\7\2fg\7\63\2\2gh\t\3"+
-		"\2\2h\u00a5\5\f\7\2ij\7\63\2\2jk\t\4\2\2k\u00a5\5\f\7\2lq\7\r\2\2mn\7"+
-		"\13\2\2no\5\20\t\2op\7\f\2\2pr\3\2\2\2qm\3\2\2\2qr\3\2\2\2rs\3\2\2\2s"+
-		"t\7\63\2\2tu\7\16\2\2uv\7\27\2\2vw\5\20\t\2wx\7\7\2\2xy\7\64\2\2yz\7\b"+
-		"\2\2z\u00a5\3\2\2\2{|\7\30\2\2|}\7\6\2\2}~\5\20\t\2~\177\7\7\2\2\177\u0080"+
-		"\7\63\2\2\u0080\u0081\7\b\2\2\u0081\u00a5\3\2\2\2\u0082\u0083\7\31\2\2"+
-		"\u0083\u0084\7\6\2\2\u0084\u0085\5\20\t\2\u0085\u0086\7\7\2\2\u0086\u0087"+
-		"\5\f\7\2\u0087\u0088\7\b\2\2\u0088\u00a5\3\2\2\2\u0089\u008a\7\32\2\2"+
-		"\u008a\u008b\7\6\2\2\u008b\u008c\5\20\t\2\u008c\u008d\7\7\2\2\u008d\u008e"+
-		"\5\f\7\2\u008e\u008f\7\b\2\2\u008f\u00a5\3\2\2\2\u0090\u0091\7\t\2\2\u0091"+
-		"\u00a5\5\f\7\2\u0092\u00a5\5\16\b\2\u0093\u0094\7\63\2\2\u0094\u0095\7"+
-		"\16\2\2\u0095\u0096\7\63\2\2\u0096\u009c\7\6\2\2\u0097\u0098\5\f\7\2\u0098"+
-		"\u0099\7\7\2\2\u0099\u009b\3\2\2\2\u009a\u0097\3\2\2\2\u009b\u009e\3\2"+
-		"\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u00a0\3\2\2\2\u009e"+
-		"\u009c\3\2\2\2\u009f\u00a1\5\f\7\2\u00a0\u009f\3\2\2\2\u00a0\u00a1\3\2"+
-		"\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a5\7\b\2\2\u00a3\u00a5\5\f\7\2\u00a4"+
-		"F\3\2\2\2\u00a4T\3\2\2\2\u00a4W\3\2\2\2\u00a4c\3\2\2\2\u00a4f\3\2\2\2"+
-		"\u00a4i\3\2\2\2\u00a4l\3\2\2\2\u00a4{\3\2\2\2\u00a4\u0082\3\2\2\2\u00a4"+
-		"\u0089\3\2\2\2\u00a4\u0090\3\2\2\2\u00a4\u0092\3\2\2\2\u00a4\u0093\3\2"+
-		"\2\2\u00a4\u00a3\3\2\2\2\u00a5\13\3\2\2\2\u00a6\u00a7\b\7\1\2\u00a7\u00a8"+
-		"\7\36\2\2\u00a8\u00d2\5\f\7\17\u00a9\u00aa\7&\2\2\u00aa\u00d2\5\f\7\16"+
-		"\u00ab\u00ac\7\'\2\2\u00ac\u00d2\5\f\7\f\u00ad\u00ae\7\63\2\2\u00ae\u00b4"+
-		"\7\6\2\2\u00af\u00b0\5\f\7\2\u00b0\u00b1\7\7\2\2\u00b1\u00b3\3\2\2\2\u00b2"+
-		"\u00af\3\2\2\2\u00b3\u00b6\3\2\2\2\u00b4\u00b2\3\2\2\2\u00b4\u00b5\3\2"+
-		"\2\2\u00b5\u00b8\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b7\u00b9\5\f\7\2\u00b8"+
-		"\u00b7\3\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00ba\3\2\2\2\u00ba\u00d2\7\b"+
-		"\2\2\u00bb\u00d2\7\63\2\2\u00bc\u00d2\7\64\2\2\u00bd\u00d2\7\66\2\2\u00be"+
-		"\u00d2\7\65\2\2\u00bf\u00d2\7\67\2\2\u00c0\u00c6\7\3\2\2\u00c1\u00c2\5"+
-		"\f\7\2\u00c2\u00c3\7\7\2\2\u00c3\u00c5\3\2\2\2\u00c4\u00c1\3\2\2\2\u00c5"+
-		"\u00c8\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\u00ca\3\2"+
-		"\2\2\u00c8\u00c6\3\2\2\2\u00c9\u00cb\5\f\7\2\u00ca\u00c9\3\2\2\2\u00ca"+
-		"\u00cb\3\2\2\2\u00cb\u00cc\3\2\2\2\u00cc\u00d2\7\4\2\2\u00cd\u00ce\7\6"+
-		"\2\2\u00ce\u00cf\5\f\7\2\u00cf\u00d0\7\b\2\2\u00d0\u00d2\3\2\2\2\u00d1"+
-		"\u00a6\3\2\2\2\u00d1\u00a9\3\2\2\2\u00d1\u00ab\3\2\2\2\u00d1\u00ad\3\2"+
-		"\2\2\u00d1\u00bb\3\2\2\2\u00d1\u00bc\3\2\2\2\u00d1\u00bd\3\2\2\2\u00d1"+
-		"\u00be\3\2\2\2\u00d1\u00bf\3\2\2\2\u00d1\u00c0\3\2\2\2\u00d1\u00cd\3\2"+
-		"\2\2\u00d2\u00f3\3\2\2\2\u00d3\u00d4\f\25\2\2\u00d4\u00d5\t\5\2\2\u00d5"+
-		"\u00f2\5\f\7\26\u00d6\u00d7\f\24\2\2\u00d7\u00d8\t\6\2\2\u00d8\u00f2\5"+
-		"\f\7\25\u00d9\u00da\f\23\2\2\u00da\u00db\t\7\2\2\u00db\u00f2\5\f\7\24"+
-		"\u00dc\u00dd\f\22\2\2\u00dd\u00de\t\b\2\2\u00de\u00f2\5\f\7\23\u00df\u00e0"+
-		"\f\21\2\2\u00e0\u00e1\t\t\2\2\u00e1\u00f2\5\f\7\22\u00e2\u00e3\f\20\2"+
-		"\2\u00e3\u00e4\t\n\2\2\u00e4\u00f2\5\f\7\21\u00e5\u00e6\f\r\2\2\u00e6"+
-		"\u00e7\7\'\2\2\u00e7\u00f2\5\f\7\16\u00e8\u00ed\f\13\2\2\u00e9\u00ea\7"+
-		"\17\2\2\u00ea\u00eb\5\f\7\2\u00eb\u00ec\7\20\2\2\u00ec\u00ee\3\2\2\2\u00ed"+
-		"\u00e9\3\2\2\2\u00ee\u00ef\3\2\2\2\u00ef\u00ed\3\2\2\2\u00ef\u00f0\3\2"+
-		"\2\2\u00f0\u00f2\3\2\2\2\u00f1\u00d3\3\2\2\2\u00f1\u00d6\3\2\2\2\u00f1"+
-		"\u00d9\3\2\2\2\u00f1\u00dc\3\2\2\2\u00f1\u00df\3\2\2\2\u00f1\u00e2\3\2"+
-		"\2\2\u00f1\u00e5\3\2\2\2\u00f1\u00e8\3\2\2\2\u00f2\u00f5\3\2\2\2\u00f3"+
-		"\u00f1\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\r\3\2\2\2\u00f5\u00f3\3\2\2\2"+
-		"\u00f6\u00f7\7(\2\2\u00f7\u00f8\7\6\2\2\u00f8\u00f9\5\f\7\2\u00f9\u00fa"+
-		"\7\b\2\2\u00fa\u00fb\5\4\3\2\u00fb\u011b\3\2\2\2\u00fc\u00fd\7)\2\2\u00fd"+
-		"\u00fe\5\4\3\2\u00fe\u00ff\7(\2\2\u00ff\u0100\7\6\2\2\u0100\u0101\5\f"+
-		"\7\2\u0101\u0102\7\b\2\2\u0102\u011b\3\2\2\2\u0103\u0104\7*\2\2\u0104"+
-		"\u0105\7\6\2\2\u0105\u0106\5\20\t\2\u0106\u0107\7\63\2\2\u0107\u0108\7"+
-		"+\2\2\u0108\u0109\5\n\6\2\u0109\u010a\7\b\2\2\u010a\u010b\5\4\3\2\u010b"+
-		"\u011b\3\2\2\2\u010c\u010d\7,\2\2\u010d\u010e\7\6\2\2\u010e\u010f\5\n"+
-		"\6\2\u010f\u0110\7\b\2\2\u0110\u0111\5\4\3\2\u0111\u011b\3\2\2\2\u0112"+
-		"\u0113\7-\2\2\u0113\u0114\7\6\2\2\u0114\u0115\5\f\7\2\u0115\u0116\7\b"+
-		"\2\2\u0116\u0117\5\4\3\2\u0117\u011b\3\2\2\2\u0118\u0119\7.\2\2\u0119"+
-		"\u011b\5\4\3\2\u011a\u00f6\3\2\2\2\u011a\u00fc\3\2\2\2\u011a\u0103\3\2"+
-		"\2\2\u011a\u010c\3\2\2\2\u011a\u0112\3\2\2\2\u011a\u0118\3\2\2\2\u011b"+
-		"\17\3\2\2\2\u011c\u0125\7/\2\2\u011d\u0125\7\60\2\2\u011e\u0125\7\61\2"+
-		"\2\u011f\u0125\7\62\2\2\u0120\u0121\7\13\2\2\u0121\u0122\5\20\t\2\u0122"+
-		"\u0123\7\f\2\2\u0123\u0125\3\2\2\2\u0124\u011c\3\2\2\2\u0124\u011d\3\2"+
-		"\2\2\u0124\u011e\3\2\2\2\u0124\u011f\3\2\2\2\u0124\u0120\3\2\2\2\u0125"+
-		"\21\3\2\2\2\31\25\36+/\64DNR^q\u009c\u00a0\u00a4\u00b4\u00b8\u00c6\u00ca"+
-		"\u00d1\u00ef\u00f1\u00f3\u011a\u0124";
+		"\u00a5\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u00af\n\7\f\7\16\7\u00b2"+
+		"\13\7\3\7\5\7\u00b5\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u00c1"+
+		"\n\7\f\7\16\7\u00c4\13\7\3\7\5\7\u00c7\n\7\3\7\3\7\3\7\3\7\3\7\5\7\u00ce"+
+		"\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
+		"\7\3\7\3\7\3\7\3\7\3\7\3\7\6\7\u00e7\n\7\r\7\16\7\u00e8\7\7\u00eb\n\7"+
+		"\f\7\16\7\u00ee\13\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
+		"\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\5\b\u0114\n\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t"+
+		"\5\t\u011e\n\t\3\t\2\3\f\n\2\4\6\b\n\f\16\20\2\13\3\2\20\21\3\2\22\23"+
+		"\3\2\24\25\4\2..\67\67\3\2/\60\3\2-.\3\2\61\64\3\289\3\2\65\67\2\u014e"+
+		"\2\25\3\2\2\2\4\32\3\2\2\2\6#\3\2\2\2\bD\3\2\2\2\n\u00a4\3\2\2\2\f\u00cd"+
+		"\3\2\2\2\16\u0113\3\2\2\2\20\u011d\3\2\2\2\22\24\5\6\4\2\23\22\3\2\2\2"+
+		"\24\27\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26\30\3\2\2\2\27\25\3\2\2\2"+
+		"\30\31\7\2\2\3\31\3\3\2\2\2\32\36\7\3\2\2\33\35\5\n\6\2\34\33\3\2\2\2"+
+		"\35 \3\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37!\3\2\2\2 \36\3\2\2\2!\"\7"+
+		"\4\2\2\"\5\3\2\2\2#$\7\5\2\2$%\7&\2\2%+\7\6\2\2&\'\5\b\5\2\'(\7\7\2\2"+
+		"(*\3\2\2\2)&\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,/\3\2\2\2-+\3\2\2\2"+
+		".\60\5\b\5\2/.\3\2\2\2/\60\3\2\2\2\60\61\3\2\2\2\61\64\7\b\2\2\62\63\7"+
+		"\t\2\2\63\65\5\20\t\2\64\62\3\2\2\2\64\65\3\2\2\2\65\66\3\2\2\2\66\67"+
+		"\5\4\3\2\67\7\3\2\2\289\7\n\2\29:\5\20\t\2:;\7&\2\2;E\3\2\2\2<=\5\20\t"+
+		"\2=>\7&\2\2>E\3\2\2\2?@\7\13\2\2@A\5\20\t\2AB\7\61\2\2BC\7&\2\2CE\3\2"+
+		"\2\2D8\3\2\2\2D<\3\2\2\2D?\3\2\2\2E\t\3\2\2\2FN\7\f\2\2GH\5\20\t\2HI\7"+
+		"&\2\2IO\3\2\2\2JK\7\13\2\2KL\5\20\t\2LM\7\61\2\2MO\3\2\2\2NG\3\2\2\2N"+
+		"J\3\2\2\2OR\3\2\2\2PQ\7\r\2\2QS\5\f\7\2RP\3\2\2\2RS\3\2\2\2S\u00a5\3\2"+
+		"\2\2TU\7&\2\2UV\7\r\2\2V\u00a5\5\n\6\2W\\\5\f\7\2XY\7\16\2\2YZ\5\f\7\2"+
+		"Z[\7\17\2\2[]\3\2\2\2\\X\3\2\2\2]^\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_`\3\2"+
+		"\2\2`a\7\r\2\2ab\5\f\7\2b\u00a5\3\2\2\2cd\7&\2\2de\t\2\2\2e\u00a5\5\f"+
+		"\7\2fg\7&\2\2gh\t\3\2\2h\u00a5\5\f\7\2ij\7&\2\2jk\t\4\2\2k\u00a5\5\f\7"+
+		"\2lq\7\f\2\2mn\7\13\2\2no\5\20\t\2op\7\61\2\2pr\3\2\2\2qm\3\2\2\2qr\3"+
+		"\2\2\2rs\3\2\2\2st\7&\2\2tu\7\r\2\2uv\7\26\2\2vw\5\20\t\2wx\7\7\2\2xy"+
+		"\7\'\2\2yz\7\b\2\2z\u00a5\3\2\2\2{|\7\27\2\2|}\7\6\2\2}~\5\20\t\2~\177"+
+		"\7\7\2\2\177\u0080\7&\2\2\u0080\u0081\7\b\2\2\u0081\u00a5\3\2\2\2\u0082"+
+		"\u0083\7\30\2\2\u0083\u0084\7\6\2\2\u0084\u0085\5\20\t\2\u0085\u0086\7"+
+		"\7\2\2\u0086\u0087\5\f\7\2\u0087\u0088\7\b\2\2\u0088\u00a5\3\2\2\2\u0089"+
+		"\u008a\7\31\2\2\u008a\u008b\7\6\2\2\u008b\u008c\5\20\t\2\u008c\u008d\7"+
+		"\7\2\2\u008d\u008e\5\f\7\2\u008e\u008f\7\b\2\2\u008f\u00a5\3\2\2\2\u0090"+
+		"\u0091\7\t\2\2\u0091\u00a5\5\f\7\2\u0092\u00a5\5\16\b\2\u0093\u0094\7"+
+		"&\2\2\u0094\u0095\7\r\2\2\u0095\u0096\7&\2\2\u0096\u009c\7\6\2\2\u0097"+
+		"\u0098\5\f\7\2\u0098\u0099\7\7\2\2\u0099\u009b\3\2\2\2\u009a\u0097\3\2"+
+		"\2\2\u009b\u009e\3\2\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d"+
+		"\u00a0\3\2\2\2\u009e\u009c\3\2\2\2\u009f\u00a1\5\f\7\2\u00a0\u009f\3\2"+
+		"\2\2\u00a0\u00a1\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a5\7\b\2\2\u00a3"+
+		"\u00a5\5\f\7\2\u00a4F\3\2\2\2\u00a4T\3\2\2\2\u00a4W\3\2\2\2\u00a4c\3\2"+
+		"\2\2\u00a4f\3\2\2\2\u00a4i\3\2\2\2\u00a4l\3\2\2\2\u00a4{\3\2\2\2\u00a4"+
+		"\u0082\3\2\2\2\u00a4\u0089\3\2\2\2\u00a4\u0090\3\2\2\2\u00a4\u0092\3\2"+
+		"\2\2\u00a4\u0093\3\2\2\2\u00a4\u00a3\3\2\2\2\u00a5\13\3\2\2\2\u00a6\u00a7"+
+		"\b\7\1\2\u00a7\u00a8\t\5\2\2\u00a8\u00ce\5\f\7\r\u00a9\u00aa\7&\2\2\u00aa"+
+		"\u00b0\7\6\2\2\u00ab\u00ac\5\f\7\2\u00ac\u00ad\7\7\2\2\u00ad\u00af\3\2"+
+		"\2\2\u00ae\u00ab\3\2\2\2\u00af\u00b2\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b0"+
+		"\u00b1\3\2\2\2\u00b1\u00b4\3\2\2\2\u00b2\u00b0\3\2\2\2\u00b3\u00b5\5\f"+
+		"\7\2\u00b4\u00b3\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00b6\3\2\2\2\u00b6"+
+		"\u00ce\7\b\2\2\u00b7\u00ce\7&\2\2\u00b8\u00ce\7\'\2\2\u00b9\u00ce\7)\2"+
+		"\2\u00ba\u00ce\7(\2\2\u00bb\u00ce\7*\2\2\u00bc\u00c2\7\3\2\2\u00bd\u00be"+
+		"\5\f\7\2\u00be\u00bf\7\7\2\2\u00bf\u00c1\3\2\2\2\u00c0\u00bd\3\2\2\2\u00c1"+
+		"\u00c4\3\2\2\2\u00c2\u00c0\3\2\2\2\u00c2\u00c3\3\2\2\2\u00c3\u00c6\3\2"+
+		"\2\2\u00c4\u00c2\3\2\2\2\u00c5\u00c7\5\f\7\2\u00c6\u00c5\3\2\2\2\u00c6"+
+		"\u00c7\3\2\2\2\u00c7\u00c8\3\2\2\2\u00c8\u00ce\7\4\2\2\u00c9\u00ca\7\6"+
+		"\2\2\u00ca\u00cb\5\f\7\2\u00cb\u00cc\7\b\2\2\u00cc\u00ce\3\2\2\2\u00cd"+
+		"\u00a6\3\2\2\2\u00cd\u00a9\3\2\2\2\u00cd\u00b7\3\2\2\2\u00cd\u00b8\3\2"+
+		"\2\2\u00cd\u00b9\3\2\2\2\u00cd\u00ba\3\2\2\2\u00cd\u00bb\3\2\2\2\u00cd"+
+		"\u00bc\3\2\2\2\u00cd\u00c9\3\2\2\2\u00ce\u00ec\3\2\2\2\u00cf\u00d0\f\22"+
+		"\2\2\u00d0\u00d1\t\6\2\2\u00d1\u00eb\5\f\7\23\u00d2\u00d3\f\21\2\2\u00d3"+
+		"\u00d4\t\7\2\2\u00d4\u00eb\5\f\7\22\u00d5\u00d6\f\20\2\2\u00d6\u00d7\t"+
+		"\b\2\2\u00d7\u00eb\5\f\7\21\u00d8\u00d9\f\17\2\2\u00d9\u00da\t\t\2\2\u00da"+
+		"\u00eb\5\f\7\20\u00db\u00dc\f\16\2\2\u00dc\u00dd\t\n\2\2\u00dd\u00eb\5"+
+		"\f\7\17\u00de\u00df\f\f\2\2\u00df\u00e0\7\32\2\2\u00e0\u00eb\5\f\7\r\u00e1"+
+		"\u00e6\f\13\2\2\u00e2\u00e3\7\16\2\2\u00e3\u00e4\5\f\7\2\u00e4\u00e5\7"+
+		"\17\2\2\u00e5\u00e7\3\2\2\2\u00e6\u00e2\3\2\2\2\u00e7\u00e8\3\2\2\2\u00e8"+
+		"\u00e6\3\2\2\2\u00e8\u00e9\3\2\2\2\u00e9\u00eb\3\2\2\2\u00ea\u00cf\3\2"+
+		"\2\2\u00ea\u00d2\3\2\2\2\u00ea\u00d5\3\2\2\2\u00ea\u00d8\3\2\2\2\u00ea"+
+		"\u00db\3\2\2\2\u00ea\u00de\3\2\2\2\u00ea\u00e1\3\2\2\2\u00eb\u00ee\3\2"+
+		"\2\2\u00ec\u00ea\3\2\2\2\u00ec\u00ed\3\2\2\2\u00ed\r\3\2\2\2\u00ee\u00ec"+
+		"\3\2\2\2\u00ef\u00f0\7\33\2\2\u00f0\u00f1\7\6\2\2\u00f1\u00f2\5\f\7\2"+
+		"\u00f2\u00f3\7\b\2\2\u00f3\u00f4\5\4\3\2\u00f4\u0114\3\2\2\2\u00f5\u00f6"+
+		"\7\34\2\2\u00f6\u00f7\5\4\3\2\u00f7\u00f8\7\33\2\2\u00f8\u00f9\7\6\2\2"+
+		"\u00f9\u00fa\5\f\7\2\u00fa\u00fb\7\b\2\2\u00fb\u0114\3\2\2\2\u00fc\u00fd"+
+		"\7\35\2\2\u00fd\u00fe\7\6\2\2\u00fe\u00ff\5\20\t\2\u00ff\u0100\7&\2\2"+
+		"\u0100\u0101\7\36\2\2\u0101\u0102\5\n\6\2\u0102\u0103\7\b\2\2\u0103\u0104"+
+		"\5\4\3\2\u0104\u0114\3\2\2\2\u0105\u0106\7\37\2\2\u0106\u0107\7\6\2\2"+
+		"\u0107\u0108\5\n\6\2\u0108\u0109\7\b\2\2\u0109\u010a\5\4\3\2\u010a\u0114"+
+		"\3\2\2\2\u010b\u010c\7 \2\2\u010c\u010d\7\6\2\2\u010d\u010e\5\f\7\2\u010e"+
+		"\u010f\7\b\2\2\u010f\u0110\5\4\3\2\u0110\u0114\3\2\2\2\u0111\u0112\7!"+
+		"\2\2\u0112\u0114\5\4\3\2\u0113\u00ef\3\2\2\2\u0113\u00f5\3\2\2\2\u0113"+
+		"\u00fc\3\2\2\2\u0113\u0105\3\2\2\2\u0113\u010b\3\2\2\2\u0113\u0111\3\2"+
+		"\2\2\u0114\17\3\2\2\2\u0115\u011e\7\"\2\2\u0116\u011e\7#\2\2\u0117\u011e"+
+		"\7$\2\2\u0118\u011e\7%\2\2\u0119\u011a\7\13\2\2\u011a\u011b\5\20\t\2\u011b"+
+		"\u011c\7\61\2\2\u011c\u011e\3\2\2\2\u011d\u0115\3\2\2\2\u011d\u0116\3"+
+		"\2\2\2\u011d\u0117\3\2\2\2\u011d\u0118\3\2\2\2\u011d\u0119\3\2\2\2\u011e"+
+		"\21\3\2\2\2\31\25\36+/\64DNR^q\u009c\u00a0\u00a4\u00b0\u00b4\u00c2\u00c6"+
+		"\u00cd\u00e8\u00ea\u00ec\u0113\u011d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

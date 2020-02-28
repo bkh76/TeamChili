@@ -1,10 +1,10 @@
 package ast;
 import java.util.*;
 
-public class WhileCond extends Conditional {
+public class WhileLoop extends Instruction {
     public Expr expr;
     public List<Instruction> instructions;
-    public WhileCond(Position pos, Expr expr, List<Instruction> instructions) {
+    public WhileLoop(Position pos, Expr expr, List<Instruction> instructions) {
         this.pos = pos;
         this.expr = expr;
         this.instructions = instructions;
