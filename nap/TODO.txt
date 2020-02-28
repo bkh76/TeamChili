@@ -1,0 +1,2 @@
+1) collapse the Loops and conditionals into Expr to make our lives easier
+2) Run tests on this
