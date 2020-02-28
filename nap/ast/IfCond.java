@@ -1,10 +1,10 @@
 package ast;
 import java.util.*;
 
-public class IfCond extends Conditional {
+public class IfCond extends Instruction {
     public Expr expr;
-    public List<Instruction> instructions;
-    public IfCond(Position pos, Expr expr, List<Instruction> instructions) {
+    public ArrayList<Instruction> instructions;
+    public IfCond(Position pos, Expr expr, ArrayList<Instruction> instructions) {
         this.pos = pos;
         this.expr = expr;
         this.instructions = instructions;

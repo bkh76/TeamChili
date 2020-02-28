@@ -1,9 +1,9 @@
 package ast;
 import java.util.*;
 
-public class ElseCond extends Conditional {
-    public List<Instruction> instructions;
-    public ElseCond(Position pos, List<Instruction> instructions) {
+public class ElseCond extends Instruction {
+    public ArrayList<Instruction> instructions;
+    public ElseCond(Position pos, ArrayList<Instruction> instructions) {
         this.pos = pos;
         this.instructions = instructions;
     }

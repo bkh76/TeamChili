@@ -1,5 +1,0 @@
-
-func foo(var int x) -> int {
-    var int y = 0
-    -> y
-}

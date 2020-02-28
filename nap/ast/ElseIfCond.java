@@ -1,10 +1,10 @@
 package ast;
 import java.util.*;
 
-public class ElseIfCond extends Conditional {
+public class ElseIfCond extends Instruction {
     public Expr expr;
-    public List<Instruction> instructions;
-    public ElseIfCond(Position pos, Expr expr, List<Instruction> instructions) {
+    public ArrayList<Instruction> instructions;
+    public ElseIfCond(Position pos, Expr expr, ArrayList<Instruction> instructions) {
         this.pos = pos;
         this.expr = expr;
         this.instructions = instructions;

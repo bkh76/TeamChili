@@ -1,11 +1,13 @@
 package ast;
 
+import java.util.*;
+
 public class ExprFuncCall extends Expr {
     Position pos;
     String funcName;
-    List<Expr> params;
+    ArrayList<Expr> params;
 
-    public ExprFuncCall(Position pos, String funcName, List<Expr> params) {
+    public ExprFuncCall(Position pos, String funcName, ArrayList<Expr> params) {
         this.pos = pos;
         this.funcName = funcName;
         this.params = params;

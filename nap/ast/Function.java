@@ -4,14 +4,14 @@ import java.util.*;
 public class Function extends Ast {
     Position pos;
     String funcName;
-    List<ExprIdentifier> arguments;
-    List<Instruction> instructions;
+    ArrayList<ExprIdentifier> arguments;
+    ArrayList<Instruction> instructions;
     Type returnType;
 
     public Function(Position pos,
                     String funcName,
-                    List<ExprIdentifier> arguments,
-                    List<Instruction> instructions,
+                    ArrayList<ExprIdentifier> arguments,
+                    ArrayList<Instruction> instructions,
                     Type returnType) {
         this.pos = pos;
         this.funcName = funcName;
