@@ -48,8 +48,8 @@ expr :      expr op=('*'|'/') expr #MulDiv
 conditional : 'while' '(' expr ')' block #WhileLoop
            | 'do' block 'while' '(' expr ')' #DoWhileLoop
            | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
-           | 'if' '(' instruction ')' block #IfCond
-           | 'else' block #ElseBlock
+           | 'if' '(' expr ')' block #IfCond
+           | 'else' (block)? #ElseBlock
            ;
 
 Identifier : [a-zA-Z_] [a-zA-Z0-9_]*;
@@ -71,4 +71,4 @@ StringConstant : '"' [a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ]* '"';
 
 Comment : '#' -> skip;
 
-WS : [ \t\r\n;]+ -> skip;
+WS : [ \t\r\n]+ -> skip;
