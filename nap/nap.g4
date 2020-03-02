@@ -45,9 +45,8 @@ expr :      expr op=('*'|'/') expr #MulDiv
 conditional : 'while' '(' expr ')' block #WhileLoop
            | 'do' block 'while' '(' expr ')' #DoWhileLoop
            | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
-           | 'if' '(' instruction ')' block #IfCond
-           | 'else if' '(' expr ')' block #ElseIfCond
-           | 'else' block #ElseCond
+           | 'if' '(' expr ')' block #IfCond
+           | 'else' (block)? #ElseBlock
            ;
 
 Identifier : [a-zA-Z_] [a-zA-Z0-9_]*;
