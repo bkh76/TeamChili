@@ -49,7 +49,6 @@ conditional : 'while' '(' expr ')' block #WhileLoop
            | 'do' block 'while' '(' expr ')' #DoWhileLoop
            | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
            | 'if' '(' instruction ')' block #IfCond
-           | 'else if' '(' expr ')' block #ElseIfCond
            | 'else' block #ElseBlock
            ;
 
