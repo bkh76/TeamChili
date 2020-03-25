@@ -12,6 +12,61 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 public class BuildAST extends napBaseVisitor<Ast>{
+    //function_defs??
+    //param??
+    //params??
+    //block??
+    //type??
+    //statement??
+
+    //instr
+    @Override 
+    public Ast visitIAssign(napParser.IAssignContext ctx) { 
+        String var = ctx.Identifier().toString();
+        Expression e = (Expression)visit(ctx.expression());
+        return new Assign(position(ctx), var, e); 
+    }
+    
+    @Override 
+    public Ast visitIFor(napParser.IForContext ctx) { 
+        //TODO
+    }    
+    
+    @Override 
+    public Ast visitIWhile(napParser.IWhileContext ctx) { 
+        //TODO
+    } 
+    
+    @Override 
+    public Ast visitIDoWhile(napParser.IDoWhileContext ctx) { 
+        //TODO
+    } 
+    
+    @Override 
+    public Ast visitIInput(napParser.IInputContext ctx) { 
+        //TODO
+    } 
+    @Override 
+    public Ast visitIPrint(napParser.IPrintContext ctx) {
+        Expression e = (Expression) visit(ctx.expression());
+        return new Print(position(ctx), e); 
+    }
+    
+    @Override 
+    public Ast visitIIf(napParser.IIfContext ctx) { 
+        //TODO
+    } 
+    
+    @Override 
+    public Ast visitIReturn(napParser.IReturnContext ctx) { 
+        //TODO
+    } 
+
+    @Override 
+    public Ast visitIExpr(napParser.IExprContext ctx) { 
+        //TODO
+    } 
+
     //expr
     @Override
     public Ast visitEMuls(napParser.EMulsContext ctx) {
@@ -36,13 +91,13 @@ public class BuildAST extends napBaseVisitor<Ast>{
     }
 
     @Override
-    public Ast visitEOpp(napParser.EOpp ctx) {
+    public Ast visitEOpp(napParser.EOppContext ctx) {
         Expression e = (Expression)visit(ctx.expressin(0));
         return new ExpUnop(position(ctx), e, OpUnary.SUB);
     }
 
     @Override
-    public Ast visitECmp(napParser.ECmp ctx) {
+    public Ast visitECmp(napParser.ECmpContext ctx) {
         Expression e0 = (Expression)visit(ctx.expression(0));
         Expression e1 = (Expression)visit(ctx.expression(1)); 
         if(ctx.op.getType() == napParser.EQ)
@@ -60,27 +115,27 @@ public class BuildAST extends napBaseVisitor<Ast>{
     }
 
     @Override
-    public Ast visitEAnd(napParser.EAnd ctx) {
+    public Ast visitEAnd(napParser.EAndContext ctx) {
         Expression e0 = (Expression)visit(ctx.expression(0));
         Expression e1 = (Expression)visit(ctx.expression(1));
         return new ExpBinop(position(ctx), e0, OpBinary.AND, e1);
     }
 
     @Override 
-    public Ast visitEOr(napParser.EOr ctx) {
+    public Ast visitEOr(napParser.EOrContext ctx) {
         Expression e0 = (Expression)visit(ctx.expression(0));
         Expression e1 = (Expression)visit(ctx.expression(1));
         return new ExpBinop(position(ctx), e0, OpBinary.OR, e1);
     }
 
     @Override 
-    public Ast visitENot(napParser.ENot ctx) {
+    public Ast visitENot(napParser.ENotContext ctx) {
         Expression e = (Expression)visit(ctx.expression(0));
         return new ExpUnop(position(ctx), e, OpUnary.NOT);
     }
 
     @Override
-    public Ast visitEPostfix(napParser.EPostfix ctx) {
+    public Ast visitEPostfix(napParser.EPostfixContext ctx) {
         Expression e = (Expression)visit(ctx.expression(0));
         if(ctx.op.getType() == napParser.INC)
             return new ExpAssignop(position(ctx), OpAssign.INC, e, false);
@@ -89,7 +144,7 @@ public class BuildAST extends napBaseVisitor<Ast>{
     }
 
     @Override
-    public Ast visitEPrefix(napParser.EPrefix ctx) {
+    public Ast visitEPrefix(napParser.EPrefixContext ctx) {
         Expression e = (Expression)visit(ctx.expression(0));
         if(ctx.op.getType() == napParser.INC)
             return new ExpAssignop(position(ctx), OpAssign.INC, e, true);
@@ -99,11 +154,57 @@ public class BuildAST extends napBaseVisitor<Ast>{
 
     //wtf
     @Override 
-    public Ast visitECall(napParser.ECall ctx) {
+    public Ast visitECall(napParser.ECallContext ctx) {
         String id = (String)visit(ctx.id()); // id is a method in the ECallContext class
-        for(napParser.)
+        for(napParser.) {
+            
+        }
+        //TODO
     }
 
     @Override
-    public Ast visitEIdentifier
+    public Ast visitEIdentifier(napParser.EIdentifierContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitEInt(napParser.EIntContext ctx) {
+       return new ExpInt(position(ctx), Integer.parseInt(ctx.Constant().toString())); 
+    }
+    
+    @Override
+    public AST visitEBool(napParser.EBoolContext ctx) {
+        //TODO
+    }
+        
+    @Override
+    public AST visitEChar(napParser.ECharContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitEString(napParser.EStringContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitENew(napParser.ENewContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitEArrayAccess(napParser.EArrayAccessContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
+        //TODO
+    }
+    
+    @Override
+    public AST visitEPar(napParser.EParContext ctx) {
+       	Expression e = (Expression) visit(ctx.expression());
+        return e;
+    }
 }
