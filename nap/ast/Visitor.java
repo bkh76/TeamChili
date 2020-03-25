@@ -1,31 +1,33 @@
 package ast;
 
-public interface Visitor<T> {
-    //expressions
-    public T visit(ExprArray expression);
-    public T visit(ExprBinop expression);
-    public T visit(ExprBoolean expression);
-    public T visit(ExprChar expression);
-    public T visit(ExprEquality expression);
-    public T visit(ExprIdentifier variable);
-    public T visit(ExprInequality expression);
-    public T visit(ExprInt number);
-    public T visit(ExprLogical expression);
-    public T visit(ExprNegation expression);
-    public T visit(ExprString expression);
-    public T visit(ExprFuncCall expression);
-    //instructions
-    public T visit(Assign instruction);
-    public T visit(ElseCond instruction);
-    public T visit(ElseIfCond instruction);
-    public T visit(IfCond instruction);
-    public T visit(New instruction);
-    public T visit(Print instruction);
-    public T visit(Read instruction);
-    public T visit(Return instruction);
-    public T visit(WhileLoop instruction);
-    //program
-    public T visit(Program program);
-
-    public T visit(Function func);
+public interface Visitor<T>
+{
+    T visit(ExpBool exp);
+    T visit(ExpChar exp);
+    T visit(ExpInt exp);
+    T visit(ExpString exp);
+    T visit(ExpVar exp);
+    T visit(ExpBinop exp);
+    T visit(ExpUnop exp);
+    T visit(ExpAssignop exp);
+    T visit(ExpFuncCall exp);
+    T visit(ExpLength exp);
+    T visit(ExpNew exp);
+    T visit(ExpCallConversion exp);
+    T visit(ExpArrAccess array);
+    T visit(ExpArrEnum array);
+    T visit(StmIf stm);
+    T visit(StmAssign stm);
+    T visit(StmExp stm);
+    T visit(StmRead stm);
+    T visit(StmPrint stm);
+    T visit(StmReturn stm);
+    T visit(StmWhile stm);
+    T visit(StmFor stm);
+    T visit(StmDecl stm);
+    T visit(TypArray type);
+    T visit(TypBasic type);
+    T visit(Block block);
+    T visit(FunctionDefinition fun);
+    T visit(Program prog);
 }

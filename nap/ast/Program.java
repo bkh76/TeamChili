@@ -1,13 +1,16 @@
 package ast;
+
 import java.util.*;
 
 public class Program extends Ast {
-    public ArrayList<Function> program;
-    public Program(Position pos, ArrayList<Function> program){
-        this.pos = pos;
-        this.program = program;
+    public List<FunctionDefinition> functions;
+
+    public Program(Position pos,
+		   List<FunctionDefinition> functions){
+	this.pos = pos;
+	this.functions = functions;
     }
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visit(this);
-    }
+    public <T> T accept(Visitor<T> visitor){
+	return visitor.visit(this);
+    }    
 }

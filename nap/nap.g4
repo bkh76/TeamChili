@@ -1,85 +1,148 @@
 grammar nap;
 
-program : (function_definition)* EOF;
+program : function_definition* EOF;
 
-block : '{' (instruction)* '}';
+function_definition: FUNC Identifier LPAR parameters RPAR (ARROW type)? block; 
 
-function_definition : 'func' Identifier '(' (arg_list',')*(arg_list)? ')' ('->' typeIdentifier)? block #FunctionDeclaration;
+parameter: REF? type Identifier ;
 
-arg_list : ('ref' typeIdentifier Identifier | typeIdentifier Identifier | 'array<' typeIdentifier '>' Identifier) #Argument;
+parameters: (parameter (COMMA parameter)*)? ;
 
-instruction : 'var' (typeIdentifier Identifier | 'array<' typeIdentifier '>') ('=' expr)? #Assignment
-           | Identifier '=' instruction #Assign
-           | expr  ('[' expr ']')+ '=' expr #ArrayAssignment
-           | Identifier op=('*=' | '/=') expr  #MulEqDivEq
-           | Identifier op=('++' | '--') expr  #IncDec
-           | Identifier op=('+=' | '-=') expr  #IncEqDecEq
-           | ('var') ('array<' typeIdentifier '>')? Identifier '=' 'new (' typeIdentifier ',' Constant ')' #NewInline
-           | 'read' '(' typeIdentifier ',' Identifier ')' #Read
-           | 'print' '(' typeIdentifier ',' expr ')' #Print
-           | 'new' '(' typeIdentifier ',' expr ')' #New
-           | '->' expr #Return
-           | conditional #CondExpr
-           | Identifier '=' Identifier '(' (expr',')*(expr)? ')' #AssignmentFunctionCall
-           | expr #InstructionToExpr
-           ;
+block: LBLOCK statement* RBLOCK;
 
-expr :      expr op=('*'|'/') expr #MulDiv
-          | expr op=('+'|'-') expr #AddSub
-          | expr op=('<='|'>='|'>'|'<') expr #Inequality
-          | expr op=('==' | '!=') expr #Equality
-          | expr op=('&&' | '||' | '!') expr #Logical
-          | op=('-'|'!') expr #Negation
-          | expr 'mod' expr #Mod
-          | expr  ('[' expr ']')+ #ArrayAccess
-          | Identifier '(' (expr',')*(expr)? ')' #FunctionCall
-          | Identifier #Identifier
-          | Constant #Constant
-          | CharacterConstant #CharacterConstant
-          | BooleanConstant #BooleanConstant
-          | StringConstant #StringConstant
-          | '{' (expr',')*(expr)? '}' #ConstantArray
-          | '(' expr ')' #Parenthesis
-          ;
+type: INT                      #TInt  
+    | BOOL                     #TBool
+    | CHAR                     #TChar
+    | FLOAT                    #TFloat
+    | BYTE                     #TByte
+    | ARRAY LT type GT         #TArray
+    ;
 
-conditional : 'while' '(' expr ')' block #WhileLoop
-           | 'do' block 'while' '(' expr ')' #DoWhileLoop
-           | 'for' '(' typeIdentifier Identifier 'in' instruction ')' block #ForLoop
-           | 'if' '(' expr ')' block #IfCond
-           | 'else' (block)? #ElseBlock
-           ;
+statement: declaration        #SDecl
+         | instruction         #SIns
+         ;
 
-Identifier : [a-zA-Z_] [a-zA-Z0-9_]*;
+declaration: VAR type Identifier (ASSIGN expr)? ;
 
-typeIdentifier : 'char' #Char
-               | 'byte' #Byte
-               | 'int' #Int
-               | 'bool' #Bool
-               | 'array<' typeIdentifier '>' #Array
-               ;
+instruction:
+      expr (ASSIGN|AEQ|MEQ|SEQ|DEQ) expr          #IAssign
+    | FOR LPAR type Identifier IN expr RPAR block #IFor
+    | WHILE LPAR expr RPAR block                  #IWhile
+    | DO block WHILE LPAR expr RPAR               #IDoWhile
+    | INPUT LPAR type COMMA expr RPAR             #IInput
+    | PRINT LPAR type COMMA expr RPAR             #IPrint
+    | IF LPAR expr RPAR block (ELSE block)?       #IIf
+    | ARROW expr                                  #IReturn
+    | expr                                        #IExpr
+    ;
 
-Constant : [0-9]+;
+expr: 
+      expr op=(MUL|DIV|MOD) expr                  #EMuls
+    | expr op=(ADD|SUB) expr                      #EAdds
+    | SUB expr                                    #EOpp
+    | expr op=(EQ|NEQ|LT|LE|GT|GE) expr           #ECmp
+    | expr AND expr                               #EAnd
+    | expr OR  expr                               #EOr
+    | NOT expr                                    #ENot
+    | expr AssignOp                               #EPostfix
+    | AssignOp expr                               #EPrefix
+    | Identifier LPAR expressions RPAR            #ECall    
+    | Identifier                                  #EIdentifier        
+    | Int                                         #EInt
+    | Bool                                        #EBool
+    | Char                                        #EChar
+    | String                                      #EString
+    | NEW LPAR type COMMA expr RPAR               #ENew
+    | expr LBRACKET expr RBRACKET                 #EArrayAccess
+    | LBLOCK expressions RBLOCK                   #EArrayEnumeration
+    | LPAR expr RPAR                              #EPar    
+    ;
 
-BooleanConstant : 'T' | 'F';
+expressions: (expr (COMMA expr)*)? ;
 
-CharacterConstant : '\'' ('\\')?[a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ] '\''; 
+Bool: TRUE | FALSE;
 
-StringConstant : '"' [a-zA-Z0-9_!?@#$%^&*\-=+,.<>\\/~`;"':()[\]{} ]* '"';
+Int: PInt | (SUB)PInt;
 
-Comment : '//' -> skip;
+PInt: [0-9]+;
 
-WS : [ \t\r\n;]+ -> skip;
+//ToDo: remove \ from the range
+Char: QUOTE([\u0020-\u0026\u0028-\u007E]|Escape)QUOTE; 
 
+//ToDo: remove \ from the range
+String: SQUOTE([ !\u0023-\u007E]|Escape)*SQUOTE;
+        
+Escape: BACKSLASH('n'|'t'|QUOTE|SQUOTE|BACKSLASH|'0');
+        
+AssignOp: INCR | DECR;
+
+// =====================
+// Remove White Spaces
+// =====================
+WS: [ \r\n\t]+ -> skip;
+
+// =====================
+// Keyworkds
+// =====================
+TRUE: 'T';
+FALSE: 'F';
+FOR: 'for';
+WHILE: 'while';
+DO: 'do';
+IF: 'if';
+ELSE: 'else';
+ARROW: '->';
+IN: 'in';
+AEQ: '+=';
+SEQ: '-=';
+MEQ: '*=';
+DEQ: '/=';          
+QUOTE: '\'';
+SQUOTE: '"';
+BACKSLASH: '\\';
+LBLOCK : '{';
+RBLOCK : '}';
+LBRACKET: '[';
+RBRACKET: ']';
+INCR: '++';
+DECR: '--';
 ADD: '+';
-SUB: '-';
+AND: '&&';
+OR: '||';
+NOT: '!';
 MUL: '*';
+SUB: '-';
 DIV: '/';
-GT: '>';
-LT: '<';
-GTEQ: '>=';
-LTEQ: '<=';
-LOR: '||';
-LAND: '&&';
-LNOT: '!';
+MOD: 'mod';
+ASSIGN: '=';
 EQ: '==';
 NEQ: '!=';
+LT: '<';
+GT: '>';
+LE: '<=';
+GE: '>=';
+ARRAY: 'array';
+BOOL: 'bool';
+BYTE: 'byte';
+INT: 'int';
+FLOAT: 'float';
+CHAR: 'char';
+FUNC: 'func';
+LPAR: '(';
+RPAR: ')';
+COMMA: ',';
+REF: 'ref';
+VAR: 'var';
+INPUT: 'read';
+PRINT: 'print';
+NEW: 'new';
+
+// =====================
+// Identifiers
+// =====================
+Identifier: [a-zA-Z_][a-zA-Z_0-9]* ;
+
+// =========================
+// Comments
+// =========================
+Comments: '#'(~'\n')* -> skip;
