@@ -75,8 +75,8 @@ public class BuildAST extends napBaseVisitor<Ast> {
             statements.add(stm);
         }
 
-        return new Block(position(ctx), statements); b
-                                                         }
+        return new Block(position(ctx), statements); 
+    }
     
     @Override
     public Ast visitSDecl(napParser.SDeclContext ctx) {
