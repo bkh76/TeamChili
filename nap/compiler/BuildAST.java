@@ -31,63 +31,69 @@ public class BuildAST extends napBaseVisitor<Ast> {
         return new Program(position(ctx), functions);
     }
 
-    public Ast visitFunctionDefinition(napParser.Function_DefinitionContext ctx) {
+    public Ast visitFunctionDefinition(napParser.Function_definitionContext ctx) {
         //TODO(Trey)
+        return null;
     }
     
     //instr
     @Override 
-    public Ast visitIAssign(napParser.IAssignContext ctx) { 
+    public Ast visitIAssign(napParser.IAssignContext ctx) {
+        /*
         String var = ctx.Identifier().toString();
-        Expression e = (Expression)visit(ctx.expression());
-        return new Assign(position(ctx), var, e); 
+        Expression e = (Expression)visit(ctx.expr);
+        return new StmAssign(position(ctx), var, e);
+        */
+        return null;
     }
     
     @Override 
     public Ast visitIFor(napParser.IForContext ctx) { 
         //TODO
+        return null;
     }    
     
     @Override 
     public Ast visitIWhile(napParser.IWhileContext ctx) { 
         //TODO
+        return null;
     } 
-    
-    @Override 
-    public Ast visitIDoWhile(napParser.IDoWhileContext ctx) { 
-        //TODO
-    } 
-    
+        
     @Override 
     public Ast visitIInput(napParser.IInputContext ctx) { 
         //TODO
+        return null;
     } 
     @Override 
     public Ast visitIPrint(napParser.IPrintContext ctx) {
-        Expression e = (Expression) visit(ctx.expression());
-        return new Print(position(ctx), e); 
+        TypBasic type = (TypBasic) visit(ctx.type());
+        Expression e = (Expression) visit(ctx.expr());
+        return new StmPrint(position(ctx), type, e); 
     }
     
     @Override 
     public Ast visitIIf(napParser.IIfContext ctx) { 
         //TODO
+        return null;
     } 
     
     @Override 
     public Ast visitIReturn(napParser.IReturnContext ctx) { 
         //TODO
+        return null;
     } 
 
     @Override 
     public Ast visitIExpr(napParser.IExprContext ctx) { 
         //TODO
+        return null;
     } 
 
     //expr
     @Override
     public Ast visitEMuls(napParser.EMulsContext ctx) {
-        Expression e0 = (Expression)visit(ctx.expression(0));
-        Expression e1 = (Expression)visit(ctx.expression(1));
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1));
         if(ctx.op.getType() == napParser.MUL)
             return new ExpBinop(position(ctx), e0, OpBinary.MUL, e1);
         else if(ctx.op.getType() == napParser.DIV)
@@ -98,8 +104,8 @@ public class BuildAST extends napBaseVisitor<Ast> {
 
     @Override
     public Ast visitEAdds(napParser.EAddsContext ctx) {
-        Expression e0 = (Expression)visit(ctx.expression(0));
-        Expression e1 = (Expression)visit(ctx.expression(1));
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1));
         if(ctx.op.getType() == napParser.ADD)
             return new ExpBinop(position(ctx), e0, OpBinary.ADD, e1);
         else
@@ -108,14 +114,14 @@ public class BuildAST extends napBaseVisitor<Ast> {
 
     @Override
     public Ast visitEOpp(napParser.EOppContext ctx) {
-        Expression e = (Expression)visit(ctx.expressin(0));
+        Expression e = (Expression)visit(ctx.expr());
         return new ExpUnop(position(ctx), e, OpUnary.SUB);
     }
 
     @Override
     public Ast visitECmp(napParser.ECmpContext ctx) {
-        Expression e0 = (Expression)visit(ctx.expression(0));
-        Expression e1 = (Expression)visit(ctx.expression(1)); 
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1)); 
         if(ctx.op.getType() == napParser.EQ)
             return new ExpBinop(position(ctx), e0, OpBinary.EQ, e1);
         else if(ctx.op.getType() == napParser.NEQ)
@@ -132,28 +138,28 @@ public class BuildAST extends napBaseVisitor<Ast> {
 
     @Override
     public Ast visitEAnd(napParser.EAndContext ctx) {
-        Expression e0 = (Expression)visit(ctx.expression(0));
-        Expression e1 = (Expression)visit(ctx.expression(1));
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1));
         return new ExpBinop(position(ctx), e0, OpBinary.AND, e1);
     }
 
     @Override 
     public Ast visitEOr(napParser.EOrContext ctx) {
-        Expression e0 = (Expression)visit(ctx.expression(0));
-        Expression e1 = (Expression)visit(ctx.expression(1));
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1));
         return new ExpBinop(position(ctx), e0, OpBinary.OR, e1);
     }
 
     @Override 
     public Ast visitENot(napParser.ENotContext ctx) {
-        Expression e = (Expression)visit(ctx.expression(0));
+        Expression e = (Expression)visit(ctx.expr());
         return new ExpUnop(position(ctx), e, OpUnary.NOT);
     }
 
     @Override
     public Ast visitEPostfix(napParser.EPostfixContext ctx) {
-        Expression e = (Expression)visit(ctx.expression(0));
-        if(ctx.op.getType() == napParser.INC)
+        Expression e = (Expression)visit(ctx.expr());
+        if(ctx.AssignOp().equals(napParser.INCR))
             return new ExpAssignop(position(ctx), OpAssign.INC, e, false);
         else
             return new ExpAssignop(position(ctx), OpAssign.DEC, e, false); 
@@ -161,8 +167,8 @@ public class BuildAST extends napBaseVisitor<Ast> {
 
     @Override
     public Ast visitEPrefix(napParser.EPrefixContext ctx) {
-        Expression e = (Expression)visit(ctx.expression(0));
-        if(ctx.op.getType() == napParser.INC)
+        Expression e = (Expression)visit(ctx.expr());
+        if(ctx.AssignOp().equals(napParser.INCR))
             return new ExpAssignop(position(ctx), OpAssign.INC, e, true);
         else
             return new ExpAssignop(position(ctx), OpAssign.DEC, e, true);
@@ -171,53 +177,61 @@ public class BuildAST extends napBaseVisitor<Ast> {
     //wtf
     @Override 
     public Ast visitECall(napParser.ECallContext ctx) {
-        String id = (String)visit(ctx.id()); // id is a method in the ECallContext class
+        String id = ctx.Identifier().toString();
         //TODO
+        return null;
     }
 
     @Override
     public Ast visitEIdentifier(napParser.EIdentifierContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitEInt(napParser.EIntContext ctx) {
-       return new ExpInt(position(ctx), Integer.parseInt(ctx.Constant().toString())); 
+    public Ast visitEInt(napParser.EIntContext ctx) {
+        return new ExpInt(position(ctx), Integer.parseInt(ctx.Int().toString())); 
     }
     
     @Override
-    public AST visitEBool(napParser.EBoolContext ctx) {
+    public Ast visitEBool(napParser.EBoolContext ctx) {
         //TODO
+        return null;
     }
         
     @Override
-    public AST visitEChar(napParser.ECharContext ctx) {
+    public Ast visitEChar(napParser.ECharContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitEString(napParser.EStringContext ctx) {
+    public Ast visitEString(napParser.EStringContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitENew(napParser.ENewContext ctx) {
+    public Ast visitENew(napParser.ENewContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitEArrayAccess(napParser.EArrayAccessContext ctx) {
+    public Ast visitEArrayAccess(napParser.EArrayAccessContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
+    public Ast visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
         //TODO
+        return null;
     }
     
     @Override
-    public AST visitEPar(napParser.EParContext ctx) {
-       	Expression e = (Expression) visit(ctx.expression());
+    public Ast visitEPar(napParser.EParContext ctx) {
+       	Expression e = (Expression) visit(ctx.expr());
         return e;
     }
 }

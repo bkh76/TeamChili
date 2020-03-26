@@ -17,7 +17,7 @@ public class Main {
 
         napParser parser = new napParser(tokens);
 
-        ParseTree tree = parser.nap();
+        ParseTree tree = parser.program();
 
         napVisitor<Ast> buildAST = new BuildAST();
         Program program = (Program)buildAST.visit(tree);
