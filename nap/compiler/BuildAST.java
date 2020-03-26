@@ -40,6 +40,9 @@ public class BuildAST extends napBaseVisitor<Ast> {
         Type returnType = (Type)visit(ctx.type());
         Block body = (Block)visit(ctx.block());
 
+        // NOTE: Our AST doesn't have the concept of parameters,
+        // so I decided to just inline the parsing of parameters here
+        // instead of making two visit functions for them.
         napParser.ParametersContext params = ctx.parameters();
 
         for (napParser.ParameterContext param : params.parameter()) {
@@ -72,7 +75,7 @@ public class BuildAST extends napBaseVisitor<Ast> {
             statements.add(stm);
         }
 
-        return new Block(position(ctx), statements);
+        return new Block(position(ctx), statements); 
     }
     
     @Override
@@ -95,9 +98,9 @@ public class BuildAST extends napBaseVisitor<Ast> {
     @Override 
     public Ast visitIAssign(napParser.IAssignContext ctx) {
         /*
-        String var = ctx.Identifier().toString();
-        Expression e = (Expression)visit(ctx.expr);
-        return new StmAssign(position(ctx), var, e);
+          String var = ctx.Identifier().toString();
+          Expression e = (Expression)visit(ctx.expr);
+          return new StmAssign(position(ctx), var, e);
         */
         return null;
     }
@@ -244,8 +247,7 @@ public class BuildAST extends napBaseVisitor<Ast> {
         
         napParser.ExpressionsContext exprsCtx = ctx.expressions();
 
-        for (napParser.ExprContext exprCtx : exprsCtx.expr())
-        {
+        for (napParser.ExprContext exprCtx : exprsCtx.expr()) {
             Expression expr = (Expression)visit(exprCtx);
             args.add(expr);
         }
