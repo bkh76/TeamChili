@@ -97,30 +97,48 @@ public class BuildAST extends napBaseVisitor<Ast> {
     //Instructions
     @Override 
     public Ast visitIAssign(napParser.IAssignContext ctx) {
-        /*
-          String var = ctx.Identifier().toString();
-          Expression e = (Expression)visit(ctx.expr);
-          return new StmAssign(position(ctx), var, e);
-        */
-        return null;
+        Expression e1 = (Expression) visit(ctx.expr(0));
+        Expression e2 = (Expression) visit(ctx.expr(1));
+        OpBinary extra_op = null;
+
+        switch (ctx.op.getType()) {
+            case napParser.ASSIGN: break;
+            case napParser.AEQ: extra_op = OpBinary.ADD; break;
+            case napParser.SEQ: extra_op = OpBinary.SUB; break;
+            case napParser.MEQ: extra_op = OpBinary.MUL; break;
+            case napParser.DEQ: extra_op = OpBinary.DIV; break;
+        }
+
+        if (extra_op != null)
+            return new StmAssign(position(ctx), e1.toString(), e2, extra_op);
+        else
+            return new StmAssign(position(ctx), e1.toString(), e2);
     }
     
     @Override 
-    public Ast visitIFor(napParser.IForContext ctx) { 
-        //TODO
-        return null;
+    public Ast visitIFor(napParser.IForContext ctx) {
+        Type type = (Type) visit(ctx.type());
+        String var = ctx.Identifier().toString();
+        Expression expr = (Expression) visit(ctx.expr());
+        Block body = (Block) visit(ctx.block());
+
+        return new StmFor(position(ctx), type, var, expr, body);
     }    
     
     @Override 
-    public Ast visitIWhile(napParser.IWhileContext ctx) { 
-        //TODO
-        return null;
+    public Ast visitIWhile(napParser.IWhileContext ctx) {
+        Block body = (Block) visit(ctx.block());
+        Expression condition = (Expression) visit(ctx.expr());
+
+        return StmWhile.While(position(ctx), condition, body);
     } 
     
     @Override 
     public Ast visitIDoWhile(napParser.IDoWhileContext ctx) { 
-        //TODO
-        return null;
+        Block body = (Block) visit(ctx.block());
+        Expression condition = (Expression) visit(ctx.expr());
+
+        return StmWhile.DoWhile(position(ctx), condition, body);
     } 
         
     @Override 
@@ -138,20 +156,26 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override 
     public Ast visitIIf(napParser.IIfContext ctx) { 
-        Expression e = (Expression) visit(ctx.expr());
-        //TODO
-        return null;
+        Expression condition = (Expression) visit(ctx.expr());
+        Block then_branch = (Block)visit(ctx.block(0));
+        Block else_branch = (Block)visit(ctx.block(1));
+
+        if (else_branch != null)
+            return new StmIf(position(ctx), condition,
+                             then_branch, else_branch);
+        else
+            return new StmIf(position(ctx), condition, then_branch);
     } 
     
     @Override 
     public Ast visitIReturn(napParser.IReturnContext ctx) { 
-        Expression e = (Expression) visit(ctx.expr);
+        Expression e = (Expression) visit(ctx.expr());
         return new StmReturn(position(ctx), e);
     } 
 
     @Override 
     public Ast visitIExpr(napParser.IExprContext ctx) {
-    	Expression e = (Expression) visit(ctx.expr);
+    	Expression e = (Expression) visit(ctx.expr());
         return new StmExp(position(ctx), e);
     } 
 
@@ -266,12 +290,17 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override
     public Ast visitEBool(napParser.EBoolContext ctx) {
-        return new ExpBool(position(ctx), ctx.Bool().toString());
+        String boolVal = ctx.Bool().toString();
+
+        if (boolVal.equals("T"))
+            return new ExpBool(position(ctx), true);
+        else
+            return new ExpBool(position(ctx), false);
     }
         
     @Override
     public Ast visitEChar(napParser.ECharContext ctx) {
-        return new ExpChar(position(ctx), ctx.Char().toString());
+        return new ExpChar(position(ctx), ctx.Char().toString().charAt(0));
     }
     
     @Override
@@ -295,13 +324,22 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override
     public Ast visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
-        List<Expression> e = (Expression)visit(ctx.expressions());
-        return new ExpArrEnum(position(ctx), e);
+        List<Expression> exprs = new ArrayList<Expression>();
+        
+        napParser.ExpressionsContext exprsCtx = ctx.expressions();
+
+        for (napParser.ExprContext exprCtx : exprsCtx.expr()) {
+            Expression expr = (Expression)visit(exprCtx);
+            exprs.add(expr);
+        }
+        
+        return new ExpArrEnum(position(ctx), exprs);
     }
     
     @Override
     public Ast visitEPar(napParser.EParContext ctx) {
        	Expression e = (Expression) visit(ctx.expr());
+        
         return e;
     }
     

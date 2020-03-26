@@ -883,6 +883,7 @@ public class napParser extends Parser {
 		}
 	}
 	public static class IAssignContext extends InstructionContext {
+		public Token op;
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
@@ -1076,9 +1077,10 @@ public class napParser extends Parser {
 				setState(89);
 				expr(0);
 				setState(90);
+				((IAssignContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AEQ) | (1L << SEQ) | (1L << MEQ) | (1L << DEQ) | (1L << ASSIGN))) != 0)) ) {
-				_errHandler.recoverInline(this);
+					((IAssignContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;

@@ -25,7 +25,7 @@ statement: declaration        #SDecl
 declaration: VAR type Identifier (ASSIGN expr)? ;
 
 instruction:
-      expr (ASSIGN|AEQ|MEQ|SEQ|DEQ) expr          #IAssign
+      expr op=(ASSIGN|AEQ|MEQ|SEQ|DEQ) expr       #IAssign
     | FOR LPAR type Identifier IN expr RPAR block #IFor
     | WHILE LPAR expr RPAR block                  #IWhile
     | DO block WHILE LPAR expr RPAR               #IDoWhile
