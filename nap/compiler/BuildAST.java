@@ -293,8 +293,13 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override
     public Ast visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
-        List<Expression> e = (Expression)visit(ctx.expressions());
-        return new ExpArrEnum(position(ctx), e);
+        List<Expression> exps = new ArrayList<Expression>();
+        
+        for (napParser.ExpressionsContext expsCtx : ctx.expressions()) {
+            Expression exp = (Expression)visit(expsCtx);
+            exps.add(exp);
+        }
+        return new ExpArrEnum(position(ctx), exps);
     }
     
     @Override
