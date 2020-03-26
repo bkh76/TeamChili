@@ -37,14 +37,15 @@ public class BuildAST extends napBaseVisitor<Ast> {
         String name = ctx.Identifier().toString();
         List<Pair<Pair<String, Type>, Boolean>> arguments =
             new ArrayList<Pair<Pair<String, Type>, Boolean>>();
-        TypBasic returnType = (TypBasic)visit(ctx.type());
+        Type returnType = (Type)visit(ctx.type());
         Block body = (Block)visit(ctx.block());
 
         napParser.ParametersContext params = ctx.parameters();
 
         for (napParser.ParameterContext param : params.parameter()) {
             String paramName = param.Identifier().toString();
-            TypBasic paramType = (TypBasic)visit(ctx.type());
+            Type paramType = (Type)visit(ctx.type());
+            // Not sure about this one
             Boolean ref = param.REF().equals(napParser.REF) ? true : false;
 
             Pair<String, Type> typeAndName = new Pair<>(paramName, paramType);
@@ -53,14 +54,15 @@ public class BuildAST extends napBaseVisitor<Ast> {
             arguments.add(arg);
         }
 
-        if (ctx.type().toString().equals(""))
+        // Not sure if this is how to handle empty types
+        if (ctx.type() == null)
             return new FunctionDefinition(position(ctx), name,
                                           arguments, body);
         else
             return new FunctionDefinition(position(ctx), name,
                                           arguments, body, returnType);
     }
-
+    
     @Override
     public Ast visitBlock(napParser.BlockContext ctx) {
         List<Statement> statements = new ArrayList<Statement>();
@@ -71,6 +73,22 @@ public class BuildAST extends napBaseVisitor<Ast> {
         }
 
         return new Block(position(ctx), statements);
+    }
+    
+    @Override
+    public Ast visitSDecl(napParser.SDeclContext ctx) {
+        napParser.DeclarationContext decl = ctx.declaration();
+
+        Type type = (Type)visit(decl.type());
+        String name = decl.Identifier().toString();
+
+        Expression init = (Expression)visit(decl.expr());
+
+        // Not sure about this one either
+        if (init != null)
+            return new StmDecl(position(ctx), name, type);
+        else
+            return new StmDecl(position(ctx), name, type, init);
     }
     
     //instr
@@ -92,6 +110,12 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override 
     public Ast visitIWhile(napParser.IWhileContext ctx) { 
+        //TODO
+        return null;
+    } 
+    
+    @Override 
+    public Ast visitIDoWhile(napParser.IDoWhileContext ctx) { 
         //TODO
         return null;
     } 
@@ -211,12 +235,20 @@ public class BuildAST extends napBaseVisitor<Ast> {
             return new ExpAssignop(position(ctx), OpAssign.DEC, e, true);
     }
 
-    //wtf
     @Override 
     public Ast visitECall(napParser.ECallContext ctx) {
-        String id = ctx.Identifier().toString();
-        //TODO
-        return null;
+        String name = ctx.Identifier().toString();
+        List<Expression> args = new ArrayList<Expression>();
+        
+        napParser.ExpressionsContext exprsCtx = ctx.expressions();
+
+        for (napParser.ExprContext exprCtx : exprsCtx.expr())
+        {
+            Expression expr = (Expression)visit(exprCtx);
+            args.add(expr);
+        }
+        
+        return new ExpFuncCall(position(ctx), name, args);
     }
 
     @Override
@@ -271,4 +303,31 @@ public class BuildAST extends napBaseVisitor<Ast> {
        	Expression e = (Expression) visit(ctx.expr());
         return e;
     }
+
+    // Types
+    @Override
+    public Ast visitTInt(napParser.TIntContext ctx) {
+        return new TypBasic(BasicType.INT);
+    }
+
+    @Override
+    public Ast visitTBool(napParser.TBoolContext ctx) {
+        return new TypBasic(BasicType.BOOL);
+    }
+    
+    @Override
+    public Ast visitTChar(napParser.TCharContext ctx) {
+        return new TypBasic(BasicType.CHAR);
+    }
+    
+    @Override
+    public Ast visitTFloat(napParser.TFloatContext ctx) {
+        return new TypBasic(BasicType.FLOAT);
+    }
+    
+    @Override
+    public Ast visitTArray(napParser.TArrayContext ctx) {
+        return new TypArray((Type)visit(ctx.type()));
+    }
+
 }
