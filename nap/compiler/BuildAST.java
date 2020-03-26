@@ -6,6 +6,7 @@ import ast.*;
 import parser.*;
 
 import java.util.*;
+import javafx.util.*;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -31,9 +32,45 @@ public class BuildAST extends napBaseVisitor<Ast> {
         return new Program(position(ctx), functions);
     }
 
-    public Ast visitFunctionDefinition(napParser.Function_definitionContext ctx) {
-        //TODO(Trey)
-        return null;
+    @Override
+    public Ast visitFunction_definition(napParser.Function_definitionContext ctx) {
+        String name = ctx.Identifier().toString();
+        List<Pair<Pair<String, Type>, Boolean>> arguments =
+            new ArrayList<Pair<Pair<String, Type>, Boolean>>();
+        TypBasic returnType = (TypBasic)visit(ctx.type());
+        Block body = (Block)visit(ctx.block());
+
+        napParser.ParametersContext params = ctx.parameters();
+
+        for (napParser.ParameterContext param : params.parameter()) {
+            String paramName = param.Identifier().toString();
+            TypBasic paramType = (TypBasic)visit(ctx.type());
+            Boolean ref = param.REF().equals(napParser.REF) ? true : false;
+
+            Pair<String, Type> typeAndName = new Pair<>(paramName, paramType);
+            Pair<Pair<String, Type>, Boolean> arg = new Pair<>(typeAndName, ref);
+            
+            arguments.add(arg);
+        }
+
+        if (ctx.type().toString().equals(""))
+            return new FunctionDefinition(position(ctx), name,
+                                          arguments, body);
+        else
+            return new FunctionDefinition(position(ctx), name,
+                                          arguments, body, returnType);
+    }
+
+    @Override
+    public Ast visitBlock(napParser.BlockContext ctx) {
+        List<Statement> statements = new ArrayList<Statement>();
+
+        for (napParser.StatementContext stmCtx : ctx.statement()) {
+            Statement stm = (Statement)visit(stmCtx);
+            statements.add(stm);
+        }
+
+        return new Block(position(ctx), statements);
     }
     
     //instr
