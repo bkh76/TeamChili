@@ -1,6 +1,6 @@
 grammar nap;
 
-program : function_definition* EOF;               #Program
+program : function_definition* EOF;
 
 function_definition: FUNC Identifier LPAR parameters RPAR (ARROW type)? block; 
 

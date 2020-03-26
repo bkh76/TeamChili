@@ -1,6 +1,6 @@
 // Using the new grammar he gave to us, the one in the man.
 
-package nap;
+package compiler;
 
 import ast.*;
 import parser.*;
@@ -11,14 +11,30 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
-public class BuildAST extends napBaseVisitor<Ast>{
-    //function_defs??
-    //param??
-    //params??
-    //block??
-    //type??
-    //statement??
+public class BuildAST extends napBaseVisitor<Ast> {
 
+    public static Position position(ParserRuleContext ctx) {
+        Position pos = new Position(ctx.start.getLine(),
+                                    ctx.start.getCharPositionInLine());
+        return pos;
+    }
+
+    @Override
+    public Ast visitProgram(napParser.ProgramContext ctx) {
+        List<FunctionDefinition> functions = new ArrayList<FunctionDefinition>();
+        for (ParseTree child : ctx.children) {
+            Ast func = visit(child);
+            if (func != null && func instanceof FunctionDefinition)
+                functions.add((FunctionDefinition)func);
+        }
+
+        return new Program(position(ctx), functions);
+    }
+
+    public Ast visitFunctionDefinition(napParser.Function_DefinitionContext ctx) {
+        //TODO(Trey)
+    }
+    
     //instr
     @Override 
     public Ast visitIAssign(napParser.IAssignContext ctx) { 
@@ -156,9 +172,6 @@ public class BuildAST extends napBaseVisitor<Ast>{
     @Override 
     public Ast visitECall(napParser.ECallContext ctx) {
         String id = (String)visit(ctx.id()); // id is a method in the ECallContext class
-        for(napParser.) {
-            
-        }
         //TODO
     }
 
