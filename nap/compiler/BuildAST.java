@@ -94,7 +94,7 @@ public class BuildAST extends napBaseVisitor<Ast> {
             return new StmDecl(position(ctx), name, type, init);
     }
     
-    //instr
+    //Instructions
     @Override 
     public Ast visitIAssign(napParser.IAssignContext ctx) {
         /*
@@ -125,8 +125,9 @@ public class BuildAST extends napBaseVisitor<Ast> {
         
     @Override 
     public Ast visitIInput(napParser.IInputContext ctx) { 
-        //TODO
-        return null;
+        Expression e = (Expression) visit(ctx.expr());
+        Type type = (Type) visit(ctx.type());
+        return new StmRead(position(ctx), type, e);
     } 
     @Override 
     public Ast visitIPrint(napParser.IPrintContext ctx) {
@@ -137,20 +138,21 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override 
     public Ast visitIIf(napParser.IIfContext ctx) { 
+        Expression e = (Expression) visit(ctx.expr());
         //TODO
         return null;
     } 
     
     @Override 
     public Ast visitIReturn(napParser.IReturnContext ctx) { 
-        //TODO
-        return null;
+        Expression e = (Expression) visit(ctx.expr);
+        return new StmReturn(position(ctx), e);
     } 
 
     @Override 
-    public Ast visitIExpr(napParser.IExprContext ctx) { 
-        //TODO
-        return null;
+    public Ast visitIExpr(napParser.IExprContext ctx) {
+    	Expression e = (Expression) visit(ctx.expr);
+        return new StmExp(position(ctx), e);
     } 
 
     //expr
@@ -252,11 +254,9 @@ public class BuildAST extends napBaseVisitor<Ast> {
         
         return new ExpFuncCall(position(ctx), name, args);
     }
-
     @Override
     public Ast visitEIdentifier(napParser.EIdentifierContext ctx) {
-        //TODO
-        return null;
+        return new ExpVar(position(ctx), ctx.Identifier().toString());
     }
     
     @Override
@@ -266,38 +266,37 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override
     public Ast visitEBool(napParser.EBoolContext ctx) {
-        //TODO
-        return null;
+        return new ExpBool(position(ctx), ctx.Bool().toString());
     }
         
     @Override
     public Ast visitEChar(napParser.ECharContext ctx) {
-        //TODO
-        return null;
+        return new ExpChar(position(ctx), ctx.Char().toString());
     }
     
     @Override
     public Ast visitEString(napParser.EStringContext ctx) {
-        //TODO
-        return null;
+        return new ExpString(position(ctx), ctx.String().toString());
     }
     
     @Override
     public Ast visitENew(napParser.ENewContext ctx) {
-        //TODO
-        return null;
+        TypBasic type = (TypBasic) visit(ctx.type());
+        Expression e = (Expression) visit(ctx.expr());
+        return new ExpNew(position(ctx), type, e); 
     }
     
     @Override
     public Ast visitEArrayAccess(napParser.EArrayAccessContext ctx) {
-        //TODO
-        return null;
+        Expression e0 = (Expression)visit(ctx.expr(0));
+        Expression e1 = (Expression)visit(ctx.expr(1));
+        return new ExpArrAccess(position(ctx), e0, e1);
     }
     
     @Override
     public Ast visitEArrayEnumeration(napParser.EArrayEnumerationContext ctx) {
-        //TODO
-        return null;
+        List<Expression> e = (Expression)visit(ctx.expressions());
+        return new ExpArrEnum(position(ctx), e);
     }
     
     @Override
@@ -305,7 +304,7 @@ public class BuildAST extends napBaseVisitor<Ast> {
        	Expression e = (Expression) visit(ctx.expr());
         return e;
     }
-
+    
     // Types
     @Override
     public Ast visitTInt(napParser.TIntContext ctx) {
