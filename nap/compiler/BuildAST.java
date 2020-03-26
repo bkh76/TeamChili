@@ -122,8 +122,9 @@ public class BuildAST extends napBaseVisitor<Ast> {
         
     @Override 
     public Ast visitIInput(napParser.IInputContext ctx) { 
-        //TODO
-        return null;
+        Expression e = (Expression) visit(ctx.expr());
+        Type type = (Type) visit(ctx.type());
+        return new StmRead(position(ctx), type, e);
     } 
     @Override 
     public Ast visitIPrint(napParser.IPrintContext ctx) {
@@ -134,20 +135,21 @@ public class BuildAST extends napBaseVisitor<Ast> {
     
     @Override 
     public Ast visitIIf(napParser.IIfContext ctx) { 
+        Expression e = (Expression) visit(ctx.expr());
         //TODO
         return null;
     } 
     
     @Override 
     public Ast visitIReturn(napParser.IReturnContext ctx) { 
-        //TODO
-        return null;
+        Expression e = (Expression) visit(ctx.expr);
+        return new StmReturn(position(ctx), e);
     } 
 
     @Override 
-    public Ast visitIExpr(napParser.IExprContext ctx) { 
-        //TODO
-        return null;
+    public Ast visitIExpr(napParser.IExprContext ctx) {
+    	Expression e = (Expression) visit(ctx.expr);
+        return new StmExp(position(ctx), e);
     } 
 
     //expr
