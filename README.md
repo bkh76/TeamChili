@@ -1,2 +1,2 @@
 # TeamChili
-CS481: Compilers
+CS481: Compilers Team 2
