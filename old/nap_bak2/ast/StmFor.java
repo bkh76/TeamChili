@@ -6,9 +6,9 @@ public class StmFor extends Statement{
     public Expression collection;
     public Block body;
     
-    public StmFor(Position pos, Type type,
+    public StmFor( Position pos, Type type,
 		   String var, Expression expr,
-		   Block block)
+		   Block block )
     {
 	this.type = type;
 	this.var = var;

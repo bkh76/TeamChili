@@ -1,7 +1,6 @@
 package ast;
 
-import util.*;
-import java.util.*;
+import java.util.*; import javafx.util.*;
 
 public class FunctionDefinition extends Ast {
     public String name;

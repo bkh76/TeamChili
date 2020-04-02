@@ -1,12 +1,12 @@
 package ast;
 
-public class ExpNew extends Expression {
-    public Type type;
+public class StmPrint extends Statement {
+    public TypBasic type;
     public Expression exp;
 
-    public ExpNew(Position pos,
-                  Type type,
-                  Expression exp) {
+    public StmPrint(Position pos,
+                    TypBasic type,
+                    Expression exp) {
         this.pos = pos;
         this.type = type;
         this.exp = exp;

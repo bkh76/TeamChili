@@ -2,7 +2,7 @@ grammar nap;
 
 program : function_definition* EOF;
 
-function_definition: FUNC Identifier LPAR parameters RPAR (ARROW returnType=type)? block;
+function_definition: FUNC Identifier LPAR parameters RPAR (ARROW type)? block; 
 
 parameter: REF? type Identifier ;
 
@@ -25,7 +25,7 @@ statement: declaration        #SDecl
 declaration: VAR type Identifier (ASSIGN expr)? ;
 
 instruction:
-      expr op=(ASSIGN|AEQ|MEQ|SEQ|DEQ) expr        #IAssign
+      expr op=(ASSIGN|AEQ|MEQ|SEQ|DEQ) expr       #IAssign
     | FOR LPAR type Identifier IN expr RPAR block #IFor
     | WHILE LPAR expr RPAR block                  #IWhile
     | DO block WHILE LPAR expr RPAR               #IDoWhile

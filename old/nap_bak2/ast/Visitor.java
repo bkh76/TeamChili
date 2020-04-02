@@ -11,8 +11,9 @@ public interface Visitor<T>
     T visit(ExpUnop exp);
     T visit(ExpAssignop exp);
     T visit(ExpFuncCall exp);
-    T visit(ExpPredefinedCall exp);
+    T visit(ExpLength exp);
     T visit(ExpNew exp);
+    T visit(ExpCallConversion exp);
     T visit(ExpArrAccess array);
     T visit(ExpArrEnum array);
     T visit(StmIf stm);
@@ -24,8 +25,9 @@ public interface Visitor<T>
     T visit(StmWhile stm);
     T visit(StmFor stm);
     T visit(StmDecl stm);
-    T visit(Type type);
+    T visit(TypArray type);
+    T visit(TypBasic type);
     T visit(Block block);
     T visit(FunctionDefinition fun);
-    T visit(Program program);
+    T visit(Program prog);
 }

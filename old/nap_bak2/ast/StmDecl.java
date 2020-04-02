@@ -1,6 +1,6 @@
 package ast;
 
-import java.util.*; import util.*;
+import java.util.*; import javafx.util.*;
 
 public class StmDecl extends Statement {
     public Pair<String, Type> binding;

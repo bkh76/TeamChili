@@ -1,11 +1,11 @@
 package ast;
 
 public class StmPrint extends Statement {
-    public TypBasic type;
+    public Type type;
     public Expression exp;
 
     public StmPrint(Position pos,
-                    TypBasic type,
+                    Type type,
                     Expression exp) {
         this.pos = pos;
         this.type = type;

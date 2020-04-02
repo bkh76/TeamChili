@@ -1,11 +1,11 @@
 package ast;
 
 public class ExpNew extends Expression {
-    public Type type;
+    public TypBasic type;
     public Expression exp;
 
     public ExpNew(Position pos,
-                  Type type,
+                  TypBasic type,
                   Expression exp) {
         this.pos = pos;
         this.type = type;
