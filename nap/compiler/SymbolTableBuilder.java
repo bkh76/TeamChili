@@ -78,7 +78,9 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(ExpAssignop exp) {
         Symbol expr = exp.exp.accept(this);
         Signature signature = getOpSignature(exp.op);
+        
         boolean prefix = exp.prefix;
+        types.add(expr.name, expr.type);
 
         return new Symbol(null, signature);
     }
