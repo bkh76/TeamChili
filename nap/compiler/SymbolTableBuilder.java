@@ -168,15 +168,22 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(StmRead stm) {
-        return null;
+        Symbol symbol = stm.type.accept(this);
+        addSymbolToEnv(symbol);
+        
+        return new Symbol(null, signature);
     }
 
     public Symbol visit(StmPrint stm) {
-        return null;
+        Symbol symbol = stm.type.accept(this);
+        addSymbolToEnv(symbol);
+       
+        return new Symbol(null, signature);
     }
 
     public Symbol visit(StmReturn stm) {
-        return null;
+        Symbol symbol = stm.exp.accept(this);
+        return new Symbol();
     }
 
     public Symbol visit(StmWhile stm) {
