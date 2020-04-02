@@ -173,7 +173,14 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(StmPrint stm) {
-        Symbol symbol = stm.exp.accept(this);
+        Symbol symbol = stm.type.accept(this);
+        addSymbolToEnv(symbol);
+        return new Symbol(null, stm.type);
+    }
+
+    public Symbol visit(StmPrint stm) {
+        Symbol symbol = stm.type.accept(this);
+        addSymbolToEnv(symbol);
         return new Symbol(null, stm.type);
     }
 
