@@ -92,7 +92,12 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         return new Symbol(exp.funcName, null);
     }
 
+    //???????
     public Symbol visit(ExpPredefinedCall exp) {
+        Symbol symbol = exp.funcName.accept(this);
+        for(Expression expr : exp.arguments) {
+            expr.accept(this);
+        }
         return new Symbol();
     }
 
