@@ -23,7 +23,7 @@ public class Symbol {
     }
 
     public Boolean isSignature() {
-        if (type == null ** signature != null)
+        if (type == null && signature != null)
             return true;
         else
             return false;
