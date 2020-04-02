@@ -22,7 +22,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(ExpBool exp) {
         return null;
     }
-    
+   
     public Symbol visit(ExpChar exp) {
         return null;
     }
@@ -133,7 +133,25 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(FunctionDefinition func) {
-        return null;
+        String funcName = func.name;
+        List<Pair<Pair<String, Type>, Boolean>> args = func.arguments;
+        // TODO: Might need to handle the optional
+        Type returnType = func.returnType.accept(this);
+        Block funcBlock = func.block.accept(this);
+
+        List<Type, Boolean> argTypes = new ArrayList<>();
+        
+        // Add each argument to the environment
+        for (Pair<Pair<String, Type>, Boolean> arg : args) {
+            Boolean isRef = arg.getSnd();
+            Pair<String, Type> binding = arg.getFst();
+            
+            types.put(binding.getFst(), binding.getSnd());
+            argTypes.add(binding.getSnd(), isRef);
+        }
+
+        signatures.put(funcName, new Signature(argTypes, returnType);
+        return new Symbol(new Signature(argTypes, returnType));
     }
     
     // ================================================
@@ -141,7 +159,10 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(Program progam) {
-        return null;
+        for (FunctionDefinition func : program.functions) {
+            func.accept(this);
+        }
+        return new Symbol();
     }
 }
 
