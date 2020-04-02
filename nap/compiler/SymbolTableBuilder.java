@@ -77,59 +77,60 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         // expression
         //signatures.put(symbol.binding, signature);
         
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpAssignop exp) {
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpFuncCall exp)
     {
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpPredefinedCall exp) {
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpNew exp) {
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpArrAccess exp) {
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(ExpArrEnum exp) {
-        return Symbol();
+        Symbol exprs = exp.exprs.accept(this);
+        return new Symbol();
     }
         
     public Symbol visit(ExpBinop exp) {
         Symbol left = exp.left.accept(this);
         Symbol right = exp.right.accept(this);
         Signature signature = getOpSignature(exp.op);
-        return Symbol(null, signature);
+        return new Symbol(null, signature);
     }
 
     public Symbol visit(ExpBool exp) {
-        return Symbol(null, Basic.BOOL);
+        return new Symbol(null, Basic.BOOL);
     }
    
     public Symbol visit(ExpChar exp) {
-        return Symbol(null, Basic.CHAR);
+        return new Symbol(null, Basic.CHAR);
     }
     
     public Symbol visit(ExpInt exp) {
-        return Symbol(null, Basic.INT);
+        return new Symbol(null, Basic.INT);
     }
     
     public Symbol visit(ExpString exp) {
-        return Symbol(null, Array);
+        return new Symbol(null, Array);
     }
         
     public Symbol visit(ExpVar exp) {
-        return Symbol(exp.name, null);
+        return new Symbol(exp.name, null);
     }
     
     // ================================================
@@ -142,7 +143,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         Block then_branch = stm.then_branch.accept(this);
         Block else_branch = stm.else_branch.accept(this);
         
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(StmAssign stm) {
@@ -152,12 +153,12 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
         Signature signature = getOpSignature(stm.op);
         
-        return Symbol(null, signature);
+        return new Symbol(null, signature);
     }
 
     public Symbol visit(StmExp stm) {
         Symbol symbol = stm.exp.accept(this);
-        return Symbol();
+        return new Symbol();
     }
 
     public Symbol visit(StmRead stm) {
