@@ -138,20 +138,27 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(StmIf stm) {
         Symbol symbol = stm.condition.accept(this);
-        addSymbolToEnv(symbol);
+        //addSymbolToEnv(symbol);
         Block then_branch = stm.then_branch.accept(this);
-        // TODO: might need to handle Optional
         Block else_branch = stm.else_branch.accept(this);
         
         return Symbol();
     }
 
     public Symbol visit(StmAssign stm) {
-        return null;
+        Symbol lvalSymbol = stm.l_value.accept(this);
+        addSymbolToEnv(lvalSymbol);
+        Symbol expSymbol = stm.exp.accept(this);
+
+        // Not sure what to do with these?
+        Signature signature = getOpSignature(stm.op);
+        
+        return lvalSymbol;
     }
 
     public Symbol visit(StmExp stm) {
-        return null;
+        Symbol symbol = stm.exp.accept(this);
+        return symbol;
     }
 
     public Symbol visit(StmRead stm) {
@@ -195,6 +202,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         for (Statement stm : block.statements) {
             stm.accept(this);
         }
+        blockStack.pop(this);
         return new Symbol();
     }
     
