@@ -104,7 +104,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(ExpArrAccess exp) {
         Symbol array = exp.array.accept(this);
         Symbol index = exp.index.accept(this);
-        return new Symbol(); //??
+        return new Symbol(null, null); //??
     }
 
     public Symbol visit(ExpArrEnum exp) {
@@ -168,15 +168,18 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(StmRead stm) {
-        return null;
+        Symbol symbol = stm.exp.accept(this);
+        return new Symbol(null, stm.type);
     }
 
     public Symbol visit(StmPrint stm) {
-        return null;
+        Symbol symbol = stm.exp.accept(this);
+        return new Symbol(null, stm.type);
     }
 
     public Symbol visit(StmReturn stm) {
-        return null;
+        Symbol symbol = stm.exp.accept(this);
+        return new Symbol();
     }
 
     public Symbol visit(StmWhile stm) {
@@ -184,7 +187,10 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(StmFor stm) {
-        return null;
+        Symbol symbol = stm.collection.accept(this);
+        Block body = stm.body.accept(this);
+        String var = stm.var;
+        return new Symbol(null, stm.type);
     }
 
     public Symbol visit(StmDecl stm) {
