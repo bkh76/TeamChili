@@ -5,67 +5,70 @@ import util.Pair;
 
 import java.util.*;
 
-public class SymbolTableBuilder implements Visitor<Type> {
+public class SymbolTableBuilder implements Visitor<Symbol> {
     Map<String, Signature> signatures;
     Map<String, Type> types;
+    Stack<Map<String, Type>> localTableStack;
 
     public SymbolTableBuilder() {
         signatures = new HashMap<String, Signature>();
         types = new HashMap<String, Type>();
+        localTableStack = new Stack<Map<String, Type>>();
     }
+    
     // ================================================
     // Expressions
     // ================================================
-    public Type visit(ExpBool exp) {
+    public Symbol visit(ExpBool exp) {
         return null;
     }
     
-    public Type visit(ExpChar exp) {
+    public Symbol visit(ExpChar exp) {
         return null;
     }
     
-    public Type visit(ExpInt exp) {
+    public Symbol visit(ExpInt exp) {
         return null;
     }
     
-    public Type visit(ExpString exp) {
+    public Symbol visit(ExpString exp) {
         return null;
     }
         
-    public Type visit(ExpVar exp) {
+    public Symbol visit(ExpVar exp) {
         return null;
     }
         
-    public Type visit(ExpBinop exp) {
+    public Symbol visit(ExpBinop exp) {
         return null;
     }
 
-    public Type visit(ExpUnop exp) {
+    public Symbol visit(ExpUnop exp) {
         return null;
     }
 
-    public Type visit(ExpAssignop exp) {
+    public Symbol visit(ExpAssignop exp) {
         return null;
     }
 
-    public Type visit(ExpFuncCall exp)
+    public Symbol visit(ExpFuncCall exp)
     {
         return null;
     }
 
-    public Type visit(ExpPredefinedCall exp) {
+    public Symbol visit(ExpPredefinedCall exp) {
         return null;
     }
 
-    public Type visit(ExpNew exp) {
+    public Symbol visit(ExpNew exp) {
         return null;
     }
 
-    public Type visit(ExpArrAccess exp) {
+    public Symbol visit(ExpArrAccess exp) {
         return null;
     }
 
-    public Type visit(ExpArrEnum exp) {
+    public Symbol visit(ExpArrEnum exp) {
         return null;
     }
     
@@ -73,39 +76,39 @@ public class SymbolTableBuilder implements Visitor<Type> {
     // Statements
     // ================================================
 
-    public Type visit(StmIf stm) {
+    public Symbol visit(StmIf stm) {
         return null;
     }
 
-    public Type visit(StmAssign stm) {
+    public Symbol visit(StmAssign stm) {
         return null;
     }
 
-    public Type visit(StmExp stm) {
+    public Symbol visit(StmExp stm) {
         return null;
     }
 
-    public Type visit(StmRead stm) {
+    public Symbol visit(StmRead stm) {
         return null;
     }
 
-    public Type visit(StmPrint stm) {
+    public Symbol visit(StmPrint stm) {
         return null;
     }
 
-    public Type visit(StmReturn stm) {
+    public Symbol visit(StmReturn stm) {
         return null;
     }
 
-    public Type visit(StmWhile stm) {
+    public Symbol visit(StmWhile stm) {
         return null;
     }
 
-    public Type visit(StmFor stm) {
+    public Symbol visit(StmFor stm) {
         return null;
     }
 
-    public Type visit(StmDecl stm) {
+    public Symbol visit(StmDecl stm) {
         return null;
     }
     
@@ -113,7 +116,7 @@ public class SymbolTableBuilder implements Visitor<Type> {
     // Type
     // ================================================
 
-    public Type visit(Type type) {
+    public Symbol visit(Type type) {
         return null;
     }
     
@@ -121,7 +124,7 @@ public class SymbolTableBuilder implements Visitor<Type> {
     // Block
     // ================================================
 
-    public Type visit(Block block) {
+    public Symbol visit(Block block) {
         return null;
     }
     
@@ -129,7 +132,7 @@ public class SymbolTableBuilder implements Visitor<Type> {
     // FunctionDefinition
     // ================================================
 
-    public Type visit(FunctionDefinition func) {
+    public Symbol visit(FunctionDefinition func) {
         return null;
     }
     
@@ -137,7 +140,7 @@ public class SymbolTableBuilder implements Visitor<Type> {
     // Program
     // ================================================
 
-    public Type visit(Program progam) {
+    public Symbol visit(Program progam) {
         return null;
     }
 }
