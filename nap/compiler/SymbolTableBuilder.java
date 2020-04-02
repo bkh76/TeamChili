@@ -70,12 +70,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(ExpUnop exp) {
         Symbol symbol = exp.exp.accept(this);
-        // What do we do with this
         Signature signature = getOpSignature(exp.op);
-
-        // This has no name to bind to so I think we just visit the
-        // expression
-        //signatures.put(symbol.binding, signature);
         
         return new Symbol(null, signature);
     }
@@ -84,15 +79,16 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         Symbol expr = exp.exp.accept(this);
         Signature signature = getOpSignature(exp.op);
         boolean prefix = exp.prefix;
+
         return new Symbol(null, signature);
     }
 
     public Symbol visit(ExpFuncCall exp) {
         Symbol args = exp.arguments.accept(this);
+
         return new Symbol(exp.funcName, null);
     }
 
-    //???????
     public Symbol visit(ExpPredefinedCall exp) {
         Symbol symbol = exp.funcName.accept(this);
         for(Expression expr : exp.arguments) {
@@ -109,12 +105,13 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(ExpArrAccess exp) {
         Symbol array = exp.array.accept(this);
         Symbol index = exp.index.accept(this);
-        return new Symbol(null, null); //??
+        
+        return new Symbol();
     }
 
     public Symbol visit(ExpArrEnum exp) {
         Symbol exprs = exp.exprs.accept(this);
-        return new Symbol(null, null); //??
+        return new Symbol();
     }
         
     public Symbol visit(ExpBinop exp) {
@@ -174,28 +171,31 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(StmRead stm) {
         Symbol symbol = stm.exp.accept(this);
-        return new Symbol(null, stm.type);
+        return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmPrint stm) {
         Symbol symbol = stm.type.accept(this);
         addSymbolToEnv(symbol);
-        return new Symbol(null, stm.type);
+        return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmPrint stm) {
         Symbol symbol = stm.type.accept(this);
         addSymbolToEnv(symbol);
-        return new Symbol(null, stm.type);
+        return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmReturn stm) {
         Symbol symbol = stm.exp.accept(this);
-        return new Symbol();
+        return new Symbol(null, symbole.type);
     }
 
     public Symbol visit(StmWhile stm) {
-        return null;
+        Block body = stm.body.accept(this);
+        Symbol symbol = stm.condition.accept(this);
+
+        return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmFor stm) {
@@ -206,7 +206,15 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(StmDecl stm) {
-        return null;
+        // What to do with this
+        Symbol symbol = stm.initialization.accept(this);
+        
+        String name = stm.binding.getFst();
+        Type type = stm.binding.getSnd();
+
+        types.add(name, type);
+        
+        return new Symbol(name, type);
     }
     
     // ================================================
@@ -214,7 +222,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(Type type) {
-        return Symbol();
+        return new Symbol();
     }
     
     // ================================================
