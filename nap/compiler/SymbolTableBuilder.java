@@ -1,6 +1,8 @@
 package compiler;
 
 import ast.*;
+import type.Basic;
+import type.Array;
 import util.Pair;
 
 import java.util.*;
@@ -13,7 +15,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public SymbolTableBuilder() {
         signatures = new HashMap<String, Signature>();
         types = new HashMap<String, Type>();
-        block = new Stack<Block>();
+        blockStack = new Stack<Block>();
     }
 
     // Helper functions
@@ -23,14 +25,14 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         else if (symbol.isSignature())
             signatures.put(symbol.binding, symbol.signature);
     }
-
+    
     private Signature getOpSignature(OpUnary op) {
-        Signature result;
+        Signature result = null;
         switch (op) {
-            case OpUnary.SUB:
+            case SUB:
                 result = Signature.unaryArithmetic;
                 break;
-            case OpUnary.NOT:
+            case NOT:
                 result = Signature.unaryBoolean;
                 break;
         }
@@ -39,24 +41,26 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     private Signature getOpSignature(OpBinary op) {
-        Signature result;
+        Signature result = null;
         switch (op) {
-            case OpBinary.ADD:
-            case OpBinary.SUB:
-            case OpBinary.MUL:
-            case OpBinary.DIV:
-            case OpBinary.MOD:
+            case ADD:
+            case SUB:
+            case MUL:
+            case DIV:
+            case MOD:
                 result = Signature.binaryArithmetic;
                 break;
-            case OpBinary.LT:
-            case OpBinary.GT:
-            case OpBinary.LE:
-            case OpBinary.GE:
-            case OpBinary.NEQ:
-            case OpBinary.EQ:
-            case OpBinary.OR:
-            case OpBinary.AND:
-                result = Signature.binaryComparison;
+            case LT:
+            case GT:
+            case LE:
+            case GE:
+                result = Signature.comparison;
+                break;
+            case NEQ:
+            case EQ:
+            case OR:
+            case AND:
+                result = Signature.binaryBoolean;
                 break;                
         }
 
@@ -77,22 +81,23 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(ExpAssignop exp) {
         Symbol expr = exp.exp.accept(this);
-        Signature signature = getOpSignature(exp.op);
-        
+        //Signature signature = getOpSignature(exp.op);
         boolean prefix = exp.prefix;
-        types.add(expr.name, expr.type);
+        
+        types.put(expr.binding, expr.type);
 
-        return new Symbol(null, signature);
+        return new Symbol();
     }
 
     public Symbol visit(ExpFuncCall exp) {
-        Symbol args = exp.arguments.accept(this);
-
-        return new Symbol(exp.funcName, null);
+        for (Expression e : exp.arguments) {
+            e.accept(this);
+        }
+        
+        return new Symbol();
     }
 
     public Symbol visit(ExpPredefinedCall exp) {
-        Symbol symbol = exp.funcName.accept(this);
         for(Expression expr : exp.arguments) {
             expr.accept(this);
         }
@@ -112,7 +117,9 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(ExpArrEnum exp) {
-        Symbol exprs = exp.exprs.accept(this);
+        for (Expression e : exp.exps) {
+            e.accept(this);
+        }
         return new Symbol();
     }
         
@@ -124,23 +131,29 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(ExpBool exp) {
-        return new Symbol(null, Basic.BOOL);
+        // Won't compile?
+        //return new Symbol(null, Basic.BOOL);
+        return new Symbol();
     }
    
     public Symbol visit(ExpChar exp) {
-        return new Symbol(null, Basic.CHAR);
+        //return new Symbol(null, Basic.CHAR);
+        return new Symbol();
     }
     
     public Symbol visit(ExpInt exp) {
-        return new Symbol(null, Basic.INT);
+        //return new Symbol(null, Basic.INT);
+        return new Symbol();
     }
     
     public Symbol visit(ExpString exp) {
-        return new Symbol(null, Array);
+        //return new Symbol(null, Array);
+        return new Symbol();
     }
         
     public Symbol visit(ExpVar exp) {
-        return new Symbol(exp.name, null);
+        //return new Symbol(exp.name, null);
+        return new Symbol();
     }
     
     // ================================================
@@ -150,8 +163,8 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(StmIf stm) {
         Symbol symbol = stm.condition.accept(this);
         //addSymbolToEnv(symbol);
-        Block then_branch = stm.then_branch.accept(this);
-        Block else_branch = stm.else_branch.accept(this);
+        Symbol then_branch = stm.then_branch.accept(this);
+        Symbol else_branch = stm.else_branch.get().accept(this);
         
         return new Symbol();
     }
@@ -161,7 +174,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         addSymbolToEnv(lvalSymbol);
         Symbol expSymbol = stm.exp.accept(this);
 
-        Signature signature = getOpSignature(stm.op);
+        Signature signature = getOpSignature(stm.op.get());
         
         return new Symbol(null, signature);
     }
@@ -178,23 +191,17 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(StmPrint stm) {
         Symbol symbol = stm.type.accept(this);
-        addSymbolToEnv(symbol);
-        return new Symbol(null, symbol.type);
-    }
-
-    public Symbol visit(StmPrint stm) {
-        Symbol symbol = stm.type.accept(this);
-        addSymbolToEnv(symbol);
+        //addSymbolToEnv(symbol);
         return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmReturn stm) {
         Symbol symbol = stm.exp.accept(this);
-        return new Symbol(null, symbole.type);
+        return new Symbol(null, symbol.type);
     }
 
     public Symbol visit(StmWhile stm) {
-        Block body = stm.body.accept(this);
+        Symbol body = stm.body.accept(this);
         Symbol symbol = stm.condition.accept(this);
 
         return new Symbol(null, symbol.type);
@@ -202,19 +209,19 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(StmFor stm) {
         Symbol symbol = stm.collection.accept(this);
-        Block body = stm.body.accept(this);
+        Symbol body = stm.body.accept(this);
         String var = stm.var;
         return new Symbol(null, stm.type);
     }
 
     public Symbol visit(StmDecl stm) {
         // What to do with this
-        Symbol symbol = stm.initialization.accept(this);
+        Symbol symbol = stm.initialization.get().accept(this);
         
         String name = stm.binding.getFst();
         Type type = stm.binding.getSnd();
 
-        types.add(name, type);
+        types.put(name, type);
         
         return new Symbol(name, type);
     }
@@ -232,11 +239,11 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(Block block) {
-        blockStack.push(this);
+        blockStack.push(block);
         for (Statement stm : block.statements) {
             stm.accept(this);
         }
-        blockStack.pop(this);
+        blockStack.pop();
         return new Symbol();
     }
     
@@ -248,10 +255,10 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         String funcName = func.name;
         List<Pair<Pair<String, Type>, Boolean>> args = func.arguments;
         // TODO: Might need to handle the optional
-        Type returnType = func.returnType.accept(this);
-        Block funcBlock = func.block.accept(this);
+        Type returnType = func.returnType.get();
+        Block funcBlock = func.body;
 
-        List<Type, Boolean> argTypes = new ArrayList<>();
+        List<Pair<Type, Boolean>> argTypes = new ArrayList<>();
         
         // Add each argument to the environment
         for (Pair<Pair<String, Type>, Boolean> arg : args) {
@@ -259,18 +266,18 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
             Pair<String, Type> binding = arg.getFst();
             
             types.put(binding.getFst(), binding.getSnd());
-            argTypes.add(binding.getSnd(), isRef);
+            argTypes.add(new Pair(binding.getSnd(), isRef));
         }
 
-        signatures.put(funcName, new Signature(argTypes, returnType);
-        return new Symbol(new Signature(argTypes, returnType));
+        signatures.put(funcName, new Signature(argTypes, returnType));
+        return new Symbol(funcName, new Signature(argTypes, returnType));
     }
     
     // ================================================
     // Program
     // ================================================
 
-    public Symbol visit(Program progam) {
+    public Symbol visit(Program program) {
         for (FunctionDefinition func : program.functions) {
             func.accept(this);
         }

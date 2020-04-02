@@ -30,6 +30,10 @@ public class Main {
         // abstract syntax tree
         napVisitor<Ast> buildAST = new BuildAST();
         Program program = (Program) buildAST.visit(tree);
+
+        SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();
+        symbolTableBuilder.visit(program);
+        
         if (1 < args.length && args[1].equals("-p"))
             System.out.println(program.accept(new PrettyPrinter(2)));
         else if (1 < args.length && args[1].equals("-i")) {

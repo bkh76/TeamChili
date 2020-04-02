@@ -1,5 +1,7 @@
 package compiler;
 
+import ast.*;
+
 // A symbol is either a signature or a simple type
 public class Symbol {
     public final Signature signature;

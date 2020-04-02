@@ -1,27 +1,29 @@
 package compiler;
 import ast.TypBasic;
+import ast.*;
 import java.util.*;
+import util.Pair;
 
 public class Signature {
-    public List<Type, Boolean> argTypes;
+    public List<Pair<Type, Boolean>> argTypes;
     public Type returnType;
 
     public Signature() {}
 
-    public Signature(List<Type, Boolean> argTypes, Type returnType) {
+    public Signature(List<Pair<Type, Boolean>> argTypes, Type returnType) {
         this.argTypes = argTypes;
         this.returnType = returnType;
     }
     
     private static Signature buildBinary(Type t1, Type t2, Type rt) {
-        List<Type, Binary> argTypes = new ArrayList<>();
-        argTypes.add(t1, false);
-        argTypes.add(t2, false);
+        List<Pair<Type, Boolean>> argTypes = new ArrayList<>();
+        argTypes.add(new Pair(t1, false));
+        argTypes.add(new Pair(t2, false));
         return new Signature(argTypes, rt);
     }
     private static Signature buildUnary(Type type, Type rt) {
-        List<Type, Boolean> argTypes = new ArrayList<>();
-        argTypes.add(type, false);
+        List<Pair<Type, Boolean>> argTypes = new ArrayList<>();
+        argTypes.add(new Pair(type, false));
         return new Signature(argTypes, rt);
     }
     public final static Signature binaryArithmetic =
@@ -35,25 +37,25 @@ public class Signature {
     public final static Signature comparison =
         buildBinary(Type.integer, Type.integer, Type.bool);
 
-    public boolean check(List<Type> types) {
+    public boolean check(List<Pair<Type, Boolean>> types) {
         if (types.size() == argTypes.size()) {
             for(int counter = 0; counter < types.size(); counter++)
-                if (!types.get(counter).equals(argTypes.get(counter)))
+                if (!types.get(counter).getFst().equals(argTypes.get(counter).getFst()))
                     return false;
             return true;
         }
         return false;   
     }
-    public boolean check(Type type) {
-        List<Type> types = new ArrayList<>();
-        types.add(type);
+    public boolean check(Type type, Boolean isRef) {
+        List<Pair<Type, Boolean>> types = new ArrayList<>();
+        types.add(new Pair(type, isRef));
         return check(types);
     }
     
-    public boolean check(Type t1, Type t2) {
-        List<Type> types = new ArrayList<>();
-        types.add(t1);
-        types.add(t2);
+    public boolean check(Type t1, Boolean isRef1, Type t2, Boolean isRef2) {
+        List<Pair<Type, Boolean>> types = new ArrayList<>();
+        types.add(new Pair(t1, isRef1));
+        types.add(new Pair(t2, isRef2));
         return check(types);
     }
 }
