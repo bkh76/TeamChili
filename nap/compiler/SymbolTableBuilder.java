@@ -6,6 +6,13 @@ import util.Pair;
 import java.util.*;
 
 public class SymbolTableBuilder implements Visitor<Type> {
+    Map<String, Signature> signatures;
+    Map<String, Type> types;
+
+    public SymbolTableBuilder() {
+        signatures = new HashMap<String, Signature>();
+        types = new HashMap<String, Type>();
+    }
     // ================================================
     // Expressions
     // ================================================
