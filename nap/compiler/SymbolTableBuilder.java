@@ -8,76 +8,139 @@ import java.util.*;
 public class SymbolTableBuilder implements Visitor<Symbol> {
     Map<String, Signature> signatures;
     Map<String, Type> types;
-    Stack<Map<String, Type>> localTableStack;
+    Stack<Block> blockStack;
 
     public SymbolTableBuilder() {
         signatures = new HashMap<String, Signature>();
         types = new HashMap<String, Type>();
-        localTableStack = new Stack<Map<String, Type>>();
+        block = new Stack<Block>();
     }
+
+    // Helper functions
+    private void addSymbolToEnv(Symbol symbol) {
+        if (symbol.isType())
+            types.put(symbol.binding, symbol.type);
+        else if (symbol.isSignature())
+            signatures.put(symbol.binding, symbol.signature);
+    }
+
+    private Signature getOpSignature(OpUnary op) {
+        Signature result;
+        switch (op) {
+            case OpUnary.SUB:
+                result = Signature.unaryArithmetic;
+                break;
+            case OpUnary.NOT:
+                result = Signature.unaryBoolean;
+                break;
+        }
+
+        return result;
+    }
+
+    private Signature getOpSignature(OpBinary op) {
+        Signature result;
+        switch (op) {
+            case OpBinary.ADD:
+            case OpBinary.SUB:
+            case OpBinary.MUL:
+            case OpBinary.DIV:
+            case OpBinary.MOD:
+                result = Signature.binaryArithmetic;
+                break;
+            case OpBinary.LT:
+            case OpBinary.GT:
+            case OpBinary.LE:
+            case OpBinary.GE:
+            case OpBinary.NEQ:
+            case OpBinary.EQ:
+            case OpBinary.OR:
+            case OpBinary.AND:
+                result = Signature.binaryComparison;
+                break;                
+        }
+
+        return result;
+    }
+    
     
     // ================================================
     // Expressions
     // ================================================
-    public Symbol visit(ExpBool exp) {
-        return null;
-    }
-   
-    public Symbol visit(ExpChar exp) {
-        return null;
-    }
-    
-    public Symbol visit(ExpInt exp) {
-        return null;
-    }
-    
-    public Symbol visit(ExpString exp) {
-        return null;
-    }
-        
-    public Symbol visit(ExpVar exp) {
-        return null;
-    }
-        
-    public Symbol visit(ExpBinop exp) {
-        return null;
-    }
 
     public Symbol visit(ExpUnop exp) {
-        return null;
+        Symbol symbol = exp.exp.accept(this);
+        Signature signature = getOpSignature(exp.op);
+
+        signatures.put(symbol.binding, signature);
+        
+        return Symbol();
     }
 
     public Symbol visit(ExpAssignop exp) {
-        return null;
+        return Symbol();
     }
 
     public Symbol visit(ExpFuncCall exp)
     {
-        return null;
+        return Symbol();
     }
 
     public Symbol visit(ExpPredefinedCall exp) {
-        return null;
+        return Symbol();
     }
 
     public Symbol visit(ExpNew exp) {
-        return null;
+        return Symbol();
     }
 
     public Symbol visit(ExpArrAccess exp) {
-        return null;
+        return Symbol();
     }
 
     public Symbol visit(ExpArrEnum exp) {
-        return null;
+        return Symbol();
     }
+
+    // NOTE: the constants just return empty symbols
+    // -------------------------------------------
+    public Symbol visit(ExpBool exp) {
+        return Symbol();
+    }
+   
+    public Symbol visit(ExpChar exp) {
+        return Symbol();
+    }
+    
+    public Symbol visit(ExpInt exp) {
+        return Symbol();
+    }
+    
+    public Symbol visit(ExpString exp) {
+        return Symbol();
+    }
+        
+    public Symbol visit(ExpVar exp) {
+        return Symbol();
+    }
+        
+    public Symbol visit(ExpBinop exp) {
+        return Symbol();
+    }
+    // -------------------------------------------
     
     // ================================================
     // Statements
     // ================================================
 
     public Symbol visit(StmIf stm) {
-        return null;
+        Symbol symbol = stm.condition.accept(this);
+        addSymbolToEnv(symbol);
+        Block then_branch = stm.then_branch.accept(this);
+        // TODO: might need to handle Optional
+        Block else_branch = stm.else_branch.accept(this);
+        
+        return Symbol();
     }
 
     public Symbol visit(StmAssign stm) {
@@ -117,7 +180,7 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(Type type) {
-        return null;
+        return Symbol();
     }
     
     // ================================================
@@ -125,7 +188,11 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     // ================================================
 
     public Symbol visit(Block block) {
-        return null;
+        blockStack.push(this);
+        for (Statement stm : block.statements) {
+            stm.accept(this);
+        }
+        return new Symbol();
     }
     
     // ================================================

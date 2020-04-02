@@ -7,7 +7,7 @@ public class Signature {
     public Type returnType;
 
     public Signature() {}
-    
+
     public Signature(List<Type, Boolean> argTypes, Type returnType) {
         this.argTypes = argTypes;
         this.returnType = returnType;
