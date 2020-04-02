@@ -70,9 +70,12 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
 
     public Symbol visit(ExpUnop exp) {
         Symbol symbol = exp.exp.accept(this);
+        // What do we do with this
         Signature signature = getOpSignature(exp.op);
 
-        signatures.put(symbol.binding, signature);
+        // This has no name to bind to so I think we just visit the
+        // expression
+        //signatures.put(symbol.binding, signature);
         
         return Symbol();
     }
