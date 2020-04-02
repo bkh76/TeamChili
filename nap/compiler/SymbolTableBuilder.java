@@ -77,16 +77,19 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         // expression
         //signatures.put(symbol.binding, signature);
         
-        return new Symbol();
+        return new Symbol(null, signature);
     }
 
     public Symbol visit(ExpAssignop exp) {
-        return new Symbol();
+        Symbol expr = exp.exp.accept(this);
+        Signature signature = getOpSignature(exp.op);
+        boolean prefix = exp.prefix;
+        return new Symbol(null, signature);
     }
 
-    public Symbol visit(ExpFuncCall exp)
-    {
-        return new Symbol();
+    public Symbol visit(ExpFuncCall exp) {
+        Symbol args = exp.arguments.accept(this);
+        return new Symbol(exp.funcName, null);
     }
 
     public Symbol visit(ExpPredefinedCall exp) {
@@ -94,16 +97,19 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     }
 
     public Symbol visit(ExpNew exp) {
-        return new Symbol();
+        Symbol expr = exp.exp.accept(this);
+        return new Symbol(null, exp.type);
     }
 
     public Symbol visit(ExpArrAccess exp) {
-        return new Symbol();
+        Symbol array = exp.array.accept(this);
+        Symbol index = exp.index.accept(this);
+        return new Symbol(); //??
     }
 
     public Symbol visit(ExpArrEnum exp) {
         Symbol exprs = exp.exprs.accept(this);
-        return new Symbol();
+        return new Symbol(null, null); //??
     }
         
     public Symbol visit(ExpBinop exp) {
