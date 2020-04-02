@@ -104,33 +104,33 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
     public Symbol visit(ExpArrEnum exp) {
         return Symbol();
     }
+        
+    public Symbol visit(ExpBinop exp) {
+        Symbol left = exp.left.accept(this);
+        Symbol right = exp.right.accept(this);
+        Signature signature = getOpSignature(exp.op);
+        return Symbol(null, signature);
+    }
 
-    // NOTE: the constants just return empty symbols
-    // -------------------------------------------
     public Symbol visit(ExpBool exp) {
-        return Symbol();
+        return Symbol(null, Basic.BOOL);
     }
    
     public Symbol visit(ExpChar exp) {
-        return Symbol();
+        return Symbol(null, Basic.CHAR);
     }
     
     public Symbol visit(ExpInt exp) {
-        return Symbol();
+        return Symbol(null, Basic.INT);
     }
     
     public Symbol visit(ExpString exp) {
-        return Symbol();
+        return Symbol(null, Array);
     }
         
     public Symbol visit(ExpVar exp) {
-        return Symbol();
+        return Symbol(exp.name, null);
     }
-        
-    public Symbol visit(ExpBinop exp) {
-        return Symbol();
-    }
-    // -------------------------------------------
     
     // ================================================
     // Statements
@@ -150,15 +150,14 @@ public class SymbolTableBuilder implements Visitor<Symbol> {
         addSymbolToEnv(lvalSymbol);
         Symbol expSymbol = stm.exp.accept(this);
 
-        // Not sure what to do with these?
         Signature signature = getOpSignature(stm.op);
         
-        return lvalSymbol;
+        return Symbol(null, signature);
     }
 
     public Symbol visit(StmExp stm) {
         Symbol symbol = stm.exp.accept(this);
-        return symbol;
+        return Symbol();
     }
 
     public Symbol visit(StmRead stm) {
