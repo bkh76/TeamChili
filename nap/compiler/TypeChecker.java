@@ -99,6 +99,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpArrAccess exp) {
+        if (exp.array.accept(this).get() != type.Array)
+            errors.add("At " + exp.array.pos +
+                       "an array access on a non-array was attempted.");
+        if (exp.index.accept(this).get() != type.Basic.INT)
+            errors.add("At " + exp.index.pos +
+                       "array index must be an integer.");
         return Optional.empty();
     }
     
@@ -116,6 +122,24 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpUnop exp) {
+        type.Type expType = exp.exp.accept(this).get();
+
+        switch (exp.op) {
+            case SUB:
+                if (expType == type.Array ||
+                    expType == type.Basic.BOOL)
+                    errors.add("At " +  exp.exp.pos +
+                               "in the unary operation" + exp.op +
+                               "the expression is not a negatable type");                    
+                break;
+            case NOT:
+                if (expType != type.Basic.BOOL)
+                    errors.add("At " +  exp.exp.pos +
+                               "in the unary operation" + exp.op +
+                               "the expression is not a boolean type");                                        
+                break;
+        }
+        
         return Optional.empty();
     }
     
