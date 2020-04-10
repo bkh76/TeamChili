@@ -79,6 +79,9 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         array.type = type.Basic.BYTE;
         if (expType.equals(array))
             return true;
+        if (isArray(expType))
+            return isArray(expType);
+        
         return false;
     }
     
@@ -152,6 +155,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpArrEnum array) {
+        type.Type initialType = array.exps.get(0).accept(this).get();
+        for (Expression e : array.exps) {
+            if (e.accept(this).get() != initialType)
+                errors.add("At " + e.pos +
+                           "array initializer did not match list type");
+        }
         return Optional.empty();
     }
 
@@ -232,6 +241,19 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
 
     @Override
     public Optional<type.Type> visit(StmFor stm) {
+        type.Type indexerType = stm.type.accept(this).get();
+        stm.body.accept(this);
+
+        if (!isArray(stm.collection.accept(this).get())) {
+            errors.add("At " + stm.collection.pos +
+                       "cannot loop over a non-array.");
+        } else {
+            type.Array array = (type.Array)stm.collection.accept(this).get();
+            if (indexerType != array.type)
+                errors.add("At " + stm.pos +
+                           "could not match indexer type to collection.");
+        }
+        
         return Optional.empty();
     }
 
