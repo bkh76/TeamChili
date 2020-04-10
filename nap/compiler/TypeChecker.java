@@ -88,6 +88,15 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // ===========================================
     @Override
     public Optional<type.Type> visit(StmIf stm) {
+        if (stm.condition.accept(this) != type.Type.BOOL ||
+            stm.condition.accept(this) != type.Type.INT) { //we allow int flags, yes?
+            errors.add("At " + stm.condition.pos +
+                       " an expression of type boolean or integer is expected."); 
+        }
+        
+        stm.then_branch.accept(this);
+        stm.else_branch.accept(this);
+
         return Optional.empty();
     }
     
