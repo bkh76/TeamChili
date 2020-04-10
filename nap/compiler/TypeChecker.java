@@ -95,7 +95,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         }
         
         stm.then_branch.accept(this);
-        stm.get().else_branch.accept(this);
+        stm.else_branch.get().accept(this);
 
 
         return Optional.empty();
