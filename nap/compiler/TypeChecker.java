@@ -124,7 +124,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     @Override
     public Optional<type.Type> visit(ExpFuncCall exp) {
         Signature signature = symbolTable.funcLookup(exp.funcName).get();
-        if (!signature.check(exp.arguments))
+        List<type.Type> paramList = new ArrayList<>();
+
+        for (Expression e : exp.arguments)
+            paramList.add(e.accept(this).get());
+        
+        if (!signature.check(paramList))
             errors.add("At " + exp.pos +
                        "arguments to function did not match the function signature types");
         
@@ -134,7 +139,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     @Override
     public Optional<type.Type> visit(ExpPredefinedCall exp) {
         Signature signature = Signatures.predefined.get(exp.funcName);
-        if (!signature.check(exp.arguments))
+        List<type.Type> paramList = new ArrayList<>();
+
+        for (Expression e : exp.arguments)
+            paramList.add(e.accept(this).get());
+
+        if (!signature.check(paramList))
             errors.add("At " + exp.pos +
                        "arguments to function did not match the function signature types");
         
@@ -162,7 +172,6 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         
         stm.then_branch.accept(this);
         stm.else_branch.get().accept(this);
-
 
         return Optional.empty();
     }
