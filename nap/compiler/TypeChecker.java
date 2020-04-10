@@ -17,15 +17,8 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // Types
     // ===========================================
     @Override
-    public Optional<type.Type> visit(Type type) {
-        switch(type.type) {
-            case INT:   return type.Basic.INT;
-            case BOOL:  return type.Basic.BOOL;
-            case BYTE:  return type.Basic.BYTE;
-            case FLOAT: return type.Basic.FLOAT;
-            case CHAR:  return type.Basic.CHAR;
-        }
-        return Optional.empty(); 
+    public Optional<type.Type> visit(Type astType) {
+        return Optional.of(astType.type); 
     }
 
     // ===========================================
@@ -48,7 +41,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpString exp) {
-        type.Type array = type.Array(type.Basic.CHAR);
+        type.Type array = new type.Array(type.Basic.CHAR);
         return Optional.of(array);
     }
 
@@ -71,14 +64,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     }
 
     private boolean isArray(type.Type type) {
-        if (type == type.Array(type.Basic.INT) ||
-            type == type.Array(type.Basic.CHAR) ||
-            type == type.Array(type.Basic.BYTE) ||
-            type == type.Array(type.Basic.BOOL) ||
-            type = type.Array(type.Basic.FLOAT))
-            return true;
-        else
-            return false;
+        
     }
     
     @Override
