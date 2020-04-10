@@ -17,7 +17,16 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // Types
     // ===========================================
     @Override
-    public Optional<type.Type> visit(Type type) { return Optional.empty(); }
+    public Optional<type.Type> visit(Type type) {
+        switch(type.type) {
+            case INT:   return type.Basic.INT;
+            case BOOL:  return type.Basic.BOOL;
+            case BYTE:  return type.Basic.BYTE;
+            case FLOAT: return type.Basic.FLOAT;
+            case CHAR:  return type.Basic.CHAR;
+        }
+        return Optional.empty(); 
+    }
 
     // ===========================================
     // Expressions: Literals
@@ -88,10 +97,9 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // ===========================================
     @Override
     public Optional<type.Type> visit(StmIf stm) {
-        if (stm.condition.accept(this).get() != type.Basic.BOOL ||
-            stm.condition.accept(this).get() != type.Basic.INT) { //we allow int flags, yes?
+        if (stm.condition.accept(this).get() != type.Basic.BOOL) {
             errors.add("At " + stm.condition.pos +
-                       " an expression of type boolean or integer is expected."); 
+                       " an expression of type boolean is expected."); 
         }
         
         stm.then_branch.accept(this);
@@ -128,6 +136,13 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(StmWhile stm) {
+        if (stm.condition.accept(this).get() != type.Basic.BOOL) {
+            errors.add("At " + stm.condition.pos +
+                       " an expression of type boolean is expected."); 
+        }
+        
+        stm.body.accept(this);
+        
         return Optional.empty();
     }
 
