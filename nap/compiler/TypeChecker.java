@@ -123,12 +123,22 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpFuncCall exp) {
-        return Optional.empty();
+        Signature signature = symbolTable.funcLookup(exp.funcName).get();
+        if (!signature.check(exp.arguments))
+            errors.add("At " + exp.pos +
+                       "arguments to function did not match the function signature types");
+        
+        return signature.returnType;
     }
     
     @Override
     public Optional<type.Type> visit(ExpPredefinedCall exp) {
-        return Optional.empty();
+        Signature signature = Signatures.predefined.get(exp.funcName);
+        if (!signature.check(exp.arguments))
+            errors.add("At " + exp.pos +
+                       "arguments to function did not match the function signature types");
+        
+        return signature.returnType;
     }
     
     @Override
@@ -225,7 +235,9 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     @Override
     public Optional<type.Type> visit(FunctionDefinition func) {
         func.body.accept(this);
-        return Optional.empty();        
+        Signature signature = symbolTable.funcLookup(func.name).get();
+        
+        return signature.returnType;
     }
 
     // ===========================================
