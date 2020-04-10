@@ -100,7 +100,7 @@ public class PrettyPrinter implements ast.Visitor<String> {
     @Override
     public String visit(StmAssign stm) {
         String exp = stm.exp.accept(this);
-        String var = stm.l_value.accept(this);
+        String var = stm.lValue.accept(this);
         String assign = "=";
         Optional<OpBinary> op = stm.op;
         if (op.isPresent())

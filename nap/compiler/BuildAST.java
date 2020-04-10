@@ -42,7 +42,8 @@ public class BuildAST extends AbstractParseTreeVisitor<Ast> implements napVisito
         }
     }
 
-    private Ast binary(Position pos, napParser.ExprContext expr0, napParser.ExprContext expr1, int opType) {
+    private Ast binary(Position pos, napParser.ExprContext expr0,
+                       napParser.ExprContext expr1, int opType) {
         Expression left = (Expression) visit(expr0);
         Expression right = (Expression) visit(expr1);
         return new ExpBinop(pos, left, getOpBinary(opType), right);
@@ -80,7 +81,7 @@ public class BuildAST extends AbstractParseTreeVisitor<Ast> implements napVisito
 
     @Override
     public Ast visitTArray(napParser.TArrayContext ctx) {
-        Type type = (Type) ctx.type().accept(this);
+        ast.Type type = (Type) ctx.type().accept(this);
         return new Type(position(ctx), new type.Array(type.type));
     }
 
@@ -447,4 +448,3 @@ public class BuildAST extends AbstractParseTreeVisitor<Ast> implements napVisito
         return null;
     }
 }
-

@@ -16,8 +16,7 @@ public class StmWhile extends Statement
     {
 	return new StmWhile(pos, expr, block, true);
     }
-    private StmWhile(){}
-    
+
     private StmWhile(Position pos,
 		     Expression expr, Block block, boolean doWhile )
     {

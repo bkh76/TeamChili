@@ -26,17 +26,28 @@ public class Main {
         napParser parser = new napParser(tokens);
         // Parse the input: the result is a parse tree
         ParseTree tree = parser.program();
+        if (parser.getNumberOfSyntaxErrors() != 0)
+            System.exit(-1);
         // Walk the parse tree in order to create an
         // abstract syntax tree
         napVisitor<Ast> buildAST = new BuildAST();
         Program program = (Program) buildAST.visit(tree);
-
         SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();
-        symbolTableBuilder.visit(program);
-        
-        if (1 < args.length && args[1].equals("-p"))
-            System.out.println(program.accept(new PrettyPrinter(2)));
-        else if (1 < args.length && args[1].equals("-i")) {
-		}
+        program.accept(symbolTableBuilder);
+        // From there your code may be different
+        if (symbolTableBuilder.has_errors()) {
+            symbolTableBuilder.printErrors();
+            System.exit(-2);
+        }
+        /* For HW06D
+        SymbolTable symbolTable = symbolTableBuilder.getSymbolTable();
+        TypeChecker typeChecker = new TypeChecker(symbolTable);
+        program.accept(typeChecker);
+        if (typeChecker.has_errors()) {
+            typeChecker.printErrors();
+            System.exit(-3);
+        }
+        */
+        System.out.print(program.accept(new PrettyPrinter(2)));
     }
 }

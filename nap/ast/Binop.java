@@ -1,5 +1,6 @@
 package ast;
- enum Binop {
+
+public enum Binop {
     ADD { 
         @Override
         public String toString() {

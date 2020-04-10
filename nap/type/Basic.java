@@ -1,7 +1,7 @@
 package type;
 
 public class Basic extends type.Type {
-    // An enumeration cannot extends an abstrac class
+    // An enumeration cannot extends an abstract class
     // The choice here is not have the enumeration as
     // a private inner class.
     private enum BasicType {
