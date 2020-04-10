@@ -18,6 +18,7 @@ public class Main {
             stream = System.in;
         else
             stream = new FileInputStream(new File(args[0]));
+        
         CharStream input = CharStreams.fromStream(stream);
         // Creation of the lexer for pico programs
         napLexer lexer = new napLexer(input);
@@ -39,15 +40,16 @@ public class Main {
             symbolTableBuilder.printErrors();
             System.exit(-2);
         }
-        /* For HW06D
+        
         SymbolTable symbolTable = symbolTableBuilder.getSymbolTable();
         TypeChecker typeChecker = new TypeChecker(symbolTable);
         program.accept(typeChecker);
+        
         if (typeChecker.has_errors()) {
             typeChecker.printErrors();
             System.exit(-3);
         }
-        */
+        
         System.out.print(program.accept(new PrettyPrinter(2)));
     }
 }

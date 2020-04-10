@@ -34,10 +34,10 @@ class SymbolTable
     // If a local table already exists for the block, do nothing.
     // Otherwise create a new empty local table.
     public void createLocalTable(Block block){
-       if (blocks.get(block) == null){
-           Map<String, type.Type> localTable = new HashMap<>();
-           blocks.put(block, localTable);
-       }
+        if (blocks.get(block) == null){
+            Map<String, type.Type> localTable = new HashMap<>();
+            blocks.put(block, localTable);
+        }
     }
 
     public Optional<Signature> funcLookup(String functionName){
