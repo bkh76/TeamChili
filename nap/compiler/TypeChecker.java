@@ -5,82 +5,77 @@ import util.Pair;
 
 import java.util.*;
 
-public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type>>
+import type.Type;
+
+public class TypeChecker extends ErrorList implements Visitor<Type>
 {
-    SymbolTable symbolTable;
+    // ===========================================
+    // Errors
+    // ===========================================
+    private List<String> errors;
     
-    public TypeChecker(SymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
-    }
+    public boolean hasErrors() { return !errors.isEmpty(); }
     
+    public List<String> errors() { return errors; }
+
     // ===========================================
     // Types
     // ===========================================
     @Override
-    public Optional<type.Type> visit(Type type) { return Optional.empty(); }
+    public Type visit(Type type) { return null; }
 
     // ===========================================
     // Expressions: Literals
     // ===========================================
     @Override
-    public Optional<type.Type> visit(ExpBool exp) { return Optional.empty(); }
+    public Type visit(ExpBool exp) { return null; }
     @Override
-    public Optional<type.Type> visit(ExpChar exp) { return Optional.empty(); }
+    public Type visit(ExpChar exp) { return null; }
     @Override
-    public Optional<type.Type> visit(ExpInt exp) { return Optional.empty(); }
+    public Type visit(ExpInt exp) { return null; }
     @Override
-    public Optional<type.Type> visit(ExpString exp) { return Optional.empty(); }
+    public Type visit(ExpString exp) { return null; }
 
     // ===========================================
     // Other Expressions
     // ===========================================
     @Override
-    public Optional<type.Type> visit(ExpVar exp) {
-        return Optional.empty();
+    public Type visit(ExpVar exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpBinop exp) {
-        return Optional.empty();
+    public Type visit(ExpBinop exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpArrAccess exp) {
-        return Optional.empty();
+    public Type visit(ExpArrAccess exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpNew exp) {
-        return Optional.empty();
+    public Type visit(ExpNew exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpUnop exp) {
-        return Optional.empty();
+    public Type visit(ExpUnop exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpAssignop exp) {
-        return Optional.empty();
+    public Type visit(ExpAssignop exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpFuncCall exp) {
-        return Optional.empty();
+    public Type visit(ExpFuncCall exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpPredefinedCall exp) {
-        return Optional.empty();
+    public Type visit(ExpPredefinedCall exp) {
     }
     
     @Override
-    public Optional<type.Type> visit(ExpArrEnum array) {
-        return Optional.empty();
+    public Type visit(ExpArrEnum array) {
     }
 
-    private Optional<type.Type> visitListExpression(List<Expression> list) {
-        return Optional.empty();
+    private Type visitListExpression(List<Expression> list) {
     }
 
     // ===========================================
@@ -101,75 +96,63 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     }
     
     @Override
-    public Optional<type.Type> visit(StmAssign stm) {
-        return Optional.empty();
+    public Type visit(StmAssign stm) {
     }
     
     @Override
-    public Optional<type.Type> visit(StmExp stm) {
-        return Optional.empty();
+    public Type visit(StmExp stm) {
     }
     
     @Override
-    public Optional<type.Type> visit(StmRead stm) {
-        return Optional.empty();
+    public Type visit(StmRead stm) {
     }
     
     @Override
-    public Optional<type.Type> visit(StmPrint stm) {
-        return Optional.empty();
+    public Type visit(StmPrint stm) {
     }
     
     @Override
-    public Optional<type.Type> visit(StmReturn stm) {
-        return Optional.empty();
+    public Type visit(StmReturn stm) {
     }
     
     @Override
-    public Optional<type.Type> visit(StmWhile stm) {
-        return Optional.empty();
+    public Type visit(StmWhile stm) {
     }
 
     @Override
-    public Optional<type.Type> visit(StmFor stm) {
-        return Optional.empty();
+    public Type visit(StmFor stm) {
     }
 
     // ===========================================
     // Statements: Declaration
     // ===========================================
     @Override
-    public Optional<type.Type> visit(StmDecl stm) {
-        return Optional.empty();
+    public Type visit(StmDecl stm) {
     }
 
     // ===========================================
     // Block
     // ===========================================
     @Override
-    public Optional<type.Type> visit(Block block) {
-        for (Statement stm : block.statements)
-            stm.accept(this);
-        return Optional.empty();
+    public Type visit(Block block) {
     }
 
     // ===========================================
     // Function Definition
     // ===========================================
+    private Signature signatureOf(FunctionDefinition fun){
+    }
 
     @Override
-    public Optional<type.Type> visit(FunctionDefinition func) {
-        func.body.accept(this);
-        return Optional.empty();        
+    public Type visit(FunctionDefinition fun) {
+        return null;
     }
 
     // ===========================================
     // Program
     // ===========================================
     @Override
-    public Optional<type.Type> visit(Program program) {
-        for (FunctionDefinition func : program.functions)
-            func.accept(this);
-        return Optional.empty();
+    public Type visit(Program program) {
+        return null;
     }
 }
