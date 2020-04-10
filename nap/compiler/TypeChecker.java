@@ -224,6 +224,15 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // ===========================================
     @Override
     public Optional<type.Type> visit(StmDecl stm) {
+        type.Type bindingType = stm.binding.getSnd().type;
+
+        if (stm.initialization.isPresent()) {
+            type.Type initType = stm.initialization.get().accept(this).get();
+            if (initType != bindingType)
+                errors.add("At " + stm.initialization.get().pos +
+                           "the initialization of the binding does not match the binding type");
+        }
+        
         return Optional.empty();
     }
 
