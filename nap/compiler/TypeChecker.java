@@ -63,7 +63,22 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         return signature.returnType;
     }
 
-    private boolean isArray(type.Type type) {
+    private boolean isArray(type.Type expType) {
+        type.Array array = new type.Array(type.Basic.INT);
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.CHAR;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.BOOL;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.FLOAT;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.BYTE;
+        if (expType.equals(array))
+            return true;
         return false;
     }
     
@@ -107,12 +122,32 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpFuncCall exp) {
-        return Optional.empty();
+        Signature signature = symbolTable.funcLookup(exp.funcName).get();
+        List<type.Type> paramList = new ArrayList<>();
+
+        for (Expression e : exp.arguments)
+            paramList.add(e.accept(this).get());
+        
+        if (!signature.check(paramList))
+            errors.add("At " + exp.pos +
+                       "arguments to function did not match the function signature types");
+        
+        return signature.returnType;
     }
     
     @Override
     public Optional<type.Type> visit(ExpPredefinedCall exp) {
-        return Optional.empty();
+        Signature signature = Signatures.predefined.get(exp.funcName);
+        List<type.Type> paramList = new ArrayList<>();
+
+        for (Expression e : exp.arguments)
+            paramList.add(e.accept(this).get());
+
+        if (!signature.check(paramList))
+            errors.add("At " + exp.pos +
+                       "arguments to function did not match the function signature types");
+        
+        return signature.returnType;
     }
     
     @Override
@@ -136,7 +171,6 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         
         stm.then_branch.accept(this);
         stm.else_branch.get().accept(this);
-
 
         return Optional.empty();
     }
@@ -226,7 +260,9 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     @Override
     public Optional<type.Type> visit(FunctionDefinition func) {
         func.body.accept(this);
-        return Optional.empty();        
+        Signature signature = symbolTable.funcLookup(func.name).get();
+        
+        return signature.returnType;
     }
 
     // ===========================================
