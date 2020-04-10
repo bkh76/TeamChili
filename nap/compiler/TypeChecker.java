@@ -41,6 +41,50 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpBinop exp) {
+        type.Type left = exp.left.accept(this).get();
+        type.Type right = exp.right.accept(this).get();
+
+        switch (exp.op) {
+            case ADD:
+            case SUB:
+            case MUL:
+            case DIV:
+            case LT:
+            case GT:
+            case LE:
+            case GE:
+            case MOD: {
+                if (left != type.Basic.INT) 
+                    errors.add("At " +  exp.left.pos +
+                               "the left expression in operation" + exp.op +
+                               "does not have type int");
+                else if (right != type.Basic.INT)
+                    errors.add("At " +  exp.right.pos +
+                               "the right expression in operation" + exp.op +
+                               "does not have type int");               
+            } break;
+                
+            case AND:
+            case OR: {
+                if (left != type.Basic.BOOL) 
+                    errors.add("At " +  exp.left.pos +
+                               "the left expression in operation" + exp.op +
+                               "does not have type bool");
+                else if (right != type.Basic.BOOL)
+                    errors.add("At " +  exp.right.pos + 
+                               "the right expression in operation" + exp.op +
+                               "does not have type bool");                               
+            } break;
+
+            case NEQ:
+            case EQ: {
+                if (left != right)
+                    errors.add("At " +  exp.left.pos +
+                               "the left expression in operation" + exp.op +
+                               "does not match the type on the right");
+            } break;
+        }
+        
         return Optional.empty();
     }
     
@@ -51,6 +95,13 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(ExpNew exp) {
+        // The type doesn't matter but the expression is
+        // the size which should be an int
+        if (exp.exp.accept(this).get() != type.Basic.INT) {
+            errors.add("At " + exp.exp.pos +
+                       "the expression should be a size of type int");
+        }
+        
         return Optional.empty();
     }
     
@@ -113,6 +164,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(StmRead stm) {
+        
         return Optional.empty();
     }
     
