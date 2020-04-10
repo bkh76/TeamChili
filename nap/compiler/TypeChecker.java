@@ -32,13 +32,25 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // Expressions: Literals
     // ===========================================
     @Override
-    public Optional<type.Type> visit(ExpBool exp) { return Optional.empty(); }
+    public Optional<type.Type> visit(ExpBool exp) {
+        return Optional.of(type.Basic.BOOL);
+    }
+    
     @Override
-    public Optional<type.Type> visit(ExpChar exp) { return Optional.empty(); }
+    public Optional<type.Type> visit(ExpChar exp) {
+        return Optional.of(type.Basic.CHAR);
+    }
+    
     @Override
-    public Optional<type.Type> visit(ExpInt exp) { return Optional.empty(); }
+    public Optional<type.Type> visit(ExpInt exp) {
+        return Optional.of(type.Basic.INT);
+    }
+    
     @Override
-    public Optional<type.Type> visit(ExpString exp) { return Optional.empty(); }
+    public Optional<type.Type> visit(ExpString exp) {
+        type.Type array = type.Array(type.Basic.CHAR);
+        return Optional.of(array);
+    }
 
     // ===========================================
     // Other Expressions
@@ -53,53 +65,25 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         type.Type left = exp.left.accept(this).get();
         type.Type right = exp.right.accept(this).get();
 
-        switch (exp.op) {
-            case ADD:
-            case SUB:
-            case MUL:
-            case DIV:
-            case LT:
-            case GT:
-            case LE:
-            case GE:
-            case MOD: {
-                if (left != type.Basic.INT) 
-                    errors.add("At " +  exp.left.pos +
-                               "the left expression in operation" + exp.op +
-                               "does not have type int");
-                else if (right != type.Basic.INT)
-                    errors.add("At " +  exp.right.pos +
-                               "the right expression in operation" + exp.op +
-                               "does not have type int");               
-            } break;
-                
-            case AND:
-            case OR: {
-                if (left != type.Basic.BOOL) 
-                    errors.add("At " +  exp.left.pos +
-                               "the left expression in operation" + exp.op +
-                               "does not have type bool");
-                else if (right != type.Basic.BOOL)
-                    errors.add("At " +  exp.right.pos + 
-                               "the right expression in operation" + exp.op +
-                               "does not have type bool");                               
-            } break;
-
-            case NEQ:
-            case EQ: {
-                if (left != right)
-                    errors.add("At " +  exp.left.pos +
-                               "the left expression in operation" + exp.op +
-                               "does not match the type on the right");
-            } break;
-        }
+        Signature signature = Signatures.binary.get(exp.op);
         
-        return Optional.empty();
+        return signature.returnType;
+    }
+
+    private boolean isArray(type.Type type) {
+        if (type == type.Array(type.Basic.INT) ||
+            type == type.Array(type.Basic.CHAR) ||
+            type == type.Array(type.Basic.BYTE) ||
+            type == type.Array(type.Basic.BOOL) ||
+            type = type.Array(type.Basic.FLOAT))
+            return true;
+        else
+            return false;
     }
     
     @Override
     public Optional<type.Type> visit(ExpArrAccess exp) {
-        if (exp.array.accept(this).get() != type.Array)
+        if (isArray(exp.array.accept(this).get()))
             errors.add("At " + exp.array.pos +
                        "an array access on a non-array was attempted.");
         if (exp.index.accept(this).get() != type.Basic.INT)
@@ -124,26 +108,13 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     public Optional<type.Type> visit(ExpUnop exp) {
         type.Type expType = exp.exp.accept(this).get();
 
-        switch (exp.op) {
-            case SUB:
-                if (expType == type.Array ||
-                    expType == type.Basic.BOOL)
-                    errors.add("At " +  exp.exp.pos +
-                               "in the unary operation" + exp.op +
-                               "the expression is not a negatable type");                    
-                break;
-            case NOT:
-                if (expType != type.Basic.BOOL)
-                    errors.add("At " +  exp.exp.pos +
-                               "in the unary operation" + exp.op +
-                               "the expression is not a boolean type");                                        
-                break;
-        }
-        
-        return Optional.empty();
+        Signature signature = Signatures.unary.get(exp.op);
+               
+        return signature.returnType;
     }
-    
+
     @Override
+    
     public Optional<type.Type> visit(ExpAssignop exp) {
         return Optional.empty();
     }
