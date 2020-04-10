@@ -63,8 +63,24 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         return signature.returnType;
     }
 
-    private boolean isArray(type.Type type) {
-        
+    private boolean isArray(type.Type expType) {
+        type.Array array = new type.Array(type.Basic.INT);
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.CHAR;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.BOOL;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.FLOAT;
+        if (expType.equals(array))
+            return true;
+        array.type = type.Basic.BYTE;
+        if (expType.equals(array))
+            return true;
+
+        return false;
     }
     
     @Override
