@@ -50,7 +50,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // ===========================================
     @Override
     public Optional<type.Type> visit(ExpVar exp) {
-
+        
         return Optional.empty();
     }
     
@@ -90,10 +90,10 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     public Optional<type.Type> visit(ExpArrAccess exp) {
         if (isArray(exp.array.accept(this).get()))
             errors.add("At " + exp.array.pos +
-                       "an array access on a non-array was attempted.");
+                       " an array access on a non-array was attempted.");
         if (exp.index.accept(this).get() != type.Basic.INT)
             errors.add("At " + exp.index.pos +
-                       "array index must be an integer.");
+                       " array index must be an integer.");
         return Optional.empty();
     }
     
@@ -103,7 +103,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         // the size which should be an int
         if (exp.exp.accept(this).get() != type.Basic.INT) {
             errors.add("At " + exp.exp.pos +
-                       "the expression should be a size of type int/");
+                       " the expression should be a size of type int.");
         }
         
         return Optional.empty();
@@ -124,7 +124,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
        
         if(expType != type.Basic.INT && expType != type.Basic.BYTE)
             errors.add("At " + exp.exp.pos +
-                       "the expression should be of type int or byte.");
+                       " the expression should be of type int or byte.");
             
         return Optional.empty();
     }
