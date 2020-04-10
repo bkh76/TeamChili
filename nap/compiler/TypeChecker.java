@@ -103,7 +103,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         // the size which should be an int
         if (exp.exp.accept(this).get() != type.Basic.INT) {
             errors.add("At " + exp.exp.pos +
-                       "the expression should be a size of type int");
+                       "the expression should be a size of type int/");
         }
         
         return Optional.empty();
@@ -120,6 +120,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
 
     @Override
     public Optional<type.Type> visit(ExpAssignop exp) {
+        type.Type expType = exp.exp.accept(this).get();
+       
+        if(expType != type.Basic.INT && expType != type.Basic.BYTE)
+            errors.add("At " + exp.exp.pos +
+                       "the expression should be of type int or byte.");
+            
         return Optional.empty();
     }
     
