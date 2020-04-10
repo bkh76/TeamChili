@@ -50,6 +50,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     // ===========================================
     @Override
     public Optional<type.Type> visit(ExpVar exp) {
+
         return Optional.empty();
     }
     
@@ -118,7 +119,6 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     }
 
     @Override
-    
     public Optional<type.Type> visit(ExpAssignop exp) {
         return Optional.empty();
     }
@@ -133,7 +133,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         
         if (!signature.check(paramList))
             errors.add("At " + exp.pos +
-                       "arguments to function did not match the function signature types");
+                       " arguments to function did not match the function signature types");
         
         return signature.returnType;
     }
@@ -148,7 +148,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
 
         if (!signature.check(paramList))
             errors.add("At " + exp.pos +
-                       "arguments to function did not match the function signature types");
+                       " arguments to function did not match the function signature types");
         
         return signature.returnType;
     }
@@ -159,12 +159,15 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
         for (Expression e : array.exps) {
             if (e.accept(this).get() != initialType)
                 errors.add("At " + e.pos +
-                           "array initializer did not match list type");
+                           " array initializer did not match list type");
         }
         return Optional.empty();
     }
 
     private Optional<type.Type> visitListExpression(List<Expression> list) {
+        for(Expression exp : list) {
+            exp.accept(this);
+        }
         return Optional.empty();
     }
 
@@ -196,7 +199,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(StmExp stm) {
-
+        stm.exp.accept(this);
 
         return Optional.empty();
     }
@@ -224,6 +227,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(StmReturn stm) {
+        stm.exp.accept(this);
         return Optional.empty();
     }
     
@@ -246,12 +250,12 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
 
         if (!isArray(stm.collection.accept(this).get())) {
             errors.add("At " + stm.collection.pos +
-                       "cannot loop over a non-array.");
+                       " cannot loop over a non-array.");
         } else {
             type.Array array = (type.Array)stm.collection.accept(this).get();
             if (indexerType != array.type)
                 errors.add("At " + stm.pos +
-                           "could not match indexer type to collection.");
+                           " could not match indexer type to collection.");
         }
         
         return Optional.empty();
@@ -268,7 +272,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
             type.Type initType = stm.initialization.get().accept(this).get();
             if (initType != bindingType)
                 errors.add("At " + stm.initialization.get().pos +
-                           "the initialization of the binding does not match the binding type");
+                           " the initialization of the binding does not match the binding type");
         }
         
         return Optional.empty();
