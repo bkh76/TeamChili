@@ -64,7 +64,7 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     }
 
     private boolean isArray(type.Type type) {
-        
+        return false;
     }
     
     @Override
@@ -143,22 +143,39 @@ public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type
     
     @Override
     public Optional<type.Type> visit(StmAssign stm) {
+        if(stm.lValue.accept(this).get() != stm.exp.accept(this).get()) {
+            errors.add("At " + stm.pos + 
+                " the type of left hand side must be the same as the right hand side.");
+        }
+
         return Optional.empty();
     }
     
     @Override
     public Optional<type.Type> visit(StmExp stm) {
+
+
         return Optional.empty();
     }
     
     @Override
     public Optional<type.Type> visit(StmRead stm) {
-        
+        // I feel like there should be some sort of checking that a variable has been declared, but there is nothing in the class for variable name
+        if(stm.type.type != stm.exp.accept(this).get()) {
+            errors.add("At " + stm.pos + 
+                " the type of the expression and the declared type must be the same.");
+        }
+
         return Optional.empty();
     }
     
     @Override
     public Optional<type.Type> visit(StmPrint stm) {
+        if(stm.type.type != stm.exp.accept(this).get()) {
+            errors.add("At " + stm.pos + 
+                " the type of the expression and the declared type must be the same.");
+        }
+
         return Optional.empty();
     }
     
