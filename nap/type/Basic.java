@@ -1,32 +1,56 @@
 package type;
 
-public class Basic extends type.Type {
-    // An enumeration cannot extends an abstract class
-    // The choice here is not have the enumeration as
-    // a private inner class.
-    private enum BasicType {
-        INT   { public String toString() { return "int"; } },
-        BOOL  { public String toString() { return "bool"; } },
-        BYTE  { public String toString() { return "byte"; } },
-        FLOAT { public String toString() { return "float"; } },
-        CHAR  { public String toString() { return "char"; } },
-    }
+abstract public class Basic extends type.Type {
 
-    private BasicType type;
-    private Basic(BasicType type){
-        this.type = type;
-    }
+    public static final Basic INT = new Int();
+    public static final Basic BOOL = new Bool();
+    public static final Basic BYTE = new Byte();
+    public static final Basic FLOAT = new Float();
+    public static final Basic CHAR = new Char();
 
-    @Override
-    public String toString() {
-        return type.toString();
+    public static class Int extends Basic {
+        private Int(){}
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.visit(this);
+        }
+        @Override
+        public String toString() { return "int"; }
     }
-    public static final Basic INT = new Basic(BasicType.INT);
-    public static final Basic BOOL = new Basic(BasicType.BOOL);
-    public static final Basic BYTE = new Basic(BasicType.BYTE);
-    public static final Basic FLOAT = new Basic(BasicType.FLOAT);
-    public static final Basic CHAR = new Basic(BasicType.CHAR);
+    public static class Bool extends Basic {
+        private Bool(){}
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.visit(this);
+        }
+        @Override
+        public String toString() { return "char"; }
+    }
+    public static class Byte extends Basic {
+        private Byte(){}
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.visit(this);
+        }
+        @Override
+        public String toString() { return "byte"; }
+    }
+    public static class Char extends Basic {
+        private Char(){}
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.visit(this);
+        }
+        @Override
+        public String toString() { return "char"; }
+    }
+    public static class Float extends Basic {
+        private Float(){}
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.visit(this);
+        }
+        @Override
+        public String toString() { return "float"; }
+    }
 }
-
-
-

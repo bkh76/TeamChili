@@ -1,319 +1,393 @@
 package compiler;
 
 import ast.*;
-import util.Pair;
+import type.Array;
+import type.Basic;
+import type.Type;
+import util.ErrorList;
 
 import java.util.*;
 
-public class TypeChecker extends ErrorList implements Visitor<Optional<type.Type>>
-{
-    SymbolTable symbolTable;
-    
+public class TypeChecker extends ErrorList implements ast.Visitor<Optional<type.Type>> {
+
+    private SymbolTable symbolTable;
+    private VisitedBlocks visitedBlocks;
+    private String currentFunction;
+
     public TypeChecker(SymbolTable symbolTable) {
         this.symbolTable = symbolTable;
-    }
-    
-    // ===========================================
-    // Types
-    // ===========================================
-    @Override
-    public Optional<type.Type> visit(Type astType) {
-        return Optional.of(astType.type); 
+        this.visitedBlocks = new VisitedBlocks();
+        this.currentFunction = null;
     }
 
-    // ===========================================
-    // Expressions: Literals
-    // ===========================================
-    @Override
-    public Optional<type.Type> visit(ExpBool exp) {
-        return Optional.of(type.Basic.BOOL);
-    }
-    
-    @Override
-    public Optional<type.Type> visit(ExpChar exp) {
-        return Optional.of(type.Basic.CHAR);
-    }
-    
-    @Override
-    public Optional<type.Type> visit(ExpInt exp) {
-        return Optional.of(type.Basic.INT);
-    }
-    
-    @Override
-    public Optional<type.Type> visit(ExpString exp) {
-        type.Type array = new type.Array(type.Basic.CHAR);
-        return Optional.of(array);
+    public VisitedBlocks getVisitedBlocks() {
+        return visitedBlocks;
     }
 
-    // ===========================================
-    // Other Expressions
-    // ===========================================
+    // In NAP only variables or array cells are assignable
+    private boolean assignable(Ast ast){
+        return (ast instanceof ExpVar) || (ast instanceof ExpArrAccess);
+    }
+
     @Override
-    public Optional<type.Type> visit(ExpVar exp) {
-        
+    public Optional<Type> visit(ast.Type type) {
         return Optional.empty();
     }
-    
-    @Override
-    public Optional<type.Type> visit(ExpBinop exp) {
-        type.Type left = exp.left.accept(this).get();
-        type.Type right = exp.right.accept(this).get();
 
+    @Override
+    public Optional<Type> visit(ExpBool exp) {
+        return Optional.of(Basic.BOOL);
+    }
+
+    @Override
+    public Optional<Type> visit(ExpChar exp) {
+        return Optional.of(Basic.CHAR);
+    }
+
+    @Override
+    public Optional<Type> visit(ExpInt exp) {
+        return Optional.of(Basic.INT);
+    }
+
+    @Override
+    public Optional<Type> visit(ExpString exp) {
+        return Optional.of(new Array(Basic.CHAR));
+    }
+
+    @Override
+    public Optional<Type> visit(ExpVar exp) {
+        Optional<Type> type = symbolTable.varLookup(exp.name, visitedBlocks);
+        return type;
+    }
+
+    @Override
+    public Optional<Type> visit(ExpBinop exp) {
+        Optional<type.Type> leftType = exp.left.accept(this);
+        Optional<type.Type> rightType = exp.right.accept(this);
         Signature signature = Signatures.binary.get(exp.op);
-        
-        return signature.returnType;
-    }
-
-    private boolean isArray(type.Type expType) {
-        type.Array array = new type.Array(type.Basic.INT);
-        if (expType.equals(array))
-            return true;
-        array.type = type.Basic.CHAR;
-        if (expType.equals(array))
-            return true;
-        array.type = type.Basic.BOOL;
-        if (expType.equals(array))
-            return true;
-        array.type = type.Basic.FLOAT;
-        if (expType.equals(array))
-            return true;
-        array.type = type.Basic.BYTE;
-        if (expType.equals(array))
-            return true;
-        if (isArray(expType))
-            return isArray(expType);
-        
-        return false;
-    }
-    
-    @Override
-    public Optional<type.Type> visit(ExpArrAccess exp) {
-        if (isArray(exp.array.accept(this).get()))
-            errors.add("At " + exp.array.pos +
-                       " an array access on a non-array was attempted.");
-        if (exp.index.accept(this).get() != type.Basic.INT)
-            errors.add("At " + exp.index.pos +
-                       " array index must be an integer.");
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(ExpNew exp) {
-        // The type doesn't matter but the expression is
-        // the size which should be an int
-        if (exp.exp.accept(this).get() != type.Basic.INT) {
-            errors.add("At " + exp.exp.pos +
-                       " the expression should be a size of type int.");
+        if (leftType.isPresent() && rightType.isPresent()) {
+            if (exp.op == OpBinary.EQ || exp.op == OpBinary.NEQ)
+                if (!leftType.get().equals(rightType.get()))
+                    addError("The two arguments to the (in)equality "
+                            + "should have the same type " + exp.pos);
+                else
+                    return Optional.of(Basic.BOOL);
+            if (signature != null && !signature.check(leftType.get(), rightType.get()))
+                addError("Operation expected two arguments of types "
+                        + signature.argTypes.get(0).getFst() + " and "
+                        + signature.argTypes.get(1).getFst() + " but values of types "
+                        + leftType.get() + " and " + rightType.get()
+                        + " are given " + exp.pos);
         }
-        
-        return Optional.empty();
+        if (!leftType.isPresent())
+            addError("Left argument of binary operation should have a type "
+                    + exp.left.pos);
+        if (!rightType.isPresent())
+            addError("Right argument of binary operation should have a type "
+                    + exp.right.pos);
+        return signature==null?Optional.empty():signature.returnType;
     }
-    
-    @Override
-    public Optional<type.Type> visit(ExpUnop exp) {
-        type.Type expType = exp.exp.accept(this).get();
 
+    @Override
+    public Optional<Type> visit(ExpUnop exp) {
+        Optional<type.Type> argType = exp.exp.accept(this);
         Signature signature = Signatures.unary.get(exp.op);
-               
+        if (argType.isPresent() && !signature.check(argType.get()))
+            addError("Operation expected one argument of type "
+                       + signature.argTypes.get(0) + " but a value of type "
+                       + argType.get() + " is given " + exp.pos);
         return signature.returnType;
     }
 
     @Override
-    public Optional<type.Type> visit(ExpAssignop exp) {
-        type.Type expType = exp.exp.accept(this).get();
-       
-        if(expType != type.Basic.INT && expType != type.Basic.BYTE)
-            errors.add("At " + exp.exp.pos +
-                       " the expression should be of type int or byte.");
-            
-        return Optional.empty();
+    public Optional<Type> visit(ExpAssignop exp) {
+        Optional<type.Type> type = exp.exp.accept(this);
+        if(!(type.isPresent() && type.get().equals(Basic.INT)))
+            addError("The argument of " + exp.op + " should have type "
+                    + Basic.INT + " " + exp.exp.pos);
+        if (!assignable(exp.exp))
+            addError("The argument of " + exp.op + " should be assignable "
+                    + exp.exp.pos);
+        return Optional.of(Basic.INT);
     }
-    
-    @Override
-    public Optional<type.Type> visit(ExpFuncCall exp) {
-        Signature signature = symbolTable.funcLookup(exp.funcName).get();
-        List<type.Type> paramList = new ArrayList<>();
 
-        for (Expression e : exp.arguments)
-            paramList.add(e.accept(this).get());
-        
-        if (!signature.check(paramList))
-            errors.add("At " + exp.pos +
-                       " arguments to function did not match the function signature types");
-        
+
+    private void checkArguments(Position pos, Signature signature, List<Expression> arguments){
+        int counter = 0;
+        int expectedArity = signature.argTypes.size();
+        int actualArity = arguments.size();
+        if (expectedArity != actualArity)
+            addError("The applied function expects " + expectedArity
+                     + " argument"+(expectedArity>1?"s":"") + " but is applied "
+                     + "to " + actualArity + " argument"+(actualArity>1?"s":"")
+                     + " " + pos);
+        else
+            for(Expression arg : arguments) {
+                Optional<type.Type> actualType = arg.accept(this);
+                type.Type expectedType = signature.argTypes.get(counter).getFst();
+                boolean passByReference = signature.argTypes.get(counter).getSnd();
+                if (!(actualType.isPresent() && actualType.get().equals(expectedType)))
+                    addError("Expected type for argument: " + expectedType
+                            + (actualType.isPresent()?
+                                " but argument has type " + actualType.get() : "")
+                            + " " + arg.pos);
+                if (passByReference && !assignable(arg))
+                    addError("Argument is passed by reference and therefore "
+                            + "should be assignable " + arg.pos);
+                counter += 1;
+        }
+    }
+
+    @Override
+    public Optional<Type> visit(ExpFuncCall exp) {
+        Optional<Signature> optSignature = symbolTable.funcLookup(exp.funcName);
+        if (!optSignature.isPresent()) {
+            addError("Function " + exp.funcName + " undefined " + exp.pos);
+            return Optional.empty();
+        }
+        Signature signature = optSignature.get();
+        checkArguments(exp.pos, signature, exp.arguments);
         return signature.returnType;
     }
-    
+
+    private Optional<type.Type> checkLength(ExpPredefinedCall exp){
+        assert(exp.funcName == OpPredefined.LENGTH);
+        if (exp.arguments.size() != 1)
+            addError("length expects 1 argument " + exp.pos);
+        else {
+            Expression argument = exp.arguments.get(0);
+            Optional<type.Type> argType = argument.accept(this);
+            if(!(argType.isPresent() && argType.get() instanceof type.Array))
+                addError("length expects an array as argument "
+                        + argument.pos);
+        }
+        return Optional.of(Basic.INT);
+    }
+
     @Override
-    public Optional<type.Type> visit(ExpPredefinedCall exp) {
+    public Optional<Type> visit(ExpPredefinedCall exp) {
+        if (exp.funcName == OpPredefined.LENGTH)
+            return checkLength(exp);
         Signature signature = Signatures.predefined.get(exp.funcName);
-        List<type.Type> paramList = new ArrayList<>();
-
-        for (Expression e : exp.arguments)
-            paramList.add(e.accept(this).get());
-
-        if (!signature.check(paramList))
-            errors.add("At " + exp.pos +
-                       " arguments to function did not match the function signature types");
-        
+        checkArguments(exp.pos, signature, exp.arguments);
         return signature.returnType;
     }
-    
+
     @Override
-    public Optional<type.Type> visit(ExpArrEnum array) {
-        type.Type initialType = array.exps.get(0).accept(this).get();
-        for (Expression e : array.exps) {
-            if (e.accept(this).get() != initialType)
-                errors.add("At " + e.pos +
-                           " array initializer did not match list type");
+    public Optional<Type> visit(ExpNew exp) {
+        type.Type cellType = exp.type.type;
+        Optional<type.Type> sizeType = exp.exp.accept(this);
+        if (!(sizeType.isPresent() && sizeType.get().equals(Basic.INT)))
+            addError("Expression should have type " + Basic.INT
+                    + " " + exp.exp.pos);
+        return Optional.of(new Array(cellType));
+    }
+
+    @Override
+    public Optional<Type> visit(ExpArrAccess exp) {
+        Optional<type.Type> arrayType = exp.array.accept(this);
+        Optional<type.Type> indexType = exp.index.accept(this);
+        if(!(indexType.isPresent() && Basic.INT.equals(indexType.get())))
+            addError("The index should have type int " + exp.pos);
+        if(!(arrayType.isPresent() && arrayType.get() instanceof type.Array)) {
+            addError("Expression should have a type of the form array<T> " +
+                        exp.array.pos);
+            return Optional.empty();
+        }
+        return Optional.of(((Array)arrayType.get()).type);
+    }
+
+    @Override
+    public Optional<Type> visit(ExpArrEnum array) {
+        // For being able to type an array enumeration,
+        // we need to have at least one element in the
+        // enumeration. If the first correctly typed element
+        // of the enumeration has type T, then all other arguments
+        // should have type T, and the array enumeration has type array<T>.
+        // It the array enumeration is empty, then we don't know
+        // what is T.
+        // It is possible to handle this case, but would make
+        // the type system more complicated. For the moment,
+        // we don't support this case.
+        List<Expression> exps = array.exps;
+        assert(0 < exps.size()) :
+                "Array enumerations of length 0 are not supported yet "
+                + array.pos;
+        type.Type cellType = null;
+        for(Expression exp : exps){
+            Optional<type.Type> currentCellType = exp.accept(this);
+            if(currentCellType.isPresent() && cellType == null)
+                cellType = currentCellType.get();
+            if (!currentCellType.isPresent())
+                addError("Expression should have a valid NAP type: " + exp.pos);
+            else if(!currentCellType.get().equals(cellType) && cellType != null)
+                addError("All expressions in an array enumeration should have the "
+                        + "same type " + cellType + ", but this expression has type "
+                        + currentCellType.get() + " " + exp.pos);
+        }
+        if (cellType == null)
+            return Optional.empty();
+        else
+            return Optional.of(new Array(cellType));
+    }
+
+    @Override
+    public Optional<Type> visit(StmExp stm) {
+        stm.exp.accept(this);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Type> visit(StmAssign stm) {
+        Optional<type.Type> lValueType = stm.lValue.accept(this);
+        Optional<type.Type> expType = stm.exp.accept(this);
+        if (!lValueType.isPresent()) {
+            addError("The left hand side of the assignment should "
+                    + " have a valid NAP type " + stm.lValue.pos);
+        }
+        if (!(lValueType.isPresent() && expType.isPresent() &&
+                lValueType.get().equals(expType.get())))
+            addError("Both sides of the assignment should "
+                    + " have the same type but the left hand side "
+                    + " has type " + (lValueType.isPresent()?lValueType.get():lValueType)
+                    + " and the right hand side has type " + (expType.isPresent()?expType.get():expType)
+                    + " " + stm.lValue.pos);
+        if (!assignable(stm.lValue))
+            addError("The left hand side of the assignment "
+                    + "should be assignable " + stm.lValue.pos);
+        if(stm.op.isPresent() &&
+                !(lValueType.isPresent() && lValueType.get().equals(Basic.INT) &&
+                        expType.isPresent() && expType.get().equals(Basic.INT)))
+            addError("When an assignment operator is used, " +
+                    "both sides should have type int " + stm.pos);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Type> visit(StmRead stm) {
+        Optional<type.Type> expType = stm.exp.accept(this);
+        type.Type readType = stm.type.type;
+        if (!assignable(stm.exp))
+            addError("The expression argument of a read "
+                    + "should be assignable " + stm.exp.pos);
+        if (!expType.isPresent()) {
+            addError("The expression argument of a read "
+                    + "should have a valid NAP type " + stm.exp.pos);
+            return Optional.empty();
+        }
+        if (!readType.equals(expType.get()))
+            addError("The expression argument of a read "
+                    + "should have the type declared in the read "
+                    + "but it has type " + expType.get() + "and "
+                    + readType + " was expected" + stm.pos);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Type> visit(StmPrint stm) {
+        Optional<type.Type> expType = stm.exp.accept(this);
+        type.Type printType = stm.type.type;
+        if (!expType.isPresent()) {
+            addError("The expression argument of a print should "
+                    + "have a valid NAP type " + stm.exp.pos);
+            return Optional.empty();
+        }
+        if (!printType.equals(expType.get()))
+            addError("The expression argument of a print "
+                    + "should have the type declared in the print "
+                    + "but it has type " + expType.get() + "and "
+                    + printType + " was expected" + stm.pos);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Type> visit(StmReturn stm) {
+        Optional<type.Type> expType = stm.exp.accept(this);
+        assert(symbolTable.funcLookup(currentFunction).isPresent());
+        Signature signature = symbolTable.funcLookup(currentFunction).get();
+        Optional<type.Type> returnType = signature.returnType;
+        if (!returnType.isPresent()) {
+            addError("The function signature does not have a return type "
+                    + "but a return statement is present " + stm.pos);
+            return Optional.empty();
+        }
+        if (!expType.equals(returnType)) {
+            addError("The returned expression has type " + expType
+                + " but from the function signature, type " + returnType
+                + " is expected " + stm.exp.pos);
         }
         return Optional.empty();
     }
 
-    private Optional<type.Type> visitListExpression(List<Expression> list) {
-        for(Expression exp : list) {
-            exp.accept(this);
-        }
-        return Optional.empty();
-    }
-
-    // ===========================================
-    // Statements: Instructions
-    // ===========================================
     @Override
-    public Optional<type.Type> visit(StmIf stm) {
-        if (stm.condition.accept(this).get() != type.Basic.BOOL) {
-            errors.add("At " + stm.condition.pos +
-                       " an expression of type boolean is expected."); 
-        }
-        
+    public Optional<Type> visit(StmIf stm) {
+        Optional<type.Type> type = stm.condition.accept(this);
+        if (!(type.isPresent() && Basic.BOOL.equals(type.get())))
+            addError("The condition of a conditional statement "
+                    + "should have type " + Basic.BOOL + stm.condition.pos);
         stm.then_branch.accept(this);
-        stm.else_branch.get().accept(this);
-
+        if (stm.else_branch.isPresent())
+            stm.else_branch.get().accept(this);
         return Optional.empty();
     }
-    
+
     @Override
-    public Optional<type.Type> visit(StmAssign stm) {
-        if(stm.lValue.accept(this).get() != stm.exp.accept(this).get()) {
-            errors.add("At " + stm.pos + 
-                " the type of left hand side must be the same as the right hand side.");
+    public Optional<Type> visit(StmWhile stm) {
+        Optional<type.Type> type = stm.condition.accept(this);
+        if (!(type.isPresent() && Basic.BOOL.equals(type.get())))
+            addError("The condition of a while loop "
+                    + "should have type " + Basic.BOOL + stm.condition.pos);
+        return stm.body.accept(this);
+    }
+
+    @Override
+    public Optional<Type> visit(StmFor stm) {
+        Optional<type.Type> collType = stm.collection.accept(this);
+        if(!(collType.isPresent() && collType.get() instanceof type.Array))
+            addError("The type of expression the loop iterates over "
+                + "should be of the form array<T> " + stm.collection.pos);
+        else {
+            if (!stm.type.type.equals(((Array) collType.get()).type))
+                addError("The type of the loop variable should be compatible "
+                    + " with the type of the collection" + stm.type.pos);
         }
-
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(StmExp stm) {
-        stm.exp.accept(this);
-
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(StmRead stm) {
-        // I feel like there should be some sort of checking that a variable has been declared, but there is nothing in the class for variable name
-        if(stm.type.type != stm.exp.accept(this).get()) {
-            errors.add("At " + stm.pos + 
-                " the type of the expression and the declared type must be the same.");
-        }
-
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(StmPrint stm) {
-        if(stm.type.type != stm.exp.accept(this).get()) {
-            errors.add("At " + stm.pos + 
-                " the type of the expression and the declared type must be the same.");
-        }
-
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(StmReturn stm) {
-        stm.exp.accept(this);
-        return Optional.empty();
-    }
-    
-    @Override
-    public Optional<type.Type> visit(StmWhile stm) {
-        if (stm.condition.accept(this).get() != type.Basic.BOOL) {
-            errors.add("At " + stm.condition.pos +
-                       " an expression of type boolean is expected."); 
-        }
-        
         stm.body.accept(this);
-        
         return Optional.empty();
     }
 
     @Override
-    public Optional<type.Type> visit(StmFor stm) {
-        type.Type indexerType = stm.type.accept(this).get();
-        stm.body.accept(this);
-
-        if (!isArray(stm.collection.accept(this).get())) {
-            errors.add("At " + stm.collection.pos +
-                       " cannot loop over a non-array.");
-        } else {
-            type.Array array = (type.Array)stm.collection.accept(this).get();
-            if (indexerType != array.type)
-                errors.add("At " + stm.pos +
-                           " could not match indexer type to collection.");
-        }
-        
-        return Optional.empty();
-    }
-
-    // ===========================================
-    // Statements: Declaration
-    // ===========================================
-    @Override
-    public Optional<type.Type> visit(StmDecl stm) {
-        type.Type bindingType = stm.binding.getSnd().type;
-
+    public Optional<Type> visit(StmDecl stm) {
         if (stm.initialization.isPresent()) {
-            type.Type initType = stm.initialization.get().accept(this).get();
-            if (initType != bindingType)
-                errors.add("At " + stm.initialization.get().pos +
-                           " the initialization of the binding does not match the binding type");
+            Optional<type.Type> expType = stm.initialization.get().accept(this);
+            type.Type declType = stm.binding.getSnd().type;
+            if (!(expType.isPresent() && declType.equals(expType.get())))
+                addError("The declared type for variable " + stm.binding.getFst()
+                        + " and the type of the initial value are different "
+                        + stm.initialization.get().pos);
         }
-        
         return Optional.empty();
     }
 
-    // ===========================================
-    // Block
-    // ===========================================
     @Override
-    public Optional<type.Type> visit(Block block) {
-        for (Statement stm : block.statements)
+    public Optional<Type> visit(Block block) {
+        visitedBlocks.enter(block);
+        for(Statement stm : block.statements)
             stm.accept(this);
+        visitedBlocks.exit();
         return Optional.empty();
     }
 
-    // ===========================================
-    // Function Definition
-    // ===========================================
-
     @Override
-    public Optional<type.Type> visit(FunctionDefinition func) {
-        func.body.accept(this);
-        Signature signature = symbolTable.funcLookup(func.name).get();
-        
-        return signature.returnType;
+    public Optional<Type> visit(FunctionDefinition fun) {
+        this.currentFunction = fun.name;
+        fun.body.accept(this);
+        return Optional.empty();
     }
 
-    // ===========================================
-    // Program
-    // ===========================================
     @Override
-    public Optional<type.Type> visit(Program program) {
-        for (FunctionDefinition func : program.functions)
-            func.accept(this);
+    public Optional<Type> visit(Program program) {
+        for(FunctionDefinition fun : program.functions)
+            fun.accept(this);
         return Optional.empty();
     }
 }
-

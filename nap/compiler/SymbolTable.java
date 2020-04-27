@@ -6,7 +6,7 @@ import ast.OpPredefined;
 import javax.swing.text.html.Option;
 import java.util.*;
 
-class SymbolTable
+public class SymbolTable
 {
     // functions is the symbol table for NAP function definitions
     private Map<String, Signature> functions;

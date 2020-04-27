@@ -1,5 +1,5 @@
-package type;
+package ir.com;
 
-abstract public class Type {
+abstract public class Command {
     public abstract <T> T accept(Visitor<T> visitor);
 }
