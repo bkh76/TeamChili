@@ -267,15 +267,40 @@ public class Translate {
 
         @Override
         public Result visit(StmRead stm) {
-            // TODO: read
-            // can report error if not of type byte, int, bool, char, or array<char>
-            return null;
+            Result result = stm.exp.accept(this);
+            Optional<type.Type> expType = stm.exp.accept(typeChecker);
+
+            if (expType.isPresent()) {
+                if (expType.get().equals(Basic.INT)) {
+                } else if (expType.get().equals(Basic.CHAR)) {
+                } else if (expType.get().equals(Basic.BOOL)) {
+                } else if (expType.get().equals(Basic.BYTE)) {
+                } else if (expType.get() instanceof type.Array) {
+                    if (!expType.get().type instanceof Type.Array) {
+                    }
+                }
+            } else {
+                return null;
+            }
         }
 
         @Override
         public Result visit(StmPrint stm) {
-            // TODO: print
-            // can report error if not of type byte, int, bool, char, or array<char>
+            Result result = stm.exp.accept(this);
+            Optional<type.Type> expType = stm.exp.accept(typeChecker);
+
+            if (expType.isPresent()) {
+                if (expType.get().equals(Basic.INT)) {
+                } else if (expType.get().equals(Basic.CHAR)) {
+                } else if (expType.get().equals(Basic.BOOL)) {
+                } else if (expType.get().equals(Basic.BYTE)) {
+                } else if (expType.get() instanceof type.Array) {
+                    if (!expType.get().type instanceof Type.Array) {
+                    }
+                }
+            } else {
+                return null;
+            }
             return null;
         }
 

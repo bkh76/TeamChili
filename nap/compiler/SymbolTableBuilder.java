@@ -23,7 +23,7 @@ public class SymbolTableBuilder extends ErrorList implements Visitor<Void>
     }
 
     public SymbolTable getSymbolTable(){
-        if (has_errors())
+        if (hasErrors())
             return null;
         else
             return symbolTable;
