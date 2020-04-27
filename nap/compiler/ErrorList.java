@@ -3,11 +3,11 @@ package compiler;
 import java.util.LinkedList;
 import java.util.List;
 
-class ErrorList
+public class ErrorList
 {
     protected List<String> errors;
 
-    public boolean has_errors() {
+    public boolean hasErrors() {
         return !errors.isEmpty();
     }
 

@@ -36,7 +36,7 @@ public class Main {
         SymbolTableBuilder symbolTableBuilder = new SymbolTableBuilder();
         program.accept(symbolTableBuilder);
         // From there your code may be different
-        if (symbolTableBuilder.has_errors()) {
+        if (symbolTableBuilder.hasErrors()) {
             symbolTableBuilder.printErrors();
             System.exit(-2);
         }
@@ -45,10 +45,11 @@ public class Main {
         TypeChecker typeChecker = new TypeChecker(symbolTable);
         program.accept(typeChecker);
         
-        if (typeChecker.has_errors()) {
+        if (typeChecker.hasErrors()) {
             typeChecker.printErrors();
             System.exit(-3);
         }
+        
         
         System.out.print(program.accept(new PrettyPrinter(2)));
     }
