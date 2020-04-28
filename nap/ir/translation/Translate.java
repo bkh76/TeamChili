@@ -331,44 +331,47 @@ public class Translate {
 
         @Override
         public Result visit(StmIf stm) {
-            // TODO: Conditional statement
             Result cond_result = stm.condition.accept(this);
             Result then_block_result = stm.then_branch.accept(this);
-            if (stm.else_branch.isPresent()) {
-                Result else_branch_result = stm.else_branch.get().accept(this);
-            }
             ir.expr.Expression cond_expr = cond_result.getExp();
             List<ir.com.Command> code = new LinkedList<>();
             Label if_label = new Label();
+            code.addAll(then_block_result.getCode());
             CJump cond_jump;
             Label label_after_if = new Label();
             if (stm.else_branch.isPresent()) {
+                Result else_branch_result = stm.else_branch.get().accept(this);
                 Label else_label = new Label();
                 cond_jump = new CJump(cond_expr, if_label, else_label);
+                code.addAll(else_branch_result.getCode());
             }
             else {
                 cond_jump = new CJump(cond_expr, if_label, label_after_if);
             }
-            return null;
+            code.add(cond_jump);
+            return new Result(code);
         }
 
 
         @Override
         public Result visit(StmWhile stm) {
-            // TODO: while loops
             Result cond_result = stm.condition.accept(this);
             Result body_result = stm.body.accept(this);
             ir.expr.Expression cond_expr = cond_result.getExp();
+            List<ir.com.Command> code = new LinkedList<>();
             if(stm.doWhile) {
-                // add the block before the cond?
+                code.addAll(body_result.getCode());
+                code.addAll(cond_result.getCode());
             }
             else {
-                // add the cond before the block?
+                code.addAll(cond_result.getCode());
+                code.addAll(body_result.getCode());
             }
             Label block_label = new Label();
             Label after_loop = new Label();
             CJump cond_jump = new CJump(cond_expr, block_label, after_loop);
-            return null;
+            code.add(cond_jump);
+            return new Result(code);
         }
 
 
