@@ -1,5 +1,6 @@
 read_char:
     li $v0, 12
     syscall
-    jal $ra
+exit_read_char:
+    j $ra
 

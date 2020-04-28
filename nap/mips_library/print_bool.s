@@ -1,4 +1,5 @@
 print_bool:
     li $v0, 11
     syscall
-    jal $ra
+exit_print_bool:
+    j $ra
