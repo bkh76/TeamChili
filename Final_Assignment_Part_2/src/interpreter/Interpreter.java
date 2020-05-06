@@ -163,10 +163,15 @@ public class Interpreter {
 
         @Override
         public Value visit(ExpUnop exp) {
-	    // TODO: To Complete
-	    errorReporter.report(Status.UNSUPPORTED,
-				 "not implemented yet", exp.pos);
-            return null;
+            // TODO: To Complete
+            Value local_exp = exp.exp.accept(this);
+            switch(exp.op) {
+                case SUB:
+                    //return arithmeticOp(exp.pos, local_exp, OpBinary., right)
+                case NOT:
+                    return 
+                default: return null;
+            }
         }
 
         @Override
@@ -276,10 +281,17 @@ public class Interpreter {
 
         @Override
         public Value visit(StmIf stm) {
-	    // TODO: To Complete
-	    errorReporter.report(Status.UNSUPPORTED,
-				 "not implemented yet", stm.pos);
-            return null;
+        // TODO: Completed
+            Value condition = stm.condition.accept(this);
+            assert condition instanceof ValueBool : "Internal Error: condition: " + stm.pos;
+            Value value = Value.NONE;
+            if(((ValueBool)condition).value) {
+                value = stm.then_branch.accept(this);
+            }
+            else if(stm.else_branch.isPresent()){
+                value = stm.else_branch.get().accept(this);
+            }
+            return value;
         }
 
         @Override
