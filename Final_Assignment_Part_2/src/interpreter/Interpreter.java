@@ -163,13 +163,19 @@ public class Interpreter {
 
         @Override
         public Value visit(ExpUnop exp) {
-            // TODO: To Complete
+            // TODO: Completed
             Value local_exp = exp.exp.accept(this);
             switch(exp.op) {
                 case SUB:
-                    //return arithmeticOp(exp.pos, local_exp, OpBinary., right)
+                    assert (local_exp instanceof ValueInt) : "Internal Error: type error " + exp.pos;
+                    int x = ((ValueInt)local_exp).value;
+                    x *= -1;
+                    return new ValueInt(x);
                 case NOT:
-                    return 
+                    assert (local_exp instanceof ValueBool) : "Internal Error: type error" + exp.pos;
+                    boolean y = ((ValueBool)local_exp).value;
+                    y = !y;
+                    return new ValueBool(y);
                 default: return null;
             }
         }
