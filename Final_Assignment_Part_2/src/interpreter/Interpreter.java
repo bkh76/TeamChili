@@ -273,7 +273,7 @@ public class Interpreter {
 
         @Override
         public Value visit(ExpArrEnum array) {
-	    // TODO: To Complete
+        // TODO: To Complete
 	    errorReporter.report(Status.UNSUPPORTED,
 				 "not implemented yet", array.pos);
             return null;
@@ -345,8 +345,12 @@ public class Interpreter {
                 if (stm.type.type == Basic.BYTE)
                     expression = new ExpPredefinedCall(stm.pos, OpPredefined.BYTE_OF_INT,
                             MakeList.one(new ExpInt(stm.pos, Integer.parseInt(line))));
-                if (stm.type.type == Basic.BOOL)
-                    expression = new ExpBool(stm.pos, Boolean.parseBoolean(line));
+                if (stm.type.type == Basic.BOOL) { //TODO: Fixed the issue with true and T
+                    if(line.charAt(0) == 'T')
+                        expression = new ExpBool(stm.pos, Boolean.TRUE); 
+                    else
+                        expression = new ExpBool(stm.pos, Boolean.FALSE); 
+                }
                 if (stm.type.type.equals(type.Array.stringType))
                     expression = new ExpString(stm.pos, line);
             } catch (NumberFormatException e) {
@@ -397,7 +401,10 @@ public class Interpreter {
 
         @Override
         public Value visit(StmFor stm) {
-	    // TODO: To Complete
+        // TODO: To Complete
+        //TODO: I believe we have to implement this as a for loop and not a while loop?
+                                    
+            
             errorReporter.report(Status.UNSUPPORTED,
 				 "not implemented yet", stm.pos);
             return Value.NONE;
