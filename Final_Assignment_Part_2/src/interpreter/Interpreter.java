@@ -280,9 +280,13 @@ public class Interpreter {
         @Override
         public Value visit(ExpArrEnum array) {
         // TODO: To Complete
-	    errorReporter.report(Status.UNSUPPORTED,
-				 "not implemented yet", array.pos);
-            return null;
+            List<Value> temp_array = new ArrayList<>();
+
+            for( Expression iter : array.exps) {
+                temp_array.add(iter.accept(this));
+            }
+            ValueArray new_array = new ValueArray(temp_array);
+            return new_array;
         }
 
         @Override
@@ -407,13 +411,16 @@ public class Interpreter {
 
         @Override
         public Value visit(StmFor stm) {
-        // TODO: To Complete
-        //TODO: I believe we have to implement this as a for loop and not a while loop?
-                                    
-            
-            errorReporter.report(Status.UNSUPPORTED,
-				 "not implemented yet", stm.pos);
-            return Value.NONE;
+        // TODO:  Completed?
+            Value condition = stm.collection.accept(this);
+            Value value = Value.NONE;
+            while(((ValueBool)condition).value)
+            {
+                value = stm.body.accept(this);
+                if (value != Value.NONE) return value;
+                condition = stm.collection.accept(this);
+            }
+            return value;
         }
 
         @Override
